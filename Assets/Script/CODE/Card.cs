@@ -16,6 +16,7 @@ public abstract class Card : MonoBehaviour
     public BoxCollider2D collid;
 
     public Program Program = GameObject.Find("Program").GetComponent<Program>();
+    public bool onInteraction = false;
     
     public void InitializeCard()
     {
@@ -32,17 +33,22 @@ public abstract class Card : MonoBehaviour
 
     void Update()
     {
-        // if half of the card is outside the screen, destroy it and send a message to the server
-        if (transform.position.y < -5)
-        {
-            Destroy(gameObject);
-            // Program.SendMessageToPlayers("Card " + this.id + " has been destroyed");
-            // SendMessageToPlayers("Card " + this.id + " has been destroyed");
+        // // if half of the card is outside the screen, destroy it and send a message to the server
+        // if (transform.position.y < -5)
+        // {
+        //     Destroy(gameObject);
+        //     // Program.SendMessageToPlayers("Card " + this.id + " has been destroyed");
+        //     // SendMessageToPlayers("Card " + this.id + " has been destroyed");
+        // }
+
+        if(transform.position.y != 0 && !onInteraction){
+            StartCoroutine(ResetPosition());
         }
     }
 
     void OnMouseDown()
     {   
+        onInteraction = true;
         Debug.Log("OnMouseDown");
         // Change color to red when clicked
         rend.material.color = Color.red;
@@ -52,6 +58,7 @@ public abstract class Card : MonoBehaviour
 
     void OnMouseUp()
     {
+        onInteraction = false;
         Debug.Log("OnMouseUp");
         // Change color to green when mouse is released
         rend.material.color = Color.white;
@@ -63,5 +70,11 @@ public abstract class Card : MonoBehaviour
         Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10);
         Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition) + offset;
         transform.position = objPosition;
+    }
+
+    IEnumerator ResetPosition(){
+        yield return new WaitForSeconds(1);
+        // Move slowly the card to y=0
+        transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, 0, transform.position.z), 0.1f);
     }
 }   

@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+    using System.Collections;
+    using System.Collections.Generic;
+    using UnityEngine;
 
 using System;
 using System.Diagnostics;
@@ -21,7 +21,8 @@ public class Program : MonoBehaviour
 
     void Start()
     {
-        LaunchServerJS();
+        // LaunchServerJS();
+        createGoldCard();
     }
 
     void LaunchServerJS()
@@ -40,15 +41,15 @@ public class Program : MonoBehaviour
         // Démarrez le processus
         processNode.Start();
 
-        // // Obtenez la sortie standard (résultats de l'exécution du script)
-        // string resultat = processNode.StandardOutput.ReadToEnd();
+        // Obtenez la sortie standard (résultats de l'exécution du script)
+        string resultat = processNode.StandardOutput.ReadToEnd();
 
-        // // Attendez la fin de l'exécution du processus
-        // processNode.WaitForExit();
+        // Attendez la fin de l'exécution du processus
+        processNode.WaitForExit();
 
-        // // Affichez la sortie du script Node.js
-        // Console.WriteLine("Résultat de l'exécution du script Node.js :");
-        // Console.WriteLine(resultat);
+        // Affichez la sortie du script Node.js
+        Console.WriteLine("Résultat de l'exécution du script Node.js :");
+        Console.WriteLine(resultat);
 
         // // Fermez le processus
         // processNode.Close();
@@ -59,9 +60,10 @@ public class Program : MonoBehaviour
         // GameObject goldCard = new GameObject("GoldCard");
         // create rectangle
         GameObject goldCard = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        // modify size to make it a card
+        goldCard.transform.localScale = new Vector3(1, 1.5f, 0.1f);
+        // make it 
         goldCard.AddComponent<GoldCard>();
-
-        
     }
 
     void createMonsterCard()
@@ -70,6 +72,4 @@ public class Program : MonoBehaviour
         monsterCard.AddComponent<MonsterCard>();
         // monsterCard.AddComponent<Card>();
     }
-
-
 }

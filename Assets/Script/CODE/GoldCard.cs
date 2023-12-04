@@ -15,8 +15,7 @@ public class GoldCard : Card
     {
         base.InitializeCard();
         this.gold = Random.Range(0, 100);
-        base.gameObject.name = "Hello";
-        base.id = 44444;
+        base.gameObject.name = "GoldCard";
         base.rend.material.color = Color.yellow;
     }
 }
