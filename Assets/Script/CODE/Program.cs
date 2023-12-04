@@ -7,69 +7,25 @@ using System.Diagnostics;
 
 using WebSocketSharp;
 
+using Tool;
+
 
 public class Program : MonoBehaviour
 {
-        private WebSocket webSocket;
+    Player player1;
+    Player player2;
+    Player player3;
+    Player player4;
 
+    string adresseNgrok = "e740-46-193-3-79";
 
     void Start()
     {
-        // SocketConnexion();
-        createGoldCard();
-
-
-
-
-        //webSocket = new WebSocket("wss://localhost:3000/0");
-        // string adresseNgrok = AdresseSingleton.GetSharedValue();
-        string adresseNgrok = "e740-46-193-3-79";
-        webSocket = new WebSocket("wss://" + adresseNgrok + ".ngrok-free.app/0");
-        webSocket.OnMessage += (sender, e) =>
-        {
-            UnityEngine.Debug.Log("Message reçu du serveur : " + e.Data);
-            // Ajoutez ici la logique pour traiter les messages reçus du serveur (éventuellement des messages des joueurs)
-        };
-
-        webSocket.Connect();
-
-        // Envoyer un message aux joueurs
-        SendMessageToPlayers("Message de la Lucas!");
-
-
+        LaunchServerJS();
     }
 
-     // Fonction pour envoyer un message aux joueurs depuis la table
-    public void SendMessageToPlayers(string message)
+    void LaunchServerJS()
     {
-        if (webSocket != null && webSocket.ReadyState == WebSocketState.Open)
-        {
-            webSocket.Send(message);
-        }
-    }   
-
-    void createGoldCard()
-    {
-        // GameObject goldCard = new GameObject("GoldCard");
-        // create rectangle
-        GameObject goldCard = GameObject.CreatePrimitive(PrimitiveType.Cube);
-
-
-
-        goldCard.AddComponent<GoldCard>();
-
-
-
-    }
-
-    void createMonsterCard()
-    {
-        GameObject monsterCard = new GameObject("MonsterCard");
-        monsterCard.AddComponent<MonsterCard>();
-        // monsterCard.AddComponent<Card>();
-    }
-
-    void SocketConnexion(){
         // Spécifiez le chemin du fichier script.js
         string cheminDuScript = "Server/server.js";
 
@@ -82,7 +38,7 @@ public class Program : MonoBehaviour
         processNode.StartInfo.CreateNoWindow = true;
 
         // Démarrez le processus
-        processNode.Start();    
+        processNode.Start();
 
         // // Obtenez la sortie standard (résultats de l'exécution du script)
         // string resultat = processNode.StandardOutput.ReadToEnd();
@@ -97,5 +53,23 @@ public class Program : MonoBehaviour
         // // Fermez le processus
         // processNode.Close();
     }
+
+    void createGoldCard()
+    {
+        // GameObject goldCard = new GameObject("GoldCard");
+        // create rectangle
+        GameObject goldCard = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        goldCard.AddComponent<GoldCard>();
+
+        
+    }
+
+    void createMonsterCard()
+    {
+        GameObject monsterCard = new GameObject("MonsterCard");
+        monsterCard.AddComponent<MonsterCard>();
+        // monsterCard.AddComponent<Card>();
+    }
+
 
 }

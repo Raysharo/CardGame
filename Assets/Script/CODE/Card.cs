@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// using Program;
+
+
 public abstract class Card : MonoBehaviour
 {
     // ATTRIBUTS
@@ -11,6 +14,8 @@ public abstract class Card : MonoBehaviour
     // OBJECT
     public Renderer rend;
     public BoxCollider2D collid;
+
+    public Program Program = GameObject.Find("Program").GetComponent<Program>();
     
     public void InitializeCard()
     {
@@ -18,17 +23,26 @@ public abstract class Card : MonoBehaviour
         this.id = Random.Range(0, 1000000);
         // Utilise gameObject.AddComponent pour ajouter des composants au GameObject
         // this.rend = gameObject.AddComponent<SpriteRenderer>();
-        // this.collid = gameObject.AddComponent<BoxCollider2D>();
-
-        //
+        // this.collid = gameObject.AddComponent<BoxCollider2D>();  
 
         this.rend = gameObject.GetComponent<Renderer>();
         this.collid = gameObject.GetComponent<BoxCollider2D>();
 
     }
 
-    void OnMouseDown()
+    void Update()
     {
+        // if half of the card is outside the screen, destroy it and send a message to the server
+        if (transform.position.y < -5)
+        {
+            Destroy(gameObject);
+            // Program.SendMessageToPlayers("Card " + this.id + " has been destroyed");
+            // SendMessageToPlayers("Card " + this.id + " has been destroyed");
+        }
+    }
+
+    void OnMouseDown()
+    {   
         Debug.Log("OnMouseDown");
         // Change color to red when clicked
         rend.material.color = Color.red;
