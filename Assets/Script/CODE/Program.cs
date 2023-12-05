@@ -12,17 +12,18 @@ using Tool;
 
 public class Program : MonoBehaviour
 {
-    Player player1;
-    Player player2;
-    Player player3;
-    Player player4;
+    public Player player1;
+    public Player player2;
+    public Player player3;
+    public Player player4;
 
     string adresseNgrok = "e740-46-193-3-79";
 
     void Start()
     {
         // LaunchServerJS();
-        createGoldCard();
+        // createGoldCard();
+        player1 = new Player(1,adresseNgrok);
     }
 
     void LaunchServerJS()
@@ -55,16 +56,18 @@ public class Program : MonoBehaviour
         // processNode.Close();
     }
 
-    void createGoldCard()
-    {
-        // GameObject goldCard = new GameObject("GoldCard");
-        // create rectangle
-        GameObject goldCard = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        // modify size to make it a card
-        goldCard.transform.localScale = new Vector3(1, 1.5f, 0.1f);
-        // make it 
-        goldCard.AddComponent<GoldCard>();
-    }
+    // void createGoldCard()
+    // {
+    //     // GameObject goldCard = new GameObject("GoldCard");
+    //     // create rectangle
+    //     GameObject goldCard = GameObject.CreatePrimitive(PrimitiveType.Cube);
+    //     // modify size to make it a card
+    //     goldCard.transform.localScale = new Vector3(1, 1.5f, 0.1f);
+    //     // make it 
+    //     goldCard.AddComponent<GoldCard>();
+
+        
+    // }
 
     void createMonsterCard()
     {

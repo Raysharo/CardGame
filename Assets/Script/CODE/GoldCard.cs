@@ -13,9 +13,12 @@ public class GoldCard : Card
 
     void InitializeCard() // Ajoutez les parenthèses ici
     {
-        base.InitializeCard();
+        base.color = Color.yellow;
         this.gold = Random.Range(0, 100);
-        base.gameObject.name = "GoldCard";
-        base.rend.material.color = Color.yellow;
+        
+        
+        base.InitializeCard();
+        base.rend.material.color = base.color;
+        base.gameObject.name = "GoldCard" + base.id;
     }
 }
