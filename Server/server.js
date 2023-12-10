@@ -8,8 +8,8 @@ const WebSocket = require('ws');
 const app = express();
 
 // Chargement des certificats SSL (remplacez les fichiers par les vôtres)
-const privateKey = fs.readFileSync('private-key.pem', 'utf8');
-const certificate = fs.readFileSync('certificate.pem', 'utf8');
+const privateKey = fs.readFileSync('Server/private-key.pem', 'utf8');
+const certificate = fs.readFileSync('Server/certificate.pem', 'utf8');
 const credentials = { key: privateKey, cert: certificate };
 
 // Création du serveur HTTPS
