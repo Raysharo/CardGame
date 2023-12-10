@@ -23,11 +23,13 @@ public abstract class Card : MonoBehaviour
     private float boxScaleFactorX = 1.5f;
     private float boxScaleFactorY = 1.5f;
     public Color color;
-    Light pointLight ;
+    Light pointLight;
 
 
     private float clickDuration = 0.3f; // Seuil de durée pour un clic bref en secondes
     private float mouseDownTime;
+
+    public Player owner;
 
     void Start()
     {
@@ -71,9 +73,10 @@ public abstract class Card : MonoBehaviour
     void TaskOnClik()
     {
         Debug.Log("TaskOnClik");
-        // Increase the saturation of the color
-        // pointLight.intensity = 0.7f;
-        // rend.material.color = (this.color == rend.material.color) ? Color.Lerp(rend.material.color, Color.white, 0.1f) : this.color;
+        CardMessage messageObject = new CardMessage(this.id);
+        string message = JsonUtility.ToJson(messageObject);
+        owner.SendMessageToTAble(message);
+
     }
 
     void OnMouseDown()
@@ -95,17 +98,12 @@ public abstract class Card : MonoBehaviour
         onInteraction = false;
         rend.material.color = this.color;
         float clickDuration = Time.time - mouseDownTime;
-        
+
 
         if (clickDuration < this.clickDuration)
         {
             TaskOnClik();
         }
-       
-        
-        
-        
-
     }
 
     void OnMouseDrag()
