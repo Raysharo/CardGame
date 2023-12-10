@@ -1,2 +1,6 @@
 Library/
 Libraries
+# Fichiers de logs Unity
+Logs/
+# Dossier temporaire Unity
+Temp/
