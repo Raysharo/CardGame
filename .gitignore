@@ -4,3 +4,6 @@ Libraries
 Logs/
 # Dossier temporaire Unity
 Temp/
+
+Server/certificate.pem
+Server/private-key.pem
