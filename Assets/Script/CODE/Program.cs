@@ -17,7 +17,7 @@ public class Program : MonoBehaviour
     public Player player3;
     public Player player4;
 
-    string adresseNgrok = "d1d0-46-193-3-79";
+    string adresseNgrok = "6ec8-2a02-8440-c201-d671-5460-1f39-d614-7ca8";
 
     void Start()
     {

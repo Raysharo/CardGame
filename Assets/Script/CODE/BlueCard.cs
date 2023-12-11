@@ -6,6 +6,8 @@ public class BlueCard : Card
 {
     void Start()
     {
+        attackPoints = 5; 
+        defensePoints = 15; 
         InitializeCard();
     }
 

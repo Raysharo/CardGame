@@ -30,6 +30,8 @@ public abstract class Card : MonoBehaviour
     private float mouseDownTime;
 
     public Player owner;
+    public int attackPoints;
+    public int defensePoints;
 
     void Start()
     {
@@ -73,7 +75,7 @@ public abstract class Card : MonoBehaviour
     void TaskOnClik()
     {
         Debug.Log("TaskOnClik");
-        CardMessage messageObject = new CardMessage(this.id);
+        CardMessage messageObject = new CardMessage(this.id,this.GetType().Name, attackPoints, defensePoints);
         string message = JsonUtility.ToJson(messageObject);
         owner.SendMessageToTAble(message);
 
