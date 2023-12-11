@@ -21,9 +21,8 @@ public class Player
 
     public WebSocket PlayerSocket;
 
-    public Player(int id, string adresseNgrok = "d1d0-46-193-3-79")
+    public Player(int id, string adresseNgrok = "6ec8-2a02-8440-c201-d671-5460-1f39-d614-7ca8")
     {
-
         this.id = id;
         // string adresseNgrok = "e740-46-193-3-79";
         PlayerSocket = new WebSocket("wss://" + adresseNgrok + ".ngrok-free.app/" + id);
@@ -32,18 +31,14 @@ public class Player
             UnityEngine.Debug.Log("Message reçu du serveur : " + e.Data);
         };
         PlayerSocket.Connect();
-        // GameObject goldCard = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        // // modify size to make it a card
-        // goldCard.transform.localScale = new Vector3(1, 1.5f, 0.1f);
-        // goldCard.transform.position = new Vector3(-2, 0, 0);
-        CreateCard(new Vector3(-2, 0, 0), new Vector3(1, 1.5f, 0.1f), Color.yellow, typeof(GoldCard));
-        CreateCard(new Vector3(0, 0, 0), new Vector3(1, 1.5f, 0.1f), Color.yellow, typeof(GoldCard));
-        CreateCard(new Vector3(2, 0, 0), new Vector3(1, 1.5f, 0.1f), Color.blue, typeof(BlueCard));
-        CreateCard(new Vector3(4, 0, 0), new Vector3(1, 1.5f, 0.1f), Color.green, typeof(GreenCard));
+        CreateCard(new Vector3(-2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GoldCard));
+        CreateCard(new Vector3(0, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GoldCard));
+        CreateCard(new Vector3(2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(BlueCard));
+        CreateCard(new Vector3(4, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GreenCard));
     }
 
 
-     public void CreateCard(Vector3 position, Vector3 scale, Color color, Type cardType)
+     public void CreateCard(Vector3 position, Vector3 scale, Type cardType)
     {
         // Créer l'objet de la carte
         GameObject cardObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
