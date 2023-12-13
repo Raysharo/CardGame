@@ -8,6 +8,8 @@ public class GoldCard : Card
 
     void Start()
     {
+        attackPoints = 20; 
+        defensePoints = 10; 
         InitializeCard(); // Ajoutez les parenthèses ici
     }
 

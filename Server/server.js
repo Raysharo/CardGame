@@ -34,27 +34,6 @@ wss.on('connection', (ws, req) => {
     lastMessages.set(clientId, null);
     // Écoute des messages du client
     ws.on('message', (data) => {
-        // console.log(`Reçu du client ${clientId}: ${data}`);
-
-        // // Vérifier si le message est une chaîne de caractères
-        // if (typeof data === 'string') {
-        //     console.log(`Reçu du client ${clientId}: ${data}`);
-
-        //     // Gérer le message de déplacement de carte
-        //     if (data.startsWith("move card to player")) {
-        //         // Traiter le message comme un déplacement de carte à la table
-        //         let cardId = data.split(" ")[5]; // Assurez-vous que cet index est correct
-        //         broadcastToTable(`card ${cardId} moved to table by player ${clientId}`);
-        //     } else {
-        //         // Gérer les autres types de messages
-        //         // ...
-        //     }
-        // } else {
-        //     // Si ce n'est pas une chaîne de caractères, vous devrez convertir les données binaires en chaîne de caractères
-        //     console.log('Message reçu, mais ce n\'est pas une chaîne de caractères.');
-        //     // Vous pouvez convertir l'ArrayBuffer en chaîne si nécessaire ici
-        // }
-
         let message;
         try {
             // Tentez de parser les données JSON reçues
@@ -75,8 +54,15 @@ wss.on('connection', (ws, req) => {
             }
         } else if (typeof message === 'object' && message.type === "move card to player") {
             console.log('Le message est un objet et de type "move card to player".');
+            // let cardId = message.cardId;
+            // broadcastToTable(`card ${cardId} moved to table by player ${clientId}`);
+
             let cardId = message.cardId;
-            broadcastToTable(`card ${cardId} moved to table by player ${clientId}`);
+            let clientId = message.clientId; // Supposons que vous ayez également un clientId dans votre objet message
+            let cardType = message.cardType;
+            let attackPoints = message.attackPoints;
+            let defensePoints = message.defensePoints;
+            broadcastToTable(cardId, clientId, cardType,attackPoints,defensePoints);
         } else {
             console.log('Format de message inconnu ou non pris en charge.', message);
         }
@@ -96,16 +82,30 @@ function broadcastMessage(message) {
     });
 }
 
-function broadcastToTable(message) {
+function broadcastToTable(cardId, clientId, cardType, attackPoints, defensePoints) {
     // Diffuser le message seulement à la table
     // Dans cet exemple, supposons que l'ID du client de la table est 0
-    let tableClientId = 0;
-    if (clients.has(tableClientId)) {
-        let tableClient = clients.get(tableClientId);
-        if (tableClient.readyState === WebSocket.OPEN) {
-            tableClient.send(message);
-        }
-    }
+    // Créer un objet représentant le message
+    let messageObject = {
+        type: "move card to player",
+        cardId: cardId,
+        playerId: clientId,
+        cardType: cardType,
+        attackPoints: attackPoints,
+        defensePoints: defensePoints
+    };
+
+     // Convertir l'objet en chaîne JSON
+     let messageString = JSON.stringify(messageObject);
+
+     // Diffuser le message JSON à la table
+     let tableClientId = 0;
+     if (clients.has(tableClientId)) {
+         let tableClient = clients.get(tableClientId);
+         if (tableClient.readyState === WebSocket.OPEN) {
+             tableClient.send(messageString);
+         }
+     }
 }
 
 // HTTP server
