@@ -51,13 +51,6 @@ public abstract class Card : MonoBehaviour
 
         this.collid.size = new Vector2(transform.localScale.x * boxScaleFactorX, transform.localScale.y * boxScaleFactorY);
 
-        // Ajouter une lumière ponctuelle au GameObject
-        // pointLight = gameObject.AddComponent<Light>();
-        // // Configurer les propriétés de la lumière
-        // pointLight.type = LightType.Point;     // Type de lumière ponctuelle
-        // pointLight.color = this.color;         // Couleur de la lumière
-        // pointLight.intensity = 0;      // Intensité de la lumière
-
     }
 
     void Update()

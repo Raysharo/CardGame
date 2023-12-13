@@ -87,19 +87,6 @@ public class TableManager : MonoBehaviour
         string text = $"Attaque: {attackPoints}\nDéfense: {defensePoints}";
         CreateCard(new Vector3(2, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text);
     }
-    // void AddTextToCardUI(GameObject cardObject, string text, Vector2 position)
-    // {
-    //     GameObject textObject = new GameObject("CardTextUI");
-    //     textObject.transform.SetParent(cardObject.transform, false);
-
-    //     RectTransform rectTransform = textObject.AddComponent<RectTransform>();
-    //     rectTransform.anchoredPosition = position;
-
-    //     Text textComponent = textObject.AddComponent<Text>();
-    //     textComponent.text = text;
-    //     textComponent.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf"); // Modifier ici
-    //     // Autres réglages de style comme la taille, la couleur, l'alignement, etc.
-    // }
 
     void AddTextToCardUI(GameObject cardObject, string text, Vector3 localPosition)
     {
@@ -125,30 +112,7 @@ public class TableManager : MonoBehaviour
         GameObject textObject = new GameObject("CardTextUI");
         textObject.transform.SetParent(canvas.transform, false);
 
-        // Configurer RectTransform pour le texte
-        // RectTransform rectTransform = textObject.AddComponent<RectTransform>();
-        // rectTransform.anchoredPosition3D = localPosition; // Utilisez localPosition pour positionner le texte sur la carte
-        // rectTransform.sizeDelta = new Vector2(100, 50); // Taille du texte, ajustez selon vos besoins
-
-        // // Ajouter et configurer le composant de texte
-        // Text textComponent = textObject.AddComponent<Text>();
-        // textComponent.text = text;
-        // textComponent.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        // textComponent.fontSize = 1;
-        // textComponent.alignment = TextAnchor.MiddleCenter;
-        // textComponent.color = Color.black;
-
-        // // chenge scale to 0.16
-        // textObject.transform.localScale = new Vector3(0.16f, 0.16f, 0.16f);
-        // // change sorting order to 1
-        // textComponent.canvas.sortingOrder = 1;
-        // //CalculerCouleurOpposee(Color.black);
-        // Configurer RectTransform pour le texte
         RectTransform rectTransform = textObject.AddComponent<RectTransform>();
-        // Ajustez localPosition pour que le texte soit devant la carte, pas dessus
-        //rectTransform.anchoredPosition3D = new Vector3(localPosition.x, localPosition.y, localPosition.z - 0.01f); // Déplacez légèrement vers la caméra
-        //rectTransform.sizeDelta = new Vector2(100, 50); // Taille du texte
-        //modified z position to -1
         rectTransform.localPosition = new Vector3(0, 0, -1); // Centrez sur la carte
 
         // Ajouter et configurer le composant de texte
