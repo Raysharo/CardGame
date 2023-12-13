@@ -80,3 +80,7 @@ crashlytics-build.properties
 
 Server/certificate.pem
 Server/private-key.pem
+Packages/packages-lock.json
+Packages/packages-lock.json
+ProjectSettings/ProjectVersion.txt
+UserSettings/Layouts/default-2023.dwlt
