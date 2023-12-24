@@ -4,11 +4,19 @@ using WebSocketSharp;
 using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using TMPro;
 
 public class TableManager : MonoBehaviour
 {
     private WebSocket ws;
     private Queue<Action> actionsToExecuteOnMainThread = new Queue<Action>();
+    public PvPlayer pvPlayer; // Référence à votre classe PvPlayer
+
+   // [SerializeField] // Cette ligne s'assure que l'array est visible dans l'Inspecteur Unity même s'il est privé
+    //private Text[] healthDisplays; // Array pour les objets Text UI des PV des joueurs
+    [SerializeField]
+    private TextMeshProUGUI[] healthDisplays;
+
 
     void Start()
     {
@@ -23,6 +31,52 @@ public class TableManager : MonoBehaviour
         };
 
         ws.Connect();
+        // pvPlayer = new PvPlayer();
+        // InitializeHealthDisplays();
+        //pvPlayer = GetComponent<PvPlayer>(); // This gets the PvPlayer component on the same GameObject.
+
+        // If PvPlayer is on a different GameObject, you'd use something like:
+        pvPlayer = GameObject.Find("PvPlayer").GetComponent<PvPlayer>();
+
+        // Make sure pvPlayer is not null before calling InitializeHealthDisplays
+        if (pvPlayer != null)
+        {
+            InitializeHealthDisplays();
+        }
+        else
+        {
+            Debug.LogError("PvPlayer component not found!");
+        }
+
+    }
+
+    void InitializeHealthDisplays()
+    {
+        if (healthDisplays != null && healthDisplays.Length == 4)
+        {
+            // Mettre à jour le texte pour chaque affichage de PV
+            for (int i = 0; i < healthDisplays.Length; i++)
+            {
+                if (healthDisplays[i] != null)
+                {
+                    healthDisplays[i].text ="PV: " + pvPlayer.GetLifePointsForPlayer(i + 1);
+                }
+                else
+                {
+                    Debug.LogError("Health display Text object for player " + (i + 1) + " is not assigned in the inspector!");
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError("HealthDisplays array is not properly assigned in the inspector!");
+        }
+    }
+
+    // Ajoutez une méthode pour mettre à jour l'affichage des PV quand ils changent
+    public void UpdateHealthDisplay(int playerNumber, int newHealth)
+    {
+        healthDisplays[playerNumber - 1].text = "Player " + playerNumber + " PV: " + newHealth;
     }
 
     void Update()
@@ -88,12 +142,12 @@ public class TableManager : MonoBehaviour
         Debug.Log("CreateOrUpdateCardOnTable - playerId " + playerId);
         string text = $"Attaque: {attackPoints}\nDéfense: {defensePoints}";
         float rotationDegreesZ = 0.0f;
-        if(playerId == 1)
+        if (playerId == 1)
         {
-            rotationDegreesZ= 0.0f;
+            rotationDegreesZ = 0.0f;
             CreateCard(new Vector3(0, -3, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ);
         }
-        else if(playerId == 2)
+        else if (playerId == 2)
         {
             rotationDegreesZ = -90.0f;
             CreateCard(new Vector3(-6, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ);
@@ -108,7 +162,6 @@ public class TableManager : MonoBehaviour
             rotationDegreesZ = 90.0f;
             CreateCard(new Vector3(6, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ);
         }
-        //CreateCard(new Vector3(2, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, playerId, text);
     }
 
     void AddTextToCardUI(GameObject cardObject, string text, Vector3 localPosition)
@@ -172,7 +225,7 @@ public class TableManager : MonoBehaviour
                 cardObject.transform.localScale = scale;
                 cardObject.transform.position = position;
                 // rotation de la carte
-                cardObject.transform.Rotate(0,0, rotationDegreesZ);
+                cardObject.transform.Rotate(0, 0, rotationDegreesZ);
                 // Ajouter le composant de carte du type spécifié
                 Card cardComponent = (Card)cardObject.AddComponent(cardType);
                 cardComponent.attackPoints = attackPoints;
