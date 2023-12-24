@@ -76,6 +76,7 @@ public abstract class Card : MonoBehaviour
         CardMessage messageObject = new CardMessage(this.id,this.GetType().Name, attackPoints, defensePoints);
         string message = JsonUtility.ToJson(messageObject);
         owner.SendMessageToTAble(message);
+        owner.DestroyCard(this.id);
 
     }
 

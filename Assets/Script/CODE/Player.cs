@@ -23,7 +23,7 @@ public class Player
 
     public WebSocket PlayerSocket;
 
-    public Player(int id, string adresseNgrok = "8354-46-193-3-79") 
+    public Player(int id, string adresseNgrok = "8354-46-193-3-79")
     {
         this.id = id;
         // string adresseNgrok = "e740-46-193-3-79";
@@ -35,22 +35,22 @@ public class Player
         PlayerSocket.Connect();
         if (id == 1)
         {
-            CreateCard(new Vector3(-2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GoldCard)  , 20, 10);
-            CreateCard(new Vector3(0, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GoldCard)   , 20, 10);
-            CreateCard(new Vector3(2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(BlueCard)    , 20, 10);
-            CreateCard(new Vector3(4, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GreenCard)  , 20, 10);
+            CreateCard(new Vector3(-2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GoldCard), 20, 10);
+            CreateCard(new Vector3(0, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GoldCard), 20, 10);
+            CreateCard(new Vector3(2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(BlueCard), 20, 10);
+            CreateCard(new Vector3(4, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GreenCard), 20, 10);
         }
         else
         {
             CreateCard(new Vector3(-2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GreenCard), 20, 10);
-            CreateCard(new Vector3(0, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GoldCard),20 , 10  );
-            CreateCard(new Vector3(2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GreenCard),20 , 10  );
-            CreateCard(new Vector3(4, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GreenCard),20 , 10 );
+            CreateCard(new Vector3(0, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GoldCard), 20, 10);
+            CreateCard(new Vector3(2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GreenCard), 20, 10);
+            CreateCard(new Vector3(4, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GreenCard), 20, 10);
         }
 
     }
 
-    public void CreateCard(Vector3 position, Vector3 scale, Type cardType, int attackPoints , int defensePoints)
+    public void CreateCard(Vector3 position, Vector3 scale, Type cardType, int attackPoints, int defensePoints)
     {
         // Créer l'objet de la carte
         GameObject cardObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -112,5 +112,21 @@ public class Player
         // Ajuster la taille de l'échelle pour rendre le texte proportionnel à la carte
         textObject.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f); // Ajustez cette échelle selon vos besoins
 
+    }
+
+    public void DestroyCard(int cardId)
+    {
+        // Trouvez toutes les cartes dans la scène
+        Card[] allCards = UnityEngine.Object.FindObjectsOfType<Card>();
+        foreach (var card in allCards)
+        {
+            // Vérifiez si l'ID de la carte correspond à celui que nous voulons détruire
+            if (card.id == cardId)
+            {
+                // Détruisez la carte
+                UnityEngine.Object.Destroy(card.gameObject);
+                break; // Sortez de la boucle si la carte a été trouvée et détruite
+            }
+        }
     }
 }
