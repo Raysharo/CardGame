@@ -23,7 +23,7 @@ public class Player
 
     public WebSocket PlayerSocket;
 
-    public Player(int id, string adresseNgrok = "6ec8-2a02-8440-c201-d671-5460-1f39-d614-7ca8") 
+    public Player(int id, string adresseNgrok = "8354-46-193-3-79") 
     {
         this.id = id;
         // string adresseNgrok = "e740-46-193-3-79";

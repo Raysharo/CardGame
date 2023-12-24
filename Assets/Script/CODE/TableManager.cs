@@ -12,7 +12,7 @@ public class TableManager : MonoBehaviour
 
     void Start()
     {
-        string adresseNgrok = "6ec8-2a02-8440-c201-d671-5460-1f39-d614-7ca8";
+        string adresseNgrok = "8354-46-193-3-79";
         // Initialiser la connexion WebSocket
         ws = new WebSocket("wss://" + adresseNgrok + ".ngrok-free.app/0");
 
@@ -42,7 +42,7 @@ public class TableManager : MonoBehaviour
         try
         {
             message = JsonUtility.FromJson<CardMessage>(data);
-            Debug.Log($"Message parsé - Type: {message.type}, CardId: {message.cardId}, cardType: {message.cardType}, attackPoints: {message.attackPoints}, defensePoints: {message.defensePoints}");
+            Debug.Log($"Message parsé - Type: {message.type}, CardId: {message.cardId}, cardType: {message.cardType}, attackPoints: {message.attackPoints}, defensePoints: {message.defensePoints}, playerId: {message.playerId}");
         }
         catch (Exception e)
         {
@@ -57,9 +57,10 @@ public class TableManager : MonoBehaviour
             Type cardType = Type.GetType(message.cardType); // Convertissez le nom du type en Type
             int attackPoints = message.attackPoints;
             int defensePoints = message.defensePoints;
+            int playerId = message.playerId;
             if (cardType != null)
             {
-                CreateOrUpdateCardOnTable(message.cardId, cardType, attackPoints, defensePoints);
+                CreateOrUpdateCardOnTable(message.cardId, cardType, attackPoints, defensePoints, playerId);
             }
             else
             {
@@ -79,13 +80,30 @@ public class TableManager : MonoBehaviour
         }
     }
 
-    void CreateOrUpdateCardOnTable(int cardId, Type cardType, int attackPoints, int defensePoints)
+    void CreateOrUpdateCardOnTable(int cardId, Type cardType, int attackPoints, int defensePoints, int playerId)
     {
         Debug.Log("CreateOrUpdateCardOnTable - Création de la carte ID " + cardId);
         Debug.Log("CreateOrUpdateCardOnTable - attackPoints " + attackPoints);
         Debug.Log("CreateOrUpdateCardOnTable - defensePoints " + defensePoints);
+        Debug.Log("CreateOrUpdateCardOnTable - playerId " + playerId);
         string text = $"Attaque: {attackPoints}\nDéfense: {defensePoints}";
-        CreateCard(new Vector3(2, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text);
+        if(playerId == 1)
+        {
+            CreateCard(new Vector3(0, -3, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text);
+        }
+        else if(playerId == 2)
+        {
+            CreateCard(new Vector3(-6, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text);
+        }
+        else if (playerId == 3)
+        {
+            CreateCard(new Vector3(0, 3, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text);
+        }
+        else if (playerId == 4)
+        {
+            CreateCard(new Vector3(6, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text);
+        }
+        //CreateCard(new Vector3(2, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, playerId, text);
     }
 
     void AddTextToCardUI(GameObject cardObject, string text, Vector3 localPosition)

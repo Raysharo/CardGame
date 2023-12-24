@@ -5,11 +5,13 @@ public class CardMessage {
     public string cardType;
     public int attackPoints;
     public int defensePoints;
+    public int playerId;
 
     public CardMessage(int id, string type, int attack, int defense) {
         this.cardId = id;
         this.cardType = type;
         this.attackPoints = attack;
         this.defensePoints = defense;
+        this.playerId = GameManager.Instance.PlayerID;
     }
 }

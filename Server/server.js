@@ -62,7 +62,8 @@ wss.on('connection', (ws, req) => {
             let cardType = message.cardType;
             let attackPoints = message.attackPoints;
             let defensePoints = message.defensePoints;
-            broadcastToTable(cardId, clientId, cardType,attackPoints,defensePoints);
+            let playerId = message.playerId;
+            broadcastToTable(cardId, clientId, cardType,attackPoints,defensePoints,playerId);
         } else {
             console.log('Format de message inconnu ou non pris en charge.', message);
         }
@@ -82,7 +83,7 @@ function broadcastMessage(message) {
     });
 }
 
-function broadcastToTable(cardId, clientId, cardType, attackPoints, defensePoints) {
+function broadcastToTable(cardId, clientId, cardType, attackPoints, defensePoints, playerId) {
     // Diffuser le message seulement à la table
     // Dans cet exemple, supposons que l'ID du client de la table est 0
     // Créer un objet représentant le message
@@ -92,7 +93,8 @@ function broadcastToTable(cardId, clientId, cardType, attackPoints, defensePoint
         playerId: clientId,
         cardType: cardType,
         attackPoints: attackPoints,
-        defensePoints: defensePoints
+        defensePoints: defensePoints,
+        playerId: playerId
     };
 
      // Convertir l'objet en chaîne JSON

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 // using Program;
 
@@ -55,11 +56,15 @@ public abstract class Card : MonoBehaviour
 
     void Update()
     {
+        string currentSceneName = SceneManager.GetActiveScene().name;
 
 
         if (transform.position.y != 0 && !onInteraction)
         {
-            StartCoroutine(ResetPosition());
+            if(currentSceneName != "TableScene")
+            {
+                StartCoroutine(ResetPosition());
+            }      
         }
         CheckAndAdjustPosition();
 
