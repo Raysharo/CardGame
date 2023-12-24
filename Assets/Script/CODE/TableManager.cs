@@ -87,21 +87,26 @@ public class TableManager : MonoBehaviour
         Debug.Log("CreateOrUpdateCardOnTable - defensePoints " + defensePoints);
         Debug.Log("CreateOrUpdateCardOnTable - playerId " + playerId);
         string text = $"Attaque: {attackPoints}\nDéfense: {defensePoints}";
+        float rotationDegreesZ = 0.0f;
         if(playerId == 1)
         {
-            CreateCard(new Vector3(0, -3, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text);
+            rotationDegreesZ= 0.0f;
+            CreateCard(new Vector3(0, -3, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ);
         }
         else if(playerId == 2)
         {
-            CreateCard(new Vector3(-6, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text);
+            rotationDegreesZ = -90.0f;
+            CreateCard(new Vector3(-6, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ);
         }
         else if (playerId == 3)
         {
-            CreateCard(new Vector3(0, 3, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text);
+            rotationDegreesZ = 180.0f;
+            CreateCard(new Vector3(0, 3, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ);
         }
         else if (playerId == 4)
         {
-            CreateCard(new Vector3(6, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text);
+            rotationDegreesZ = 90.0f;
+            CreateCard(new Vector3(6, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ);
         }
         //CreateCard(new Vector3(2, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, playerId, text);
     }
@@ -154,7 +159,7 @@ public class TableManager : MonoBehaviour
         return couleurOpposee;
     }
 
-    void CreateCard(Vector3 position, Vector3 scale, Type cardType, int attackPoints, int defensePoints, string text)
+    void CreateCard(Vector3 position, Vector3 scale, Type cardType, int attackPoints, int defensePoints, string text, float rotationDegreesZ)
     {
         actionsToExecuteOnMainThread.Enqueue(() =>
         {
@@ -166,6 +171,8 @@ public class TableManager : MonoBehaviour
                 // Modifier la taille pour en faire une carte
                 cardObject.transform.localScale = scale;
                 cardObject.transform.position = position;
+                // rotation de la carte
+                cardObject.transform.Rotate(0,0, rotationDegreesZ);
                 // Ajouter le composant de carte du type spécifié
                 Card cardComponent = (Card)cardObject.AddComponent(cardType);
                 cardComponent.attackPoints = attackPoints;
