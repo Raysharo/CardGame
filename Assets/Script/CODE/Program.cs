@@ -5,12 +5,13 @@ using UnityEngine;
 
 public class Program : MonoBehaviour
 {
-    string adresseNgrok = "8354-46-193-3-79";
+    string adresseNgrok;
     public Player player;
 
     void Start()
     {
         int playerID = GameManager.Instance.PlayerID;
+        adresseNgrok = NgrokManager.GetAdresseNgrok();
         player = new Player(playerID,adresseNgrok);
     }
 }

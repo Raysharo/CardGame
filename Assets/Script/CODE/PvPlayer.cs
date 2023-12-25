@@ -34,4 +34,27 @@ public class PvPlayer : MonoBehaviour
                 return 0;
         }
     }
+
+     public void ReduceLifePoints(int playerId, int damage)
+    {
+        switch (playerId)
+        {
+            case 1:
+                lifePointsPlyer1 -= damage;
+                break;
+            case 2:
+                lifePointsPlyer2 -= damage;
+                break;
+            case 3:
+                lifePointsPlyer3 -= damage;
+                break;
+            case 4:
+                lifePointsPlyer4 -= damage;
+                break;
+            default:
+                Debug.LogError("Invalid player number!");
+                break;
+        }
+    }
+
 }

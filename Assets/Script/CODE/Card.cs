@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 // using Program;
 
@@ -25,6 +26,7 @@ public abstract class Card : MonoBehaviour
     private float boxScaleFactorY = 1.5f;
     public Color color;
     Light pointLight;
+    private TableManager tableManager;
 
 
     private float clickDuration = 0.3f; // Seuil de durée pour un clic bref en secondes
@@ -33,16 +35,46 @@ public abstract class Card : MonoBehaviour
     public Player owner;
     public int attackPoints;
     public int defensePoints;
+    public int idPlayer;
+    private int currentZonePlayerId = -1; // -1  la carte n'est dans aucune zone
+
+    private Vector2 topLeftPlayer1 = new Vector2(-4.3f, -4.68f);
+    private Vector2 topRightPlayer1 = new Vector2(4.3f, -4.68f); 
+    private Vector2 bottomLeftPlayer1 = new Vector2(-4.3f, -1.0f);
+    private Vector2 bottomRightPlayer1 = new Vector2(4.3f, -2.27f);
+
+    private Vector2 topLeftPlayer2 = new Vector2(-8.2f, -2.54f);
+    private Vector2 topRightPlayer2 = new Vector2(-4.3f, 2.68f);
+    private Vector2 bottomLeftPlayer2 = new Vector2(-9.0f, -7.0f);
+    private Vector2 bottomRightPlayer2 = new Vector2(-4.3f, -6.27f);
+
+    private Vector2 topLeftPlayer3 = new Vector2(-4.3f, 0.68f);
+    private Vector2 topRightPlayer3 = new Vector2(4.3f, 0.68f);
+    private Vector2 bottomLeftPlayer3 = new Vector2(-4.3f, -8.27f);
+    private Vector2 bottomRightPlayer3 = new Vector2(4.3f, -8.27f);
+
+    private Vector2 topLeftPlayer4 = new Vector2(4.3f, -2.54f);
+    private Vector2 topRightPlayer4 = new Vector2(8.2f, 2.68f);
+    private Vector2 bottomLeftPlayer4 = new Vector2(4.3f, -7.0f);
+    private Vector2 bottomRightPlayer4 = new Vector2(9.0f, -6.27f);
+
+
+
+    private Rect playerZone1;
+    private Rect playerZone2;
+    private Rect playerZone3;
+    private Rect playerZone4;
 
     void Start()
     {
         Program = GameObject.Find("Program").GetComponent<Program>();
     }
 
+
     public void InitializeCard()
     {
         // Récupère la référence à l'objet auquel ce script est attaché
-        this.id = Random.Range(0, 1000000);
+        this.id = UnityEngine.Random.Range(0, 1000000);
         // Utilise gameObject.AddComponent pour ajouter des composants au GameObject
 
         this.rend = gameObject.GetComponent<Renderer>();
@@ -61,10 +93,10 @@ public abstract class Card : MonoBehaviour
 
         if (transform.position.y != 0 && !onInteraction)
         {
-            if(currentSceneName != "TableScene")
+            if (currentSceneName != "TableScene")
             {
                 StartCoroutine(ResetPosition());
-            }      
+            }
         }
         CheckAndAdjustPosition();
 
@@ -73,7 +105,7 @@ public abstract class Card : MonoBehaviour
     void TaskOnClik()
     {
         Debug.Log("TaskOnClik");
-        CardMessage messageObject = new CardMessage(this.id,this.GetType().Name, attackPoints, defensePoints);
+        CardMessage messageObject = new CardMessage(this.id, this.GetType().Name, attackPoints, defensePoints);
         string message = JsonUtility.ToJson(messageObject);
         owner.SendMessageToTAble(message);
         owner.DestroyCard(this.id);
@@ -93,6 +125,23 @@ public abstract class Card : MonoBehaviour
         offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10));
     }
 
+    
+    void OnDrawGizmos() 
+    {
+    Vector3 bottomLeft = new Vector3(playerZone4.x, playerZone4.y, 0);
+    Vector3 topLeft = new Vector3(playerZone4.x, playerZone4.y + playerZone4.height, 0);
+    Vector3 topRight = new Vector3(playerZone4.x + playerZone4.width, playerZone4.y + playerZone4.height, 0);
+    Vector3 bottomRight = new Vector3(playerZone4.x + playerZone4.width, playerZone4.y, 0);
+
+
+
+    Debug.DrawLine(bottomLeft, topLeft, Color.green);
+    Debug.DrawLine(topLeft, topRight, Color.green);
+    Debug.DrawLine(topRight, bottomRight, Color.green);
+    Debug.DrawLine(bottomRight, bottomLeft, Color.green);
+
+    }
+
     void OnMouseUp()
     {
         // Debug.Log("OnMouseUp");
@@ -100,11 +149,95 @@ public abstract class Card : MonoBehaviour
         rend.material.color = this.color;
         float clickDuration = Time.time - mouseDownTime;
 
+        if (SceneManager.GetActiveScene().name == "TableScene")
+        {
+            tableManager = GameObject.Find("GameObject").GetComponent<TableManager>();
+            if (tableManager == null)
+            {
+                Debug.LogError("TableManager not found in the scene!");
+            }
+            else
+            {
+
+                playerZone1 = new Rect( 
+                            topLeftPlayer1.x,
+                            topLeftPlayer1.y,
+                            Mathf.Abs(bottomRightPlayer1.x - topLeftPlayer1.x), // width est la différence absolue en x
+                            Mathf.Abs(topLeftPlayer1.y - bottomLeftPlayer1.y) // height est la différence absolue en y
+                                );
+
+                playerZone2 = new Rect(
+                            topLeftPlayer2.x,
+                            topLeftPlayer2.y,
+                            Mathf.Abs(bottomRightPlayer2.x - topLeftPlayer2.x), // width est la différence absolue en x
+                            Mathf.Abs(topLeftPlayer2.y - bottomLeftPlayer2.y) // height est la différence absolue en y
+                                );
+                
+                playerZone3 = new Rect( 
+                            topLeftPlayer3.x,
+                            topLeftPlayer3.y,
+                            Mathf.Abs(bottomRightPlayer3.x - topLeftPlayer3.x), // width est la différence absolue en x
+                            Mathf.Abs(topLeftPlayer3.y - bottomLeftPlayer3.y - 4.5f) // height est la différence absolue en y
+                                );
+                
+                playerZone4 = new Rect( 
+                            topLeftPlayer4.x,
+                            topLeftPlayer4.y,
+                            Mathf.Abs(bottomRightPlayer4.x - topLeftPlayer4.x), // width est la différence absolue en x
+                            Mathf.Abs(topLeftPlayer4.y - bottomLeftPlayer4.y) // height est la différence absolue en y
+                                );
+                //OnDrawGizmos();
+                CheckZonesForCards();
+                Vector2 cardPosition2D = new Vector2(this.transform.position.x, this.transform.position.y);
+                int attackPoints = 0;
+                if (playerZone1.Contains(cardPosition2D))
+                {
+                    Debug.Log("Carte levée dans la zone du joueur " + currentZonePlayerId);
+                    // Vous pouvez appeler ici la fonction pour attaquer ou autre action
+                    Debug.Log("TableManager found: " + tableManager.gameObject.name);
+                    attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone1);
+                    tableManager.AttackPlayer(this.idPlayer, 1, attackPoints);
+                }
+                else if (playerZone2.Contains(cardPosition2D))
+                {
+                    Debug.Log("Carte levée dans la zone du joueur " + currentZonePlayerId);
+                    // Vous pouvez appeler ici la fonction pour attaquer ou autre action
+                    Debug.Log("TableManager found: " + tableManager.gameObject.name);
+                    attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone2);
+                    tableManager.AttackPlayer(this.idPlayer, 2, attackPoints);
+                }
+                else if (playerZone3.Contains(cardPosition2D))
+                {
+                    Debug.Log("Carte levée dans la zone du joueur " + currentZonePlayerId); 
+                    // Vous pouvez appeler ici la fonction pour attaquer ou autre action
+                    Debug.Log("TableManager found: " + tableManager.gameObject.name);
+                    attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone3);
+                    tableManager.AttackPlayer(this.idPlayer, 3, attackPoints);
+                }
+                else if (playerZone4.Contains(cardPosition2D))
+                {
+                    Debug.Log("Carte levée dans la zone du joueur " + currentZonePlayerId);
+                    // Vous pouvez appeler ici la fonction pour attaquer ou autre action
+                    Debug.Log("TableManager found: " + tableManager.gameObject.name);
+                    attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone4);
+                    tableManager.AttackPlayer(this.idPlayer, 4, attackPoints);
+                }
+                else
+                {
+                    Debug.Log("Carte levée dans aucune zone");
+                }
+            }
+        }
 
         if (clickDuration < this.clickDuration)
         {
             TaskOnClik();
         }
+    }
+
+    public void SetCurrentZone(int playerId)
+    {
+        this.currentZonePlayerId = playerId;
     }
 
     void OnMouseDrag()
@@ -142,6 +275,58 @@ public abstract class Card : MonoBehaviour
                 transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x + (0.1f * direction), transform.position.y, transform.position.z), 0.1f);
             }
         }
+    }
+
+
+     public int CountCardsInZone(Rect zone)
+    {
+        Card[] allCards = FindObjectsOfType<Card>(); // Trouvez toutes les cartes dans la scène
+        int count = 0;
+        int pDeffence = 0;
+
+        foreach (Card card in allCards)
+        {
+            Vector2 cardPos = new Vector2(card.transform.position.x, card.transform.position.y);
+            if (zone.Contains(cardPos))
+            {
+                count++;
+                pDeffence += card.defensePoints;
+            }
+        }
+
+        return count; // Retourne le nombre de cartes dans la zone
+    }
+
+    // Vous pouvez appeler cette fonction pour chaque zone pour obtenir le compte
+    public void CheckZonesForCards()
+    {
+        int cardsInZone1 = CountCardsInZone(playerZone1);
+        int cardsInZone2 = CountCardsInZone(playerZone2);
+        int cardsInZone3 = CountCardsInZone(playerZone3);
+        int cardsInZone4 = CountCardsInZone(playerZone4);
+
+        // Logique ou actions basées sur le nombre de cartes dans chaque zone
+        Debug.Log("Zone 1 a " + cardsInZone1 + " cartes.");
+        Debug.Log("Zone 2 a " + cardsInZone2 + " cartes.");
+        Debug.Log("Zone 3 a " + cardsInZone3 + " cartes.");
+        Debug.Log("Zone 4 a " + cardsInZone4 + " cartes.");
+    }
+
+     public int PointDeffenceCardsInZone(Rect zone)
+    {
+        Card[] allCards = FindObjectsOfType<Card>(); // Trouvez toutes les cartes dans la scène
+        int pDeffence = 0;
+
+        foreach (Card card in allCards)
+        {
+            Vector2 cardPos = new Vector2(card.transform.position.x, card.transform.position.y);
+            if (zone.Contains(cardPos))
+            {
+                pDeffence += card.defensePoints;
+            }
+        }
+
+        return pDeffence; // Retourne le nombre de cartes dans la zone
     }
 
 }

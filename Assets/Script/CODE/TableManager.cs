@@ -12,7 +12,7 @@ public class TableManager : MonoBehaviour
     private Queue<Action> actionsToExecuteOnMainThread = new Queue<Action>();
     public PvPlayer pvPlayer; // Référence à votre classe PvPlayer
 
-   // [SerializeField] // Cette ligne s'assure que l'array est visible dans l'Inspecteur Unity même s'il est privé
+    // [SerializeField] // Cette ligne s'assure que l'array est visible dans l'Inspecteur Unity même s'il est privé
     //private Text[] healthDisplays; // Array pour les objets Text UI des PV des joueurs
     [SerializeField]
     private TextMeshProUGUI[] healthDisplays;
@@ -20,7 +20,8 @@ public class TableManager : MonoBehaviour
 
     void Start()
     {
-        string adresseNgrok = "8354-46-193-3-79";
+        //string adresseNgrok = "8354-46-193-3-79";
+        string adresseNgrok = NgrokManager.GetAdresseNgrok();
         // Initialiser la connexion WebSocket
         ws = new WebSocket("wss://" + adresseNgrok + ".ngrok-free.app/0");
 
@@ -59,7 +60,7 @@ public class TableManager : MonoBehaviour
             {
                 if (healthDisplays[i] != null)
                 {
-                    healthDisplays[i].text ="PV: " + pvPlayer.GetLifePointsForPlayer(i + 1);
+                    healthDisplays[i].text = "PV: " + pvPlayer.GetLifePointsForPlayer(i + 1);
                 }
                 else
                 {
@@ -74,10 +75,7 @@ public class TableManager : MonoBehaviour
     }
 
     // Ajoutez une méthode pour mettre à jour l'affichage des PV quand ils changent
-    public void UpdateHealthDisplay(int playerNumber, int newHealth)
-    {
-        healthDisplays[playerNumber - 1].text = "Player " + playerNumber + " PV: " + newHealth;
-    }
+
 
     void Update()
     {
@@ -145,22 +143,22 @@ public class TableManager : MonoBehaviour
         if (playerId == 1)
         {
             rotationDegreesZ = 0.0f;
-            CreateCard(new Vector3(0, -3, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ);
+            CreateCard(new Vector3(0, -3, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId);
         }
         else if (playerId == 2)
         {
             rotationDegreesZ = -90.0f;
-            CreateCard(new Vector3(-6, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ);
+            CreateCard(new Vector3(-6, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId);
         }
         else if (playerId == 3)
         {
             rotationDegreesZ = 180.0f;
-            CreateCard(new Vector3(0, 3, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ);
+            CreateCard(new Vector3(0, 3, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId);
         }
         else if (playerId == 4)
         {
             rotationDegreesZ = 90.0f;
-            CreateCard(new Vector3(6, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ);
+            CreateCard(new Vector3(6, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId);
         }
     }
 
@@ -212,7 +210,7 @@ public class TableManager : MonoBehaviour
         return couleurOpposee;
     }
 
-    void CreateCard(Vector3 position, Vector3 scale, Type cardType, int attackPoints, int defensePoints, string text, float rotationDegreesZ)
+    void CreateCard(Vector3 position, Vector3 scale, Type cardType, int attackPoints, int defensePoints, string text, float rotationDegreesZ, int playerId)
     {
         actionsToExecuteOnMainThread.Enqueue(() =>
         {
@@ -230,6 +228,7 @@ public class TableManager : MonoBehaviour
                 Card cardComponent = (Card)cardObject.AddComponent(cardType);
                 cardComponent.attackPoints = attackPoints;
                 cardComponent.defensePoints = defensePoints;
+                cardComponent.idPlayer = playerId;
                 // Initialiser la carte
                 cardComponent.InitializeCard();
                 AddTextToCardUI(cardObject, text, new Vector3(0, -0.5f, 0));
@@ -241,4 +240,21 @@ public class TableManager : MonoBehaviour
             }
         });
     }
+
+
+    public void AttackPlayer(int attackerId, int defenderId, int attackPoints)
+    {
+        // Diminuer les points de vie du défenseur
+        pvPlayer.ReduceLifePoints(defenderId, attackPoints);
+        // Mettre à jour l'affichage des points de vie du défenseur
+        UpdateHealthDisplay(defenderId, pvPlayer.GetLifePointsForPlayer(defenderId));
+    }
+    public void UpdateHealthDisplay(int playerNumber, int newHealth)
+    {
+        Debug.Log("UpdateHealthDisplay - Mise à jour de l'affichage des PV du joueur " + playerNumber + " à " + newHealth);
+        healthDisplays[playerNumber - 1].text ="PV: " + newHealth;
+    }
+
+
+
 }
