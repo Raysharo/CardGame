@@ -6,8 +6,8 @@ public class GreenCard : Card
 {
     void Start()
     {
-        attackPoints = 10; 
-        defensePoints = 5; 
+        // attackPoints = 10; 
+        // defensePoints = 5; 
         InitializeCard();
     }
 
@@ -20,13 +20,16 @@ public class GreenCard : Card
         // base.gameObject.name = "GreenCard" + base.id;
 
         base.color = Color.green;
-        Material newMat = new Material(Shader.Find("Unlit/Color")); // ou un autre shader compatible
-        newMat.color = base.color;
-        base.rend.material = newMat;
+        // Material newMat = new Material(Shader.Find("Unlit/Color")); // ou un autre shader compatible
+        // newMat.color = base.color;
+        // base.rend.material = newMat;
 
-        base.InitializeCard();
+        base.rend.material.color = base.color;
+        //base.InitializeCard();
         base.gameObject.name = "GreenCard" + base.id;
     }
+
+
 
 
 }

@@ -1,3 +1,4 @@
+
 using System.Collections;
 using UnityEngine;
 using WebSocketSharp;
@@ -16,6 +17,9 @@ public class TableManager : MonoBehaviour
     //private Text[] healthDisplays; // Array pour les objets Text UI des PV des joueurs
     [SerializeField]
     private TextMeshProUGUI[] healthDisplays;
+
+    public int currentPlayer = 1; // Commencez avec le joueur 1
+     public int totalPlayers = 4; // Nombre total de joueurs
 
 
     void Start()
@@ -148,7 +152,7 @@ public class TableManager : MonoBehaviour
         else if (playerId == 2)
         {
             rotationDegreesZ = -90.0f;
-            CreateCard(new Vector3(-6, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId);
+            CreateCard(new Vector3(-10, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId);
         }
         else if (playerId == 3)
         {
@@ -158,7 +162,7 @@ public class TableManager : MonoBehaviour
         else if (playerId == 4)
         {
             rotationDegreesZ = 90.0f;
-            CreateCard(new Vector3(6, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId);
+            CreateCard(new Vector3(10, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId);
         }
     }
 
@@ -230,7 +234,7 @@ public class TableManager : MonoBehaviour
                 cardComponent.defensePoints = defensePoints;
                 cardComponent.idPlayer = playerId;
                 // Initialiser la carte
-                cardComponent.InitializeCard();
+                cardComponent.InitializeCard(attackPoints, defensePoints);
                 AddTextToCardUI(cardObject, text, new Vector3(0, -0.5f, 0));
                 Debug.Log("CreateCard - Carte créée avec succès");
             }
@@ -252,8 +256,47 @@ public class TableManager : MonoBehaviour
     public void UpdateHealthDisplay(int playerNumber, int newHealth)
     {
         Debug.Log("UpdateHealthDisplay - Mise à jour de l'affichage des PV du joueur " + playerNumber + " à " + newHealth);
-        healthDisplays[playerNumber - 1].text ="PV: " + newHealth;
+        healthDisplays[playerNumber - 1].text = "PV: " + newHealth;
     }
+
+    public void UpdatePositionCards(int playerId)
+    {
+        Debug.Log("UpdatePositionCards - Mise à jour de la position des cartes du joueur " + playerId);
+        Card[] allCards = FindObjectsOfType<Card>();
+        foreach (Card card in allCards)
+        {
+            if (card.idPlayer == playerId && playerId == 1)
+            {
+                // a jour avec cette possition new Vector3(0, -3, 0)
+                card.transform.position = new Vector3(0, -3, 0);
+            }
+            else if (card.idPlayer == playerId && playerId == 2)
+            {
+                // a jour avec cette possition new Vector3(-6, 0, 0)
+                card.transform.position = new Vector3(-10, 0, 0);
+            }
+            else if (card.idPlayer == playerId && playerId == 3)
+            {
+                // a jour avec cette possition new Vector3(0, 3, 0)
+                card.transform.position = new Vector3(0, 3, 0);
+            }
+            else if (card.idPlayer == playerId && playerId == 4)
+            {
+                // a jour avec cette possition new Vector3(6, 0, 0)
+                card.transform.position = new Vector3(10, 0, 0);
+            }
+        }
+    }
+
+    public void NextPlayerTurn()
+    {
+        currentPlayer++;
+        if (currentPlayer > totalPlayers)
+        {
+            currentPlayer = 1; // Retour au premier joueur
+        }
+    }
+
 
 
 

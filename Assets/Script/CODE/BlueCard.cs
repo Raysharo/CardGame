@@ -6,8 +6,8 @@ public class BlueCard : Card
 {
     void Start()
     {
-        attackPoints = 5; 
-        defensePoints = 15; 
+        //attackPoints = 5; 
+        //defensePoints = 15; 
         InitializeCard();
     }
 
@@ -16,7 +16,7 @@ public class BlueCard : Card
         base.color = Color.blue;
         // Autres propriétés spécifiques à BlueCard
         
-        base.InitializeCard();
+        //base.InitializeCard();
         base.rend.material.color = base.color;
         base.gameObject.name = "BlueCard" + base.id;
     }
