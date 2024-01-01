@@ -99,7 +99,10 @@ public abstract class Card : MonoBehaviour
         {
             if (currentSceneName != "TableScene")
             {
-                StartCoroutine(ResetPosition());
+                // if(this.idPlayer !=){
+                    
+                // }
+                // StartCoroutine(ResetPosition());
             }
         }
         CheckAndAdjustPosition();

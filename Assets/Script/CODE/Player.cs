@@ -212,7 +212,7 @@ public class Player
         {
             Debug.Log("Carte trouvée : " + card.attackPoints + "  " + card.defensePoints + "  " + card.idPlayer + "  " + card.cardType);
             Type cardType = Type.GetType(card.cardType);
-            CreateCard(new Vector3(x, 1, 0), new Vector3(1, 1.5f, 0.1f), cardType, card.attackPoints, card.defensePoints, true);
+            CreateCard(new Vector3(x, 4, 0), new Vector3(1, 1.5f, 0.1f), cardType, card.attackPoints, card.defensePoints, true);
             x += 2;
         }
     }

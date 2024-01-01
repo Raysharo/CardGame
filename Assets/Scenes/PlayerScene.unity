@@ -249,7 +249,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 486, y: 218}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: 160, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &772447389
 MonoBehaviour:
@@ -358,6 +358,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   seeCardPlayButton: {fileID: 772447389}
+  isGetCard: 0
+  idPlayer: -1
 --- !u!1 &1780715110
 GameObject:
   m_ObjectHideFlags: 0
@@ -387,7 +389,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d929cb3c346fb7488ff217b82dcaad9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  messageManager: {fileID: 0}
 --- !u!4 &1780715112
 Transform:
   m_ObjectHideFlags: 0
@@ -460,7 +461,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'See Card Play
+  m_text: 'View Ally
 
 '
   m_isRightToLeft: 0
