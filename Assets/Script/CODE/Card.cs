@@ -37,6 +37,7 @@ public abstract class Card : MonoBehaviour
     public int attackPoints;
     public int defensePoints;
     public int idPlayer;
+    public string iconCard;
     private int currentZonePlayerId = -1; // -1  la carte n'est dans aucune zone
 
     private Vector2 topLeftPlayer1 = new Vector2(-4.3f, -4.68f);
@@ -112,7 +113,7 @@ public abstract class Card : MonoBehaviour
     void TaskOnClik()
     {
         Debug.Log("TaskOnClik");
-        CardMessage messageObject = new CardMessage(this.id, this.GetType().Name, attackPoints, defensePoints);
+        CardMessage messageObject = new CardMessage(this.id, this.GetType().Name, attackPoints, defensePoints, this.iconCard);
         string message = JsonUtility.ToJson(messageObject);
         owner.SendMessageToTAble(message);
         owner.DestroyCard(this.id);

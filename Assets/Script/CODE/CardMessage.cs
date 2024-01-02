@@ -6,12 +6,14 @@ public class CardMessage {
     public int attackPoints;
     public int defensePoints;
     public int playerId;
+    public string iconCard;
 
-    public CardMessage(int id, string type, int attack, int defense) {
+    public CardMessage(int id, string type, int attack, int defense, string iconCard) {
         this.cardId = id;
         this.cardType = type;
         this.attackPoints = attack;
         this.defensePoints = defense;
         this.playerId = GameManager.Instance.PlayerID;
+        this.iconCard = iconCard;
     }
 }

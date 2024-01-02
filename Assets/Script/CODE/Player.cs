@@ -83,33 +83,47 @@ public class Player
             // }
         };
         PlayerSocket.Connect();
+        string[] iconNames = { "Icon1", "Icon2", "Icon3", "Icon4", "Icon5", "Icon6", "Icon7" };
+        string iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
         if (id == 1)
         {
-            CreateCard(new Vector3(-2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GoldCard), 25, 9, false);
-            CreateCard(new Vector3(0, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GoldCard), 29, 14, false);
-            CreateCard(new Vector3(2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(BlueCard), 35, 12, false);
-            CreateCard(new Vector3(4, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GreenCard), 17, 13, false);
+            CreateCard(new Vector3(-2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GoldCard), 25, 9,iconSelected, false);
+            iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
+            CreateCard(new Vector3(0, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GoldCard), 29, 14,iconSelected, false);
+            iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
+            CreateCard(new Vector3(2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(BlueCard), 35, 12, iconSelected,false);
+            iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
+            CreateCard(new Vector3(4, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GreenCard), 17, 13, iconSelected,false);
         }
         else if (id == 2)
         {
-            CreateCard(new Vector3(-2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GreenCard), 12, 5, false);
-            CreateCard(new Vector3(0, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GoldCard), 15, 10, false);
-            CreateCard(new Vector3(2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GreenCard), 30, 10, false);
-            CreateCard(new Vector3(4, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GreenCard), 20, 15, false);
+            CreateCard(new Vector3(-2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GreenCard), 12, 5,iconSelected, false);
+            iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
+            CreateCard(new Vector3(0, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GoldCard), 15, 10, iconSelected,false);
+            iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
+            CreateCard(new Vector3(2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GreenCard), 30, 10, iconSelected,false);
+            iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
+            CreateCard(new Vector3(4, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GreenCard), 20, 15,iconSelected, false);
         }
         else if (id == 3)
         {
-            CreateCard(new Vector3(-2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(BlueCard), 17, 13, false);
-            CreateCard(new Vector3(0, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GoldCard), 20, 14, false);
-            CreateCard(new Vector3(2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(BlueCard), 18, 1, false);
-            CreateCard(new Vector3(4, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GreenCard), 11, 5, false);
+            CreateCard(new Vector3(-2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(BlueCard), 17, 13,iconSelected, false);
+            iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
+            CreateCard(new Vector3(0, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GoldCard), 20, 14,iconSelected, false);
+            iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
+            CreateCard(new Vector3(2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(BlueCard), 18, 1,iconSelected, false);
+            iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
+            CreateCard(new Vector3(4, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GreenCard), 11, 5,iconSelected, false);
         }
         else if (id == 4)
         {
-            CreateCard(new Vector3(-2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GreenCard), 24, 3, false);
-            CreateCard(new Vector3(0, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GoldCard), 16, 11, false);
-            CreateCard(new Vector3(2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(BlueCard), 13, 10, false);
-            CreateCard(new Vector3(4, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GreenCard), 19, 15, false);
+            CreateCard(new Vector3(-2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GreenCard), 24, 3,iconSelected, false);
+            iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
+            CreateCard(new Vector3(0, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GoldCard), 16, 11,iconSelected, false);
+            iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
+            CreateCard(new Vector3(2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(BlueCard), 13, 10,iconSelected, false);
+            iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
+            CreateCard(new Vector3(4, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GreenCard), 19, 15,iconSelected, false);
         }
 
     }
@@ -210,9 +224,9 @@ public class Player
         int x = -2;
         foreach (var card in cardMessage.cards)
         {
-            Debug.Log("Carte trouvée : " + card.attackPoints + "  " + card.defensePoints + "  " + card.idPlayer + "  " + card.cardType);
+            Debug.Log("Carte trouvée : " + card.attackPoints + "  " + card.defensePoints + "  " + card.idPlayer + "  " + card.cardType + "  " + card.iconCard);
             Type cardType = Type.GetType(card.cardType);
-            CreateCard(new Vector3(x, 4, 0), new Vector3(1, 1.5f, 0.1f), cardType, card.attackPoints, card.defensePoints, true);
+            CreateCard(new Vector3(x, 4, 0), new Vector3(1, 1.5f, 0.1f), cardType, card.attackPoints, card.defensePoints,card.iconCard ,true);
             x += 2;
         }
     }
@@ -256,8 +270,10 @@ public class Player
         }
     }
 
-    public void CreateCard(Vector3 position, Vector3 scale, Type cardType, int attackPoints, int defensePoints,bool isGetCard)
+    public void CreateCard(Vector3 position, Vector3 scale, Type cardType, int attackPoints, int defensePoints,string iconSelected ,bool isGetCard)
     {
+        // Assuming icons are named "Icon1", "Icon2", ..., "Icon7" in the Resources/Sprites folder
+       
         // Créer l'objet de la carte
         GameObject cardObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
         // Modifier la taille pour en faire une carte
@@ -271,13 +287,42 @@ public class Player
         cardComponent.InitializeCard(attackPoints, defensePoints);
         // Assigner le joueur comme propriétaire de la carte
         string text = $"Attaque: {attackPoints}\nDéfense: {defensePoints}";
-        AddTextToCardUI(cardObject, text, new Vector3(0, -0.5f, 0));
+        AddTextToCardUI(cardObject, text, new Vector3(0, -0.35f, 0));
+
+        GameObject icon = new GameObject("Icon");
+        icon.transform.SetParent(cardObject.transform, false);
+        icon.transform.localPosition = new Vector3(0, 0.17f, -1); // Centrez sur la carte
+        icon.transform.localScale = new Vector3(0.8f, 0.5f, 1f); //  // Adjust width (x) and height (y) as needed
+        SpriteRenderer spriteRenderer = icon.AddComponent<SpriteRenderer>();
+        cardComponent.iconCard = iconSelected;
+        spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/" + iconSelected);
+        spriteRenderer.sortingOrder = 1;
+        
+        // spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/" + iconNames[UnityEngine.Random.Range(0, iconNames.Length)]);
+        // spriteRenderer.sortingOrder = 1;
+
         if (isGetCard == false)
         {
+            // string iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
             cardComponent.owner = this;
             cardComponent.idPlayer = this.id;
             cards.Add(cardComponent); // Ajoutez la carte à la liste du joueur
+
+            // GameObject icon = new GameObject("Icon");
+            // icon.transform.SetParent(cardObject.transform, false);
+            // icon.transform.localPosition = new Vector3(0, 0.17f, -1); // Centrez sur la carte
+            // icon.transform.localScale = new Vector3(0.8f, 0.5f, 1f); //  // Adjust width (x) and height (y) as needed
+            // SpriteRenderer spriteRenderer = icon.AddComponent<SpriteRenderer>();
+            // spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/" + iconSelected);
+            
+            // spriteRenderer.sortingOrder = 1;
         }
+
+        
+        // create icon for card
+
+
+
     }
 
 
@@ -325,7 +370,8 @@ public class Player
             // Ajustez la taille et la position du Canvas pour qu'il corresponde à la carte
             RectTransform canvasRectTransform = canvasObject.GetComponent<RectTransform>();
             canvasRectTransform.sizeDelta = new Vector2(100, 100); // Ajustez cette taille selon vos besoins
-            canvasRectTransform.localPosition = new Vector3(0, 0, 0); // Centrez sur la carte
+            //canvasRectTransform.localPosition = new Vector3(0, 0, 0); // Centrez sur la carte
+            canvasRectTransform.localPosition = localPosition; // Centrez sur la carte
         }
 
         // Créer l'objet de texte en tant qu'enfant de cardObject

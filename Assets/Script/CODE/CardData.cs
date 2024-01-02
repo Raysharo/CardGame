@@ -9,6 +9,7 @@ public class CardData
     public int defensePoints;
     public int idPlayer;
     public string cardType;
+    public string iconCard; 
 
     public CardData(Card card)
     {
@@ -17,5 +18,6 @@ public class CardData
         defensePoints = card.defensePoints;
         idPlayer = card.owner.id;
         cardType = card.GetType().Name;
+        iconCard = card.iconCard;
     }
 }

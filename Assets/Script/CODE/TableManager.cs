@@ -19,7 +19,7 @@ public class TableManager : MonoBehaviour
     private TextMeshProUGUI[] healthDisplays;
 
     public int currentPlayer = 1; // Commencez avec le joueur 1
-     public int totalPlayers = 4; // Nombre total de joueurs
+    public int totalPlayers = 4; // Nombre total de joueurs
 
 
     void Start()
@@ -98,7 +98,7 @@ public class TableManager : MonoBehaviour
         try
         {
             message = JsonUtility.FromJson<CardMessage>(data);
-            Debug.Log($"Message parsé - Type: {message.type}, CardId: {message.cardId}, cardType: {message.cardType}, attackPoints: {message.attackPoints}, defensePoints: {message.defensePoints}, playerId: {message.playerId}");
+            Debug.Log($"Message parsé - Type: {message.type}, CardId: {message.cardId}, cardType: {message.cardType}, attackPoints: {message.attackPoints}, defensePoints: {message.defensePoints}, playerId: {message.playerId}, iconCard: {message.iconCard}");
         }
         catch (Exception e)
         {
@@ -113,10 +113,11 @@ public class TableManager : MonoBehaviour
             Type cardType = Type.GetType(message.cardType); // Convertissez le nom du type en Type
             int attackPoints = message.attackPoints;
             int defensePoints = message.defensePoints;
+            string iconCard = message.iconCard;
             int playerId = message.playerId;
             if (cardType != null)
             {
-                CreateOrUpdateCardOnTable(message.cardId, cardType, attackPoints, defensePoints, playerId);
+                CreateOrUpdateCardOnTable(message.cardId, cardType, attackPoints, defensePoints, playerId, iconCard);
             }
             else
             {
@@ -136,7 +137,7 @@ public class TableManager : MonoBehaviour
         }
     }
 
-    void CreateOrUpdateCardOnTable(int cardId, Type cardType, int attackPoints, int defensePoints, int playerId)
+    void CreateOrUpdateCardOnTable(int cardId, Type cardType, int attackPoints, int defensePoints, int playerId, string iconCard)
     {
         Debug.Log("CreateOrUpdateCardOnTable - Création de la carte ID " + cardId);
         Debug.Log("CreateOrUpdateCardOnTable - attackPoints " + attackPoints);
@@ -147,22 +148,22 @@ public class TableManager : MonoBehaviour
         if (playerId == 1)
         {
             rotationDegreesZ = 0.0f;
-            CreateCard(new Vector3(0, -3, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId);
+            CreateCard(new Vector3(0, -3, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard);
         }
         else if (playerId == 2)
         {
             rotationDegreesZ = -90.0f;
-            CreateCard(new Vector3(-10, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId);
+            CreateCard(new Vector3(-10, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard);
         }
         else if (playerId == 3)
         {
             rotationDegreesZ = 180.0f;
-            CreateCard(new Vector3(0, 3, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId);
+            CreateCard(new Vector3(0, 3, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard);
         }
         else if (playerId == 4)
         {
             rotationDegreesZ = 90.0f;
-            CreateCard(new Vector3(10, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId);
+            CreateCard(new Vector3(10, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard);
         }
     }
 
@@ -183,7 +184,7 @@ public class TableManager : MonoBehaviour
             // Ajustez la taille et la position du Canvas pour qu'il corresponde à la carte
             RectTransform canvasRectTransform = canvasObject.GetComponent<RectTransform>();
             canvasRectTransform.sizeDelta = new Vector2(100, 100); // Ajustez cette taille selon vos besoins
-            canvasRectTransform.localPosition = new Vector3(0, 0, 0); // Centrez sur la carte
+            canvasRectTransform.localPosition = localPosition; // Centrez sur la carte
         }
 
         // Créer l'objet de texte en tant qu'enfant de cardObject
@@ -214,7 +215,7 @@ public class TableManager : MonoBehaviour
         return couleurOpposee;
     }
 
-    void CreateCard(Vector3 position, Vector3 scale, Type cardType, int attackPoints, int defensePoints, string text, float rotationDegreesZ, int playerId)
+    void CreateCard(Vector3 position, Vector3 scale, Type cardType, int attackPoints, int defensePoints, string text, float rotationDegreesZ, int playerId, string iconCard)
     {
         actionsToExecuteOnMainThread.Enqueue(() =>
         {
@@ -235,7 +236,15 @@ public class TableManager : MonoBehaviour
                 cardComponent.idPlayer = playerId;
                 // Initialiser la carte
                 cardComponent.InitializeCard(attackPoints, defensePoints);
-                AddTextToCardUI(cardObject, text, new Vector3(0, -0.5f, 0));
+                AddTextToCardUI(cardObject, text, new Vector3(0, -0.35f, 0));
+                GameObject icon = new GameObject("Icon");
+                icon.transform.SetParent(cardObject.transform, false);
+                icon.transform.localPosition = new Vector3(0, 0.17f, -1); // Centrez sur la carte
+                icon.transform.localScale = new Vector3(0.8f, 0.5f, 1f); //  // Adjust width (x) and height (y) as needed
+                SpriteRenderer spriteRenderer = icon.AddComponent<SpriteRenderer>();
+                cardComponent.iconCard = iconCard;
+                spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/" + iconCard);
+                spriteRenderer.sortingOrder = 1;
                 Debug.Log("CreateCard - Carte créée avec succès");
             }
             catch (Exception e)
