@@ -40,25 +40,72 @@ public abstract class Card : MonoBehaviour
     public string iconCard;
     private int currentZonePlayerId = -1; // -1  la carte n'est dans aucune zone
 
-    private Vector2 topLeftPlayer1 = new Vector2(-4.3f, -4.68f);
-    private Vector2 topRightPlayer1 = new Vector2(4.3f, -4.68f);
-    private Vector2 bottomLeftPlayer1 = new Vector2(-4.3f, -1.0f);
-    private Vector2 bottomRightPlayer1 = new Vector2(4.3f, -2.27f);
+    // private Vector2 topLeftPlayer1 = new Vector2(-4.3f, -4.68f);
+    // private Vector2 topRightPlayer1 = new Vector2(4.3f, -4.68f);
+    // private Vector2 bottomLeftPlayer1 = new Vector2(-4.3f, -1.0f);
+    // private Vector2 bottomRightPlayer1 = new Vector2(4.3f, -2.27f);
 
-    private Vector2 topLeftPlayer2 = new Vector2(-10.0f, -2.54f);
+    // private Vector2 topLeftPlayer2 = new Vector2(-10.0f, -2.54f);
+    // private Vector2 topRightPlayer2 = new Vector2(-4.3f, 2.68f);
+    // private Vector2 bottomLeftPlayer2 = new Vector2(-10.0f, -7.0f);
+    // private Vector2 bottomRightPlayer2 = new Vector2(-4.3f, -6.27f);
+
+    // private Vector2 topLeftPlayer3 = new Vector2(-4.3f, 0.68f);
+    // private Vector2 topRightPlayer3 = new Vector2(4.3f, 0.68f);
+    // private Vector2 bottomLeftPlayer3 = new Vector2(-4.3f, -8.27f);
+    // private Vector2 bottomRightPlayer3 = new Vector2(4.3f, -8.27f);
+
+    // private Vector2 topLeftPlayer4 = new Vector2(4.3f, -2.54f);
+    // private Vector2 topRightPlayer4 = new Vector2(11.0f, 2.68f);
+    // private Vector2 bottomLeftPlayer4 = new Vector2(4.3f, -7.0f);
+    // private Vector2 bottomRightPlayer4 = new Vector2(11.0f, -6.27f);
+
+
+    // result of playerZone4  it's  playerZone4(x:4.30, y:-2.54, width:6.70, height:4.46)
+    // result of playerZone3  it's  playerZone3(x:-4.30, y:0.68, width:8.60, height:8.95)
+    // result of playerZone2  it's  playerZone2(x:-10.00, y:-2.54, width:5.70, height:4.46)
+    // result of playerZone1  it's  playerZone1(x:-4.30, y:-4.68, width:8.60, height:3.68)
+
+
+
+    // if i want for playerZone 1 playerZone1(x:-5, y:-5, width:10, height:5)
+    // so how i can change  private Vector2 topLeftPlayer1 = new Vector2(-4.3f, -4.68f); and other vector2 to get playerZone1(x:-5, y:-5, width:10, height:5)
+    private Vector2 topLeftPlayer1 = new Vector2(-5.0f, -5.0f);
+    private Vector2 topRightPlayer1 = new Vector2(5.0f, -5.0f);
+    private Vector2 bottomLeftPlayer1 = new Vector2(-5.0f, -10.0f);
+    private Vector2 bottomRightPlayer1 = new Vector2(5.0f, -6.27f);
+
+
+
+    // if i want for playerZone 2 playerZone2(x:-10, y:-5, width:5, height:10)
+    // so how i can change  private Vector2 topLeftPlayer2 = new Vector2(-10.0f, -2.54f); and other vector2 to get playerZone2(x:-10, y:-5, width:5, height:10)
+    private Vector2 topLeftPlayer2 = new Vector2(-10.0f, -5.0f);
     private Vector2 topRightPlayer2 = new Vector2(-4.3f, 2.68f);
-    private Vector2 bottomLeftPlayer2 = new Vector2(-10.0f, -7.0f);
+    private Vector2 bottomLeftPlayer2 = new Vector2(-10.0f, -10.0f);
     private Vector2 bottomRightPlayer2 = new Vector2(-4.3f, -6.27f);
 
-    private Vector2 topLeftPlayer3 = new Vector2(-4.3f, 0.68f);
-    private Vector2 topRightPlayer3 = new Vector2(4.3f, 0.68f);
-    private Vector2 bottomLeftPlayer3 = new Vector2(-4.3f, -8.27f);
-    private Vector2 bottomRightPlayer3 = new Vector2(4.3f, -8.27f);
 
-    private Vector2 topLeftPlayer4 = new Vector2(4.3f, -2.54f);
+
+    // if i want for playerZone 3 playerZone3(x:-5, y:0, width:10, height:5)
+    // so how i can change  private Vector2 topLeftPlayer3 = new Vector2(-4.3f, 0.68f); and other vector2 to get playerZone3(x:-5, y:0, width:10, height:5)
+    private Vector2 topLeftPlayer3 = new Vector2(-5.0f, 0.0f);
+    private Vector2 topRightPlayer3 = new Vector2(5.0f, 0.0f);
+    private Vector2 bottomLeftPlayer3 = new Vector2(-5.0f, -5.0f);
+    private Vector2 bottomRightPlayer3 = new Vector2(5.0f, -5.0f);
+
+    // if i want for playerZone 4 playerZone4(x:5.50, y:-5, width:5, height:10)
+    //so how i can change  private Vector2 topLeftPlayer4 = new Vector2(4.3f, -2.54f); and other vector2 to get playerZone4(x:5.50, y:-5, width:5, height:10)
+    private Vector2 topLeftPlayer4 = new Vector2(5.50f, -5.0f);
     private Vector2 topRightPlayer4 = new Vector2(11.0f, 2.68f);
-    private Vector2 bottomLeftPlayer4 = new Vector2(4.3f, -7.0f);
+    private Vector2 bottomLeftPlayer4 = new Vector2(5.50f, -10.0f);
     private Vector2 bottomRightPlayer4 = new Vector2(11.0f, -6.27f);
+
+
+    // private Vector2 topLeftPlayer4 = new Vector2(4.3f, -2.54f);
+    // private Vector2 topRightPlayer4 = new Vector2(11.0f, 2.68f);
+    // private Vector2 bottomLeftPlayer4 = new Vector2(4.3f, -7.0f);
+    // private Vector2 bottomRightPlayer4 = new Vector2(11.0f, -6.27f);
+
 
 
 
@@ -287,7 +334,23 @@ public abstract class Card : MonoBehaviour
         offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10));
     }
 
-    void OnDrawGizmost()
+
+
+    void OnDrawGizmost1()
+    {
+        Vector3 bottomLeft = new Vector3(playerZone1.x, playerZone1.y, 0);
+        Vector3 topLeft = new Vector3(playerZone1.x, playerZone1.y + playerZone1.height, 0);
+        Vector3 topRight = new Vector3(playerZone1.x + playerZone1.width, playerZone1.y + playerZone1.height, 0);
+        Vector3 bottomRight = new Vector3(playerZone1.x + playerZone1.width, playerZone1.y, 0);
+
+        Debug.DrawLine(bottomLeft, topLeft, Color.green);
+        Debug.DrawLine(topLeft, topRight, Color.green);
+        Debug.DrawLine(topRight, bottomRight, Color.green);
+        Debug.DrawLine(bottomRight, bottomLeft, Color.green);
+        Debug.Log("playerZone1" + playerZone1);
+    }
+
+    void OnDrawGizmost2()
     {
         Vector3 bottomLeft = new Vector3(playerZone2.x, playerZone2.y, 0);
         Vector3 topLeft = new Vector3(playerZone2.x, playerZone2.y + playerZone2.height, 0);
@@ -298,7 +361,38 @@ public abstract class Card : MonoBehaviour
         Debug.DrawLine(topLeft, topRight, Color.green);
         Debug.DrawLine(topRight, bottomRight, Color.green);
         Debug.DrawLine(bottomRight, bottomLeft, Color.green);
+        Debug.Log("playerZone2" + playerZone2);
     }
+
+    void OnDrawGizmost3()
+    {
+        Vector3 bottomLeft = new Vector3(playerZone3.x, playerZone3.y, 0);
+        Vector3 topLeft = new Vector3(playerZone3.x, playerZone3.y + playerZone3.height, 0);
+        Vector3 topRight = new Vector3(playerZone3.x + playerZone3.width, playerZone3.y + playerZone3.height, 0);
+        Vector3 bottomRight = new Vector3(playerZone3.x + playerZone3.width, playerZone3.y, 0);
+
+        Debug.DrawLine(bottomLeft, topLeft, Color.green);
+        Debug.DrawLine(topLeft, topRight, Color.green);
+        Debug.DrawLine(topRight, bottomRight, Color.green);
+        Debug.DrawLine(bottomRight, bottomLeft, Color.green);
+        Debug.Log("playerZone3" + playerZone3);
+    }
+
+    void OnDrawGizmost4()
+    {
+        Vector3 bottomLeft = new Vector3(playerZone4.x, playerZone4.y, 0);
+        Vector3 topLeft = new Vector3(playerZone4.x, playerZone4.y + playerZone4.height, 0);
+        Vector3 topRight = new Vector3(playerZone4.x + playerZone4.width, playerZone4.y + playerZone4.height, 0);
+        Vector3 bottomRight = new Vector3(playerZone4.x + playerZone4.width, playerZone4.y, 0);
+
+        Debug.DrawLine(bottomLeft, topLeft, Color.green);
+        Debug.DrawLine(topLeft, topRight, Color.green);
+        Debug.DrawLine(topRight, bottomRight, Color.green);
+        Debug.DrawLine(bottomRight, bottomLeft, Color.green);
+        Debug.Log("playerZone4" + playerZone4);
+    }
+
+
 
 
 
@@ -319,38 +413,53 @@ public abstract class Card : MonoBehaviour
             else
             {
 
-                playerZone1 = new Rect(
-                            topLeftPlayer1.x,
-                            topLeftPlayer1.y,
-                            Mathf.Abs(bottomRightPlayer1.x - topLeftPlayer1.x), // width est la différence absolue en x
-                            Mathf.Abs(topLeftPlayer1.y - bottomLeftPlayer1.y) // height est la différence absolue en y
-                                );
+                // playerZone1 = new Rect(
+                //             topLeftPlayer1.x,
+                //             topLeftPlayer1.y,
+                //             Mathf.Abs(bottomRightPlayer1.x - topLeftPlayer1.x), // width est la différence absolue en x
+                //             Mathf.Abs(topLeftPlayer1.y - bottomLeftPlayer1.y) // height est la différence absolue en y
+                //                 );
 
-                playerZone2 = new Rect(
-                            topLeftPlayer2.x,
-                            topLeftPlayer2.y,
-                            Mathf.Abs(bottomRightPlayer2.x - topLeftPlayer2.x), // width est la différence absolue en x
-                            Mathf.Abs(topLeftPlayer2.y - bottomLeftPlayer2.y) // height est la différence absolue en y
-                                );
+                playerZone1 = new Rect(-5.0f,-5.0f,10.0f,5.0f);
+                playerZone2 = new Rect(-10.5f,-5.0f,5.0f,10.0f);
+                playerZone3 = new Rect(-5.0f,0.0f,10.0f,5.0f);
+                playerZone4 = new Rect(5.5f,-5.0f,5.0f,10.0f);
 
-
-                playerZone3 = new Rect(
-                            topLeftPlayer3.x,
-                            topLeftPlayer3.y,
-                            Mathf.Abs(bottomRightPlayer3.x - topLeftPlayer3.x), // width est la différence absolue en x
-                            Mathf.Abs(topLeftPlayer3.y - bottomLeftPlayer3.y - 4.5f) // height est la différence absolue en y
-                                );
+                // playerZone2 = new Rect(
+                //             topLeftPlayer2.x,
+                //             topLeftPlayer2.y,
+                //             Mathf.Abs(bottomRightPlayer2.x - topLeftPlayer2.x), // width est la différence absolue en x
+                //             Mathf.Abs(topLeftPlayer2.y - bottomLeftPlayer2.y) // height est la différence absolue en y
+                //                 );
 
 
-                playerZone4 = new Rect(
-                            topLeftPlayer4.x,
-                            topLeftPlayer4.y,
-                            Mathf.Abs(bottomRightPlayer4.x - topLeftPlayer4.x), // width est la différence absolue en x
-                            Mathf.Abs(topLeftPlayer4.y - bottomLeftPlayer4.y) // height est la différence absolue en y
-                                );
 
 
-                OnDrawGizmost();
+                // playerZone3 = new Rect(
+                //             topLeftPlayer3.x,
+                //             topLeftPlayer3.y,
+                //             Mathf.Abs(bottomRightPlayer3.x - topLeftPlayer3.x), // width est la différence absolue en x
+                //             Mathf.Abs(topLeftPlayer3.y - bottomLeftPlayer3.y) // height est la différence absolue en y
+                //                 );
+
+
+                // playerZone4 = new Rect(
+                //             topLeftPlayer4.x,
+                //             topLeftPlayer4.y,
+                //             Mathf.Abs(bottomRightPlayer4.x - topLeftPlayer4.x), // width est la différence absolue en x
+                //             Mathf.Abs(topLeftPlayer4.y - bottomLeftPlayer4.y) // height est la différence absolue en y
+                //                 );
+
+
+                // private Vector2 topLeftPlayer4 = new Vector2(4.3f, -2.54f);
+                // private Vector2 topRightPlayer4 = new Vector2(11.0f, 2.68f);
+                // private Vector2 bottomLeftPlayer4 = new Vector2(4.3f, -7.0f);
+                // private Vector2 bottomRightPlayer4 = new Vector2(11.0f, -6.27f);
+
+                OnDrawGizmost1();
+                OnDrawGizmost2();
+                OnDrawGizmost3();
+                OnDrawGizmost4();
 
                 CheckZonesForCards();
                 Vector2 cardPosition2D = new Vector2(this.transform.position.x, this.transform.position.y);
@@ -363,7 +472,8 @@ public abstract class Card : MonoBehaviour
                     if (this.idPlayer != 1 && this.idPlayer != 3)
                     {
                         Debug.Log("Carte  peut attaque  ");
-                        attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone1, this.idPlayer);
+                        //attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone1, this.idPlayer);
+                        attackPoints = this.attackPoints - PointDeffenceCardsInZonetest(playerZone1, this.idPlayer);
                         Debug.Log("attackPoints" + attackPoints);
                         tableManager.AttackPlayer(this.idPlayer, 1, attackPoints);
                         //tableManager.UpdatePositionCards(this.idPlayer);
@@ -378,7 +488,9 @@ public abstract class Card : MonoBehaviour
                     if (this.idPlayer != 2 && this.idPlayer != 4)
                     {
                         Debug.Log("Carte  peut attaque  ");
-                        attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone2, this.idPlayer);
+                        //attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone2, this.idPlayer);
+                        attackPoints = this.attackPoints - PointDeffenceCardsInZonetest(playerZone2, this.idPlayer);
+
                         Debug.Log("attackPoints" + attackPoints);
                         tableManager.AttackPlayer(this.idPlayer, 2, attackPoints);
                         //tableManager.UpdatePositionCards(this.idPlayer);
@@ -393,7 +505,8 @@ public abstract class Card : MonoBehaviour
                     if (this.idPlayer != 1 && this.idPlayer != 3)
                     {
                         Debug.Log("Carte  peut attaque  ");
-                        attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone3, this.idPlayer);
+                        //attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone3, this.idPlayer);
+                        attackPoints = this.attackPoints - PointDeffenceCardsInZonetest(playerZone3, this.idPlayer);
                         Debug.Log("attackPoints" + attackPoints);
                         tableManager.AttackPlayer(this.idPlayer, 3, attackPoints);
                         //tableManager.UpdatePositionCards(this.idPlayer);
@@ -408,7 +521,8 @@ public abstract class Card : MonoBehaviour
                     if (this.idPlayer != 2 && this.idPlayer != 4)
                     {
                         Debug.Log("Carte  peut attaque  ");
-                        attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone4, this.idPlayer);
+                        //attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone4, this.idPlayer);
+                        attackPoints = this.attackPoints - PointDeffenceCardsInZonetest(playerZone4, this.idPlayer);
                         Debug.Log("attackPoints" + attackPoints);
                         tableManager.AttackPlayer(this.idPlayer, 4, attackPoints);
                         //tableManager.UpdatePositionCards(this.idPlayer);
@@ -488,6 +602,26 @@ public abstract class Card : MonoBehaviour
         return count; // Retourne le nombre de cartes dans la zone
     }
 
+    // count card in zone with an angle different to angle of initial card
+    public int CountCardsInZonePositiondeffence(Rect zone, float angle)
+    {
+        Card[] allCards = FindObjectsOfType<Card>(); // Trouvez toutes les cartes dans la scène
+        int count = 0;
+        int pDeffence = 0;
+
+        foreach (Card card in allCards)
+        {
+            Vector2 cardPos = new Vector2(card.transform.position.x, card.transform.position.y);
+            if (zone.Contains(cardPos) && card.transform.rotation.z != angle)
+            {
+                count++;
+                pDeffence += card.defensePoints;
+            }
+        }
+
+        return count; // Retourne le nombre de cartes dans la zone
+    }
+
     // Vous pouvez appeler cette fonction pour chaque zone pour obtenir le compte
     public void CheckZonesForCards()
     {
@@ -535,6 +669,137 @@ public abstract class Card : MonoBehaviour
                 UnityEngine.Object.Destroy(card.gameObject);
             }
         }
+
+        return pDeffence; // Retourne le nombre de cartes dans la zone
+    }
+
+    public int PointDeffenceCardsInZonetest(Rect zone, int idPlayer)
+    {
+        // Card[] allCards = FindObjectsOfType<Card>(); // Trouvez toutes les cartes dans la scène
+        // int pDeffence = 0;
+        // int pAttack = 0;
+
+        // foreach (Card card in allCards)
+        // {
+        //     Vector2 cardPos = new Vector2(card.transform.position.x, card.transform.position.y);
+        //     if (zone.Contains(cardPos) && card.idPlayer != idPlayer)
+        //     {
+
+        //         if (zone == playerZone1 && card.transform.rotation.z != 0)
+        //         {
+        //             pDeffence += card.defensePoints;
+        //         }
+        //         else if (zone == playerZone2 && card.transform.rotation.z != -90)
+        //         {
+        //             pDeffence += card.defensePoints;
+        //         }
+        //         else if (zone == playerZone3 && card.transform.rotation.z != 180)
+        //         {
+        //             pDeffence += card.defensePoints;
+        //         }
+        //         else if (zone == playerZone4 && card.transform.rotation.z != 90)
+        //         {
+        //             pDeffence += card.defensePoints;
+        //         }
+        //     }
+        //     if (card.idPlayer == idPlayer)
+        //     {
+        //         pAttack += card.attackPoints;
+        //     }
+        // }
+
+
+        // Card[] allCards = FindObjectsOfType<Card>(); // Trouvez toutes les cartes dans la scène
+        // int pDeffence = 0;
+        // int pAttack = 0;
+
+        // foreach (Card card in allCards)
+        // {
+        //     Vector2 cardPos = new Vector2(card.transform.position.x, card.transform.position.y);
+        //     float zRotation = card.transform.eulerAngles.z;
+
+        //     // Normalize the rotation value to the 0-360 range
+        //     zRotation = (zRotation + 360) % 360;
+
+        //     if (zone.Contains(cardPos) && card.idPlayer != idPlayer)
+        //     {
+        //         if (zone == playerZone1 && Mathf.Abs(zRotation) < 5f) // within 5 degrees of 0
+        //         {
+        //             pDeffence += card.defensePoints;
+        //         }
+        //         else if (zone == playerZone2 && Mathf.Abs(zRotation - 90f) < 5f) // within 5 degrees of 90
+        //         {
+        //             pDeffence += card.defensePoints;
+        //         }
+        //         else if (zone == playerZone3 && Mathf.Abs(zRotation - 180f) < 5f) // within 5 degrees of 180
+        //         {
+        //             pDeffence += card.defensePoints;
+        //         }
+        //         else if (zone == playerZone4 && Mathf.Abs(zRotation - 270f) < 5f) // within 5 degrees of 270
+        //         {
+        //             pDeffence += card.defensePoints;
+        //         }
+        //     }
+
+        //     if (card.idPlayer == idPlayer)
+        //     {
+        //         pAttack += card.attackPoints;
+        //     }
+        // }
+
+
+        Card[] allCards = FindObjectsOfType<Card>(); // Trouvez toutes les cartes dans la scène
+        int pDeffence = 0;
+        int pAttack = 0;
+
+        foreach (Card card in allCards)
+        {
+            Vector2 cardPos = new Vector2(card.transform.position.x, card.transform.position.y);
+            // Get the current Z angle and normalize it to the range [0, 360)
+            float currentZAngle = card.transform.eulerAngles.z % 360;
+
+            if (zone.Contains(cardPos) && card.idPlayer != idPlayer)
+            {
+                if (zone == playerZone1 && !Mathf.Approximately(currentZAngle, 0))
+                {
+                    pDeffence += card.defensePoints;
+                }
+                else if (zone == playerZone2 && Mathf.Approximately(currentZAngle, 0))
+                {
+                    pDeffence += card.defensePoints;
+                }
+                else if (zone == playerZone3 && Mathf.Approximately(currentZAngle, 90))
+                {
+                    pDeffence += card.defensePoints;
+                }
+                else if (zone == playerZone4 && Mathf.Approximately(currentZAngle, 0))
+                {
+                    pDeffence += card.defensePoints;
+                }
+            }
+
+            if (card.idPlayer == idPlayer)
+            {
+                pAttack += card.attackPoints;
+            }
+        }
+
+        Debug.Log("pAttackTest " + pAttack);
+        Debug.Log("pDeffence:Test  " + pDeffence);
+
+        // suppriemr toutes les cartes dans la zone sauf la carte qui attaque si elle est plus forte que la carte deffence
+        // foreach (Card card in allCards)
+        // {
+        //     Vector2 cardPos = new Vector2(card.transform.position.x, card.transform.position.y);
+        //     if (pAttack > pDeffence && zone.Contains(cardPos) && card.idPlayer != idPlayer)
+        //     {
+        //         Debug.Log("pAttack" + pAttack);
+        //         Debug.Log("pDeffence" + pDeffence);
+        //         Debug.Log("card dertroyed voir le paln ");
+        //         // how to destroy card;
+        //         UnityEngine.Object.Destroy(card.gameObject);
+        //     }
+        // }
 
         return pDeffence; // Retourne le nombre de cartes dans la zone
     }
