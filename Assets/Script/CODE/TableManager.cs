@@ -148,22 +148,22 @@ public class TableManager : MonoBehaviour
         if (playerId == 1)
         {
             rotationDegreesZ = 0.0f;
-            CreateCard(new Vector3(0, -3, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard);
+            CreateCard(new Vector3(0, -4, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard);
         }
         else if (playerId == 2)
         {
             rotationDegreesZ = -90.0f;
-            CreateCard(new Vector3(-10, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard);
+            CreateCard(new Vector3(-9.5f, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard);
         }
         else if (playerId == 3)
         {
             rotationDegreesZ = 180.0f;
-            CreateCard(new Vector3(0, 3, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard);
+            CreateCard(new Vector3(0, 4, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard);
         }
         else if (playerId == 4)
         {
             rotationDegreesZ = 90.0f;
-            CreateCard(new Vector3(10, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard);
+            CreateCard(new Vector3(9.5f, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard);
         }
     }
 
@@ -277,22 +277,22 @@ public class TableManager : MonoBehaviour
             if (card.idPlayer == playerId && playerId == 1)
             {
                 // a jour avec cette possition new Vector3(0, -3, 0)
-                card.transform.position = new Vector3(0, -3, 0);
+                card.transform.position = new Vector3(0, -4, 0);
             }
             else if (card.idPlayer == playerId && playerId == 2)
             {
                 // a jour avec cette possition new Vector3(-6, 0, 0)
-                card.transform.position = new Vector3(-10, 0, 0);
+                card.transform.position = new Vector3(-9.5f, 0, 0);
             }
             else if (card.idPlayer == playerId && playerId == 3)
             {
                 // a jour avec cette possition new Vector3(0, 3, 0)
-                card.transform.position = new Vector3(0, 3, 0);
+                card.transform.position = new Vector3(0, 4, 0);
             }
             else if (card.idPlayer == playerId && playerId == 4)
             {
                 // a jour avec cette possition new Vector3(6, 0, 0)
-                card.transform.position = new Vector3(10, 0, 0);
+                card.transform.position = new Vector3(9.5f, 0, 0);
             }
         }
     }

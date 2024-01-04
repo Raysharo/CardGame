@@ -74,7 +74,7 @@ public abstract class Card : MonoBehaviour
     }
 
 
-    public void InitializeCard(int attackPoints,int defensePoints)
+    public void InitializeCard(int attackPoints, int defensePoints)
     {
         // Récupère la référence à l'objet auquel ce script est attaché
         this.id = UnityEngine.Random.Range(0, 1000000);
@@ -90,33 +90,187 @@ public abstract class Card : MonoBehaviour
         this.collid.size = new Vector2(transform.localScale.x * boxScaleFactorX, transform.localScale.y * boxScaleFactorY);
 
     }
-    
+
     void Update()
     {
         string currentSceneName = SceneManager.GetActiveScene().name;
-       
 
-        if (transform.position.y != 0 && !onInteraction)
+
+        // if (transform.position.y != 0 && !onInteraction)
+        // {
+        //     if (currentSceneName == "TableScene")
+        //     {
+        //         // if(this.idPlayer !=){
+
+        //         // }
+        //         // StartCoroutine(ResetPosition());
+        //         CheckAndAdjustPositionTable();
+        //     }
+        //     else
+        //     {
+        //         // StartCoroutine(ResetPosition());
+        //         CheckAndAdjustPositionPlayer();
+        //         // CheckZonesForCards();
+        //     }
+        // }
+        if (!onInteraction)
         {
-            if (currentSceneName != "TableScene")
+            if (currentSceneName == "TableScene")
             {
                 // if(this.idPlayer !=){
-                    
+
                 // }
                 // StartCoroutine(ResetPosition());
+                CheckAndAdjustPositionTable();
+            }
+            else
+            {
+                // StartCoroutine(ResetPosition());
+                CheckAndAdjustPositionPlayer();
+                // CheckZonesForCards();
             }
         }
-        CheckAndAdjustPosition();
-
     }
+
+    void CheckAndAdjustPositionTable()
+    {
+        if (this.idPlayer == 1 || this.idPlayer == 3)
+        {
+            // Check if the card is in collision with another card
+            Collider[] hitColliders = Physics.OverlapBox(transform.position, transform.localScale / 2, Quaternion.identity);
+            // Debug.Log("hitColliders" + hitColliders.Length);
+
+            // Sort the colliders by their horizontal positions
+            System.Array.Sort(hitColliders, (a, b) => a.transform.position.x.CompareTo(b.transform.position.x));
+
+            foreach (Collider hitCollider in hitColliders)
+            {
+                if (hitCollider.gameObject != gameObject)
+                {
+                    Debug.Log(gameObject.name + " collides with " + hitCollider.gameObject.name);
+                    // Determine the direction based on relative horizontal positions
+                    float direction = (hitCollider.transform.position.x < transform.position.x) ? 1f : -1f;
+
+                    // Slowly move the card to the right or left based on the direction
+                    transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x + (0.1f * direction), transform.position.y, transform.position.z), 0.1f);
+                }
+            }
+        }
+        else if (this.idPlayer == 2 || this.idPlayer == 4)
+        {
+            // Check if the card is in collision with another card
+            Collider[] hitColliders = Physics.OverlapBox(transform.position, transform.localScale / 2, Quaternion.identity);
+            // Debug.Log("hitColliders" + hitColliders.Length);
+
+            // Sort the colliders by their vertical positions
+            System.Array.Sort(hitColliders, (a, b) => a.transform.position.y.CompareTo(b.transform.position.y));
+
+            foreach (Collider hitCollider in hitColliders)
+            {
+                if (hitCollider.gameObject != gameObject)
+                {
+                    Debug.Log(gameObject.name + " collides with " + hitCollider.gameObject.name);
+                    // Determine the direction based on relative vertical positions
+                    float direction = (hitCollider.transform.position.y < transform.position.y) ? 1f : -1f;
+
+                    // Slowly move the card to the top or bottom based on the direction
+                    transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, transform.position.y + (0.1f * direction), transform.position.z), 0.1f);
+                }
+            }
+
+        }
+    }
+
+    void CheckAndAdjustPositionPlayer()
+    {
+        // Check if the card is in collision with another card
+        Collider[] hitColliders = Physics.OverlapBox(transform.position, transform.localScale / 2, Quaternion.identity);
+        // Debug.Log("hitColliders" + hitColliders.Length);
+
+        // Sort the colliders by their horizontal positions
+        System.Array.Sort(hitColliders, (a, b) => a.transform.position.x.CompareTo(b.transform.position.x));
+
+        foreach (Collider hitCollider in hitColliders)
+        {
+            if (hitCollider.gameObject != gameObject)
+            {
+                // Determine the direction based on relative horizontal positions
+                float direction = (hitCollider.transform.position.x < transform.position.x) ? 1f : -1f;
+
+                // Slowly move the card to the right or left based on the direction
+                transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x + (0.1f * direction), transform.position.y, transform.position.z), 0.1f);
+            }
+        }
+    }
+
 
     void TaskOnClik()
     {
+
         Debug.Log("TaskOnClik");
-        CardMessage messageObject = new CardMessage(this.id, this.GetType().Name, attackPoints, defensePoints, this.iconCard);
-        string message = JsonUtility.ToJson(messageObject);
-        owner.SendMessageToTAble(message);
-        owner.DestroyCard(this.id);
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        if (currentSceneName == "TableScene")
+        {
+            Debug.Log("TableManager found: " + tableManager.gameObject.name);
+            if (this.idPlayer == 1)
+            {
+                Debug.Log("this.transform.rotation.z" + this.transform.rotation.z);
+                if (this.transform.rotation.z == 0)
+                {
+                    this.transform.rotation = Quaternion.Euler(0, 0, -90);
+                }
+                else
+                {
+                    this.transform.rotation = Quaternion.Euler(0, 0, 0);
+                }
+            }
+            else if (this.idPlayer == 2)
+            {
+                Debug.Log("this.transform.rotation.z" + this.transform.rotation.z);
+                if (this.transform.rotation.z == 0)
+                {
+                    this.transform.rotation = Quaternion.Euler(0, 0, -90);
+                }
+                else
+                {
+                    this.transform.rotation = Quaternion.Euler(0, 0, 0);
+                }
+            }
+            else if (this.idPlayer == 3)
+            {
+                Debug.Log("this.transform.rotation.z" + this.transform.rotation.z);
+                float currentZAngle = this.transform.rotation.eulerAngles.z;
+                float tolerance = 1.0f;
+                if (Mathf.Abs(currentZAngle - 180) < tolerance)
+                {
+                    this.transform.rotation = Quaternion.Euler(0, 0, 90);
+                }
+                else
+                {
+                    this.transform.rotation = Quaternion.Euler(0, 0, -180);
+                }
+            }
+            else if (this.idPlayer == 4)
+            {
+                Debug.Log("this.transform.rotation.z" + this.transform.rotation.z);
+                if (this.transform.rotation.z == 0)
+                {
+                    this.transform.rotation = Quaternion.Euler(0, 0, 90);
+                }
+                else
+                {
+                    this.transform.rotation = Quaternion.Euler(0, 0, 0);
+                }
+            }
+        }
+        else
+        {
+            CardMessage messageObject = new CardMessage(this.id, this.GetType().Name, attackPoints, defensePoints, this.iconCard);
+            string message = JsonUtility.ToJson(messageObject);
+            owner.SendMessageToTAble(message);
+            owner.DestroyCard(this.id);
+        }
+
 
     }
 
@@ -133,20 +287,20 @@ public abstract class Card : MonoBehaviour
         offset = transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10));
     }
 
-
-    void OnDrawGizmos()
+    void OnDrawGizmost()
     {
-        Vector3 bottomLeft = new Vector3(playerZone4.x, playerZone4.y, 0);
-        Vector3 topLeft = new Vector3(playerZone4.x, playerZone4.y + playerZone4.height, 0);
-        Vector3 topRight = new Vector3(playerZone4.x + playerZone4.width, playerZone4.y + playerZone4.height, 0);
-        Vector3 bottomRight = new Vector3(playerZone4.x + playerZone4.width, playerZone4.y, 0);
+        Vector3 bottomLeft = new Vector3(playerZone2.x, playerZone2.y, 0);
+        Vector3 topLeft = new Vector3(playerZone2.x, playerZone2.y + playerZone2.height, 0);
+        Vector3 topRight = new Vector3(playerZone2.x + playerZone2.width, playerZone2.y + playerZone2.height, 0);
+        Vector3 bottomRight = new Vector3(playerZone2.x + playerZone2.width, playerZone2.y, 0);
 
         Debug.DrawLine(bottomLeft, topLeft, Color.green);
         Debug.DrawLine(topLeft, topRight, Color.green);
         Debug.DrawLine(topRight, bottomRight, Color.green);
         Debug.DrawLine(bottomRight, bottomLeft, Color.green);
-
     }
+
+
 
     void OnMouseUp()
     {
@@ -179,6 +333,7 @@ public abstract class Card : MonoBehaviour
                             Mathf.Abs(topLeftPlayer2.y - bottomLeftPlayer2.y) // height est la différence absolue en y
                                 );
 
+
                 playerZone3 = new Rect(
                             topLeftPlayer3.x,
                             topLeftPlayer3.y,
@@ -186,13 +341,17 @@ public abstract class Card : MonoBehaviour
                             Mathf.Abs(topLeftPlayer3.y - bottomLeftPlayer3.y - 4.5f) // height est la différence absolue en y
                                 );
 
+
                 playerZone4 = new Rect(
                             topLeftPlayer4.x,
                             topLeftPlayer4.y,
                             Mathf.Abs(bottomRightPlayer4.x - topLeftPlayer4.x), // width est la différence absolue en x
                             Mathf.Abs(topLeftPlayer4.y - bottomLeftPlayer4.y) // height est la différence absolue en y
                                 );
-                OnDrawGizmos();
+
+
+                OnDrawGizmost();
+
                 CheckZonesForCards();
                 Vector2 cardPosition2D = new Vector2(this.transform.position.x, this.transform.position.y);
                 int attackPoints = 0;
@@ -309,27 +468,6 @@ public abstract class Card : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, 0, transform.position.z), 0.1f);
     }
 
-    void CheckAndAdjustPosition()
-    {
-        // Check if the card is in collision with another card
-        Collider[] hitColliders = Physics.OverlapBox(transform.position, transform.localScale / 2, Quaternion.identity);
-        // Debug.Log("hitColliders" + hitColliders.Length);
-
-        // Sort the colliders by their horizontal positions
-        System.Array.Sort(hitColliders, (a, b) => a.transform.position.x.CompareTo(b.transform.position.x));
-
-        foreach (Collider hitCollider in hitColliders)
-        {
-            if (hitCollider.gameObject != gameObject)
-            {
-                // Determine the direction based on relative horizontal positions
-                float direction = (hitCollider.transform.position.x < transform.position.x) ? 1f : -1f;
-
-                // Slowly move the card to the right or left based on the direction
-                transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x + (0.1f * direction), transform.position.y, transform.position.z), 0.1f);
-            }
-        }
-    }
 
     public int CountCardsInZone(Rect zone)
     {
@@ -391,7 +529,7 @@ public abstract class Card : MonoBehaviour
             if (pAttack > pDeffence && zone.Contains(cardPos) && card.idPlayer != idPlayer)
             {
                 Debug.Log("pAttack" + pAttack);
-                Debug.Log("pDeffence" + pDeffence); 
+                Debug.Log("pDeffence" + pDeffence);
                 Debug.Log("card dertroyed voir le paln ");
                 // how to destroy card;
                 UnityEngine.Object.Destroy(card.gameObject);
