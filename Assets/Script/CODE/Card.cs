@@ -40,14 +40,12 @@ public abstract class Card : MonoBehaviour
     public string iconCard;
     private int currentZonePlayerId = -1; // -1  la carte n'est dans aucune zone
     private static Dictionary<Rect, Card> cartesEnModeDefenseParZone = new Dictionary<Rect, Card>();
-    // private static Dictionary<Rect, int> nombreDeCartesParZone = new Dictionary<Rect, int>();
-    // private static Dictionary<int, int> nombreDeCartesParZone = new Dictionary<int, int>();
 
 
 
 
-    // if i want for playerZone 1 playerZone1(x:-5, y:-5, width:10, height:5)
-    // so how i can change  private Vector2 topLeftPlayer1 = new Vector2(-4.3f, -4.68f); and other vector2 to get playerZone1(x:-5, y:-5, width:10, height:5)
+
+
     private Vector2 topLeftPlayer1 = new Vector2(-5.0f, -5.0f);
     private Vector2 topRightPlayer1 = new Vector2(5.0f, -5.0f);
     private Vector2 bottomLeftPlayer1 = new Vector2(-5.0f, -10.0f);
@@ -55,8 +53,7 @@ public abstract class Card : MonoBehaviour
 
 
 
-    // if i want for playerZone 2 playerZone2(x:-10, y:-5, width:5, height:10)
-    // so how i can change  private Vector2 topLeftPlayer2 = new Vector2(-10.0f, -2.54f); and other vector2 to get playerZone2(x:-10, y:-5, width:5, height:10)
+   
     private Vector2 topLeftPlayer2 = new Vector2(-10.0f, -5.0f);
     private Vector2 topRightPlayer2 = new Vector2(-4.3f, 2.68f);
     private Vector2 bottomLeftPlayer2 = new Vector2(-10.0f, -10.0f);
@@ -64,25 +61,17 @@ public abstract class Card : MonoBehaviour
 
 
 
-    // if i want for playerZone 3 playerZone3(x:-5, y:0, width:10, height:5)
-    // so how i can change  private Vector2 topLeftPlayer3 = new Vector2(-4.3f, 0.68f); and other vector2 to get playerZone3(x:-5, y:0, width:10, height:5)
+   
     private Vector2 topLeftPlayer3 = new Vector2(-5.0f, 0.0f);
     private Vector2 topRightPlayer3 = new Vector2(5.0f, 0.0f);
     private Vector2 bottomLeftPlayer3 = new Vector2(-5.0f, -5.0f);
     private Vector2 bottomRightPlayer3 = new Vector2(5.0f, -5.0f);
 
-    // if i want for playerZone 4 playerZone4(x:5.50, y:-5, width:5, height:10)
-    //so how i can change  private Vector2 topLeftPlayer4 = new Vector2(4.3f, -2.54f); and other vector2 to get playerZone4(x:5.50, y:-5, width:5, height:10)
+   
     private Vector2 topLeftPlayer4 = new Vector2(5.50f, -5.0f);
     private Vector2 topRightPlayer4 = new Vector2(11.0f, 2.68f);
     private Vector2 bottomLeftPlayer4 = new Vector2(5.50f, -10.0f);
     private Vector2 bottomRightPlayer4 = new Vector2(11.0f, -6.27f);
-
-
-    // private Vector2 topLeftPlayer4 = new Vector2(4.3f, -2.54f);
-    // private Vector2 topRightPlayer4 = new Vector2(11.0f, 2.68f);
-    // private Vector2 bottomLeftPlayer4 = new Vector2(4.3f, -7.0f);
-    // private Vector2 bottomRightPlayer4 = new Vector2(11.0f, -6.27f);
 
 
 
@@ -94,13 +83,6 @@ public abstract class Card : MonoBehaviour
 
     private bool initializedNombreDeCartesZone = false;
 
-    // private  int ZoneIncarte1 = 0;
-    // private  int ZoneIncarte2 = 0;
-    // private  int ZoneIncarte3 = 0;
-    // private  int ZoneIncarte4 = 0;
-    // private  int Zone2Id = 0;
-    // private  int Zone3Id = 0;
-    // private  int Zone4Id = 0;
 
     void Start()
     {
@@ -213,22 +195,6 @@ public abstract class Card : MonoBehaviour
         }
     }
 
-    // private void InitialiseNombreDeCartesParZone()
-    // {
-    //     nombreDeCartesParZone[playerZone1] = 0;
-    //     nombreDeCartesParZone[playerZone2] = 0;
-    //     nombreDeCartesParZone[playerZone3] = 0;
-    //     nombreDeCartesParZone[playerZone4] = 0;
-    // }
-
-    // private void InitialiseNombreDeCartesParZone()
-    // {
-    //     Debug.Log("InitialiseNombreDeCartesParZone");
-    //     nombreDeCartesParZone[Zone1Id] = 0;
-    //     nombreDeCartesParZone[Zone2Id] = 0;
-    //     nombreDeCartesParZone[Zone3Id] = 0;
-    //     nombreDeCartesParZone[Zone4Id] = 0;
-    // }
 
     void TaskOnClik()
     {
@@ -236,12 +202,6 @@ public abstract class Card : MonoBehaviour
         string currentSceneName = SceneManager.GetActiveScene().name;
         if (currentSceneName == "TableScene")
         {
-            // if (!initializedNombreDeCartesZone)
-            // {
-            //     // InitialiseNombreDeCartesParZone();
-            //     InitialiseNombreDeCartesParZone();
-            //     initializedNombreDeCartesZone = true;
-            // }
             Rect zone = ObtenirZonePourLeJoueur(this.idPlayer);
             Debug.Log("TableManager found: " + tableManager.gameObject.name);
             if (PeutOrienterEnDefense(zone))
@@ -317,15 +277,17 @@ public abstract class Card : MonoBehaviour
             {
                 if (GameManager.Instance.GetZoneIncarte1() < 2)
                 {
+                    owner.SupprimerCartefromlistCards(this.id);
                     Debug.Log("Carte peut etre poser");
                     GameManager.Instance.IncrementZoneIncarte1();
                     CardMessage messageObject = new CardMessage(this.id, this.GetType().Name, attackPoints, defensePoints, this.iconCard);
                     string message = JsonUtility.ToJson(messageObject);
                     owner.SendMessageToTAble(message);
                     owner.DestroyCard(this.id);
-                    // nombreDeCartesParZone[Zone1Id]++;
-
-
+                    if (owner.CompteCarte() == 0)
+                    {
+                        owner.CreateCardPlayer(this.idPlayer);
+                    }
                 }
                 else
                 {
@@ -336,6 +298,7 @@ public abstract class Card : MonoBehaviour
             {
                 if (GameManager.Instance.GetZoneIncarte2() < 2)
                 {
+                    owner.SupprimerCartefromlistCards(this.id);
                     Debug.Log("Carte peut etre poser");
                     GameManager.Instance.IncrementZoneIncarte2();
                     CardMessage messageObject = new CardMessage(this.id, this.GetType().Name, attackPoints, defensePoints, this.iconCard);
@@ -343,6 +306,10 @@ public abstract class Card : MonoBehaviour
                     owner.SendMessageToTAble(message);
                     owner.DestroyCard(this.id);
                     // nombreDeCartesParZone[Zone1Id]++;
+                    if (owner.CompteCarte() == 0)
+                    {
+                        owner.CreateCardPlayer(this.idPlayer);
+                    }
 
                 }
                 else
@@ -354,6 +321,7 @@ public abstract class Card : MonoBehaviour
             {
                 if (GameManager.Instance.GetZoneIncarte3() < 2)
                 {
+                    owner.SupprimerCartefromlistCards(this.id);
                     Debug.Log("Carte peut etre poser");
                     GameManager.Instance.IncrementZoneIncarte3();
                     CardMessage messageObject = new CardMessage(this.id, this.GetType().Name, attackPoints, defensePoints, this.iconCard);
@@ -361,6 +329,10 @@ public abstract class Card : MonoBehaviour
                     owner.SendMessageToTAble(message);
                     owner.DestroyCard(this.id);
                     // nombreDeCartesParZone[Zone3Id]++;
+                    if (owner.CompteCarte() == 0)
+                    {
+                        owner.CreateCardPlayer(this.idPlayer);
+                    }
 
 
                 }
@@ -373,6 +345,7 @@ public abstract class Card : MonoBehaviour
             {
                 if (GameManager.Instance.GetZoneIncarte4() < 2)
                 {
+                    owner.SupprimerCartefromlistCards(this.id);
                     Debug.Log("Carte peut etre poser");
                     GameManager.Instance.IncrementZoneIncarte4();
                     CardMessage messageObject = new CardMessage(this.id, this.GetType().Name, attackPoints, defensePoints, this.iconCard);
@@ -380,6 +353,10 @@ public abstract class Card : MonoBehaviour
                     owner.SendMessageToTAble(message);
                     owner.DestroyCard(this.id);
                     // nombreDeCartesParZone[Zone4Id]++;
+                    if (owner.CompteCarte() == 0)
+                    {
+                        owner.CreateCardPlayer(this.idPlayer);
+                    }
 
                 }
                 else
@@ -391,28 +368,6 @@ public abstract class Card : MonoBehaviour
         }
 
     }
-
-    // bool PeutPoserCarte(Rect zone)
-    // {
-    //     // Initialisation si la zone n'est pas encore dans le dictionnaire
-    //     if (!nombreDeCartesParZone.ContainsKey(zone))
-    //     {
-    //         nombreDeCartesParZone[zone] = 0;
-    //     }
-
-    //     // Vérifiez si moins de deux cartes sont dans la zone
-    //     return nombreDeCartesParZone[zone] < 2;
-    // }
-
-    // bool PeutPoserCarte(int zoneId)
-    // {
-    //     if (!nombreDeCartesParZone.ContainsKey(zoneId))
-    //     {
-    //         nombreDeCartesParZone[zoneId] = 0;
-    //     }
-
-    //     return nombreDeCartesParZone[zoneId] < 2;
-    // }
 
 
 

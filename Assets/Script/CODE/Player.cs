@@ -40,164 +40,52 @@ public class Player
             UnityEngine.Debug.Log("Message reçu du serveur : " + e.Data);
             try
             {
-                // MessageManager messageManager = FindObjectOfType<MessageManager>();
-                // if (messageManager == null)
-                // {
-                //     Debug.LogError("MessageManager n'est pas assigné dans l'inspecteur!");
-                //     return;
-                // }
-                // messageManager.EnqueueMessage(e.Data);
                 MessageManager.Instance.EnqueueMessage(e.Data, this);
             }
             catch (Exception ex)
             {
                 UnityEngine.Debug.Log("Erreur : " + ex.Message);
             }
-
-
-            // lock (messageQueue)
-            // {
-            //     messageQueue.Enqueue(e.Data);
-            // }
-
-
-
-            // UnityEngine.Debug.Log("Message reçu du serveur : " + e.Data);
-
-            // MessageTypeIdentifier messageType = JsonUtility.FromJson<MessageTypeIdentifier>(e.Data);
-
-            // Debug.Log("Type de message reçu : " + messageType.type);
-
-            // switch (messageType.type)
-            // {
-            //     case "requestCards":
-            //         Debug.Log("Cartes demandées par le serveur");
-            //         HandleRequestCardsMessage(e.Data);
-            //         break;
-            //     case "giveCards":
-            //         HandleGiveCardsMessage(e.Data);
-            //         break;
-            //     default:
-            //         Debug.LogError("Type de message inconnu.");
-            //         break;
-            // }
         };
         PlayerSocket.Connect();
+
+        CreateCardPlayer(id);
+    }
+
+
+    public void CreateCardPlayer(int id)
+    {
+        Type[] cardTypes = { typeof(GoldCard), typeof(BlueCard), typeof(GreenCard) };
         string[] iconNames = { "Icon1", "Icon2", "Icon3", "Icon4", "Icon5", "Icon6", "Icon7" };
-        string iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
         if (id == 1)
         {
-            CreateCard(new Vector3(-2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GoldCard), 25, 9,iconSelected, false);
-            iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
-            CreateCard(new Vector3(0, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GoldCard), 29, 14,iconSelected, false);
-            iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
-            CreateCard(new Vector3(2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(BlueCard), 35, 12, iconSelected,false);
-            iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
-            CreateCard(new Vector3(4, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GreenCard), 17, 13, iconSelected,false);
+            CreateforCard(cardTypes, iconNames);
         }
         else if (id == 2)
         {
-            CreateCard(new Vector3(-2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GreenCard), 12, 5,iconSelected, false);
-            iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
-            CreateCard(new Vector3(0, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GoldCard), 15, 10, iconSelected,false);
-            iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
-            CreateCard(new Vector3(2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GreenCard), 30, 10, iconSelected,false);
-            iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
-            CreateCard(new Vector3(4, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GreenCard), 20, 15,iconSelected, false);
+            CreateforCard(cardTypes, iconNames);
         }
         else if (id == 3)
         {
-            CreateCard(new Vector3(-2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(BlueCard), 17, 13,iconSelected, false);
-            iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
-            CreateCard(new Vector3(0, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GoldCard), 20, 14,iconSelected, false);
-            iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
-            CreateCard(new Vector3(2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(BlueCard), 18, 1,iconSelected, false);
-            iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
-            CreateCard(new Vector3(4, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GreenCard), 11, 5,iconSelected, false);
+            CreateforCard(cardTypes, iconNames);
         }
         else if (id == 4)
         {
-            CreateCard(new Vector3(-2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GreenCard), 24, 3,iconSelected, false);
-            iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
-            CreateCard(new Vector3(0, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GoldCard), 16, 11,iconSelected, false);
-            iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
-            CreateCard(new Vector3(2, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(BlueCard), 13, 10,iconSelected, false);
-            iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
-            CreateCard(new Vector3(4, 0, 0), new Vector3(1, 1.5f, 0.1f), typeof(GreenCard), 19, 15,iconSelected, false);
+            CreateforCard(cardTypes, iconNames);
         }
-
     }
 
-    // void Update()
-    // {
-    //      Debug.Log("Traitement du message ");
-    //     while (messageQueue.Count > 0)
-    //     {
-    //         string message;
-    //         lock (messageQueue)
-    //         {
-    //             message = messageQueue.Dequeue();
-    //         }
 
-    //         Debug.Log("Traitement du message : " + message); 
-
-    //         ProcessMessage(message);
-    //     }
-    // }
-
-    private void ProcessMessage(string message)
+    public void CreateforCard(Type[] cardTypes, string[] iconNames)
     {
-        // Votre logique de traitement des messages...
-
-        try
+        for (int i = 0; i < 4; i++)
         {
-            UnityEngine.Debug.Log("Message reçu du serveur : " + message);
-            MessageTypeIdentifier messageType = JsonUtility.FromJson<MessageTypeIdentifier>(message);
-
-            // ... (le reste de votre logique de traitement de message)
-            // Debug.Log("Type de message reçu : " + messageType.type);
-            switch (messageType.type)
-            {
-                case "requestCards":
-                    Debug.Log("Cartes demandées par le serveur");
-                    HandleRequestCardsMessage(message);
-                    break;
-                case "giveCards":
-                    HandleGiveCardsMessage(message);
-                    break;
-                case "carteDetruite":
-                    Debug.Log("Carte détruite");
-                    HandleCarteDetruiteMessage(message);
-                    break;
-                default:
-                    Debug.LogError("Type de message inconnu.");
-                    break;
-            }
+            Type randomCardType = cardTypes[UnityEngine.Random.Range(0, cardTypes.Length)];
+            string iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
+            int attackPoints = UnityEngine.Random.Range(10, 25);
+            int defensePoints = UnityEngine.Random.Range(1, 15);
+            CreateCard(new Vector3(-2 + 2 * i, 0, 0), new Vector3(1, 1.5f, 0.1f), randomCardType, attackPoints, defensePoints, iconSelected, false);
         }
-        catch (Exception ex)
-        {
-            UnityEngine.Debug.LogError("Une erreur est survenue lors du traitement du message : " + ex.Message);
-            // Vous pouvez ajouter ici d'autres logiques pour gérer l'erreur si nécessaire
-        }
-
-        // UnityEngine.Debug.Log("Message reçu du serveur : " + message);
-
-        // MessageTypeIdentifier messageType = JsonUtility.FromJson<MessageTypeIdentifier>(message);
-
-        // Debug.Log("Type de message reçu : " + messageType.type);
-        // switch (messageType.type)
-        // {
-        //     case "requestCards":
-        //         Debug.Log("Cartes demandées par le serveur");
-        //         HandleRequestCardsMessage(message);
-        //         break;
-        //     case "giveCards":
-        //         HandleGiveCardsMessage(message);
-        //         break;
-        //     default:
-        //         Debug.LogError("Type de message inconnu.");
-        //         break;
-        // }
     }
 
 
@@ -256,7 +144,7 @@ public class Player
         {
             Debug.Log("Carte trouvée : " + card.attackPoints + "  " + card.defensePoints + "  " + card.idPlayer + "  " + card.cardType + "  " + card.iconCard);
             Type cardType = Type.GetType(card.cardType);
-            CreateCard(new Vector3(x, 4, 0), new Vector3(1, 1.5f, 0.1f), cardType, card.attackPoints, card.defensePoints,card.iconCard ,true);
+            CreateCard(new Vector3(x, 4, 0), new Vector3(1, 1.5f, 0.1f), cardType, card.attackPoints, card.defensePoints, card.iconCard, true);
             x += 2;
         }
     }
@@ -300,10 +188,10 @@ public class Player
         }
     }
 
-    public void CreateCard(Vector3 position, Vector3 scale, Type cardType, int attackPoints, int defensePoints,string iconSelected ,bool isGetCard)
+    public void CreateCard(Vector3 position, Vector3 scale, Type cardType, int attackPoints, int defensePoints, string iconSelected, bool isGetCard)
     {
         // Assuming icons are named "Icon1", "Icon2", ..., "Icon7" in the Resources/Sprites folder
-       
+
         // Créer l'objet de la carte
         GameObject cardObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
         // Modifier la taille pour en faire une carte
@@ -327,7 +215,7 @@ public class Player
         cardComponent.iconCard = iconSelected;
         spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/" + iconSelected);
         spriteRenderer.sortingOrder = 1;
-        
+
         // spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/" + iconNames[UnityEngine.Random.Range(0, iconNames.Length)]);
         // spriteRenderer.sortingOrder = 1;
 
@@ -337,21 +225,7 @@ public class Player
             cardComponent.owner = this;
             cardComponent.idPlayer = this.id;
             cards.Add(cardComponent); // Ajoutez la carte à la liste du joueur
-
-            // GameObject icon = new GameObject("Icon");
-            // icon.transform.SetParent(cardObject.transform, false);
-            // icon.transform.localPosition = new Vector3(0, 0.17f, -1); // Centrez sur la carte
-            // icon.transform.localScale = new Vector3(0.8f, 0.5f, 1f); //  // Adjust width (x) and height (y) as needed
-            // SpriteRenderer spriteRenderer = icon.AddComponent<SpriteRenderer>();
-            // spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/" + iconSelected);
-            
-            // spriteRenderer.sortingOrder = 1;
         }
-
-        
-        // create icon for card
-
-
 
     }
 
@@ -366,9 +240,37 @@ public class Player
             // Vérifiez si la carte appartient à ce joueur
             if (card.owner == this)
             {
+                Debug.Log("carte appartient à ce joueur " + card.idPlayer);
                 // Ajoutez la carte à la liste du joueur*
                 Debug.Log("Carte trouvée : " + card.attackPoints + "  " + card.defensePoints);
                 //cards.Add(card);
+            }
+        }
+    }
+
+    public int CompteCarte()
+    {
+        //Debug.Log("Nombre de cartes trouvées : " + cards.Count);
+        Card[] allCards = UnityEngine.Object.FindObjectsOfType<Card>();
+        int nbCarte = 0;
+        foreach (var card in allCards)
+        {
+            nbCarte++;
+        }
+        Debug.Log("Nombre de cartes trouvées : " + nbCarte);
+        return nbCarte - 1;
+    }
+
+    public void SupprimerCartefromlistCards(int idCard)
+    {
+        //cards.RemoveAt(idCard);
+        Card[] allCards = UnityEngine.Object.FindObjectsOfType<Card>();
+        foreach (var card in allCards)
+        {
+            // Vérifiez si l'ID de la carte correspond à celui que nous voulons détruire
+            if (card.id == idCard)
+            {
+                cards.Remove(card);
             }
         }
     }
