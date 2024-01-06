@@ -78,7 +78,13 @@ wss.on('connection', (ws, req) => {
 
             // let targetPlayerId = message.targetPlayerId;
             // let requestingPlayerId = message.requestingPlayerId;
-            handleCardGet(command,cards,targetPlayerId, requestingPlayerId);
+            handleCardGet(command, cards, targetPlayerId, requestingPlayerId);
+        } else if (typeof message === 'object' && message.type === "carteDetruite") {
+
+            let command = message.type;
+            let idPlayer = message.idPlayer;
+
+            broadcastMessagePlayerDecrement(command, idPlayer);
         }
         else {
             console.log('Format de message inconnu ou non pris en charge.', message);
@@ -88,6 +94,25 @@ wss.on('connection', (ws, req) => {
     // Envoi d'un message au client connecté
     //ws.send(`Bienvenue sur le serveur WebSocket, client ${clientId}`);
 });
+
+function broadcastMessagePlayerDecrement(command, idPlayer) {
+    // Exemple : Diffuser le message à tous les clients connectés, sauf à la table
+    let messageObject = {
+        type: command,
+        idPlayer: idPlayer
+    };
+    // Convertir l'objet en chaîne JSON
+    let messageString = JSON.stringify(messageObject);
+
+    clients.forEach((client, clientId) => {
+        if (client.readyState === WebSocket.OPEN && clientId == idPlayer) {
+            lastMessages.set(clientId, messageString);
+            console.log("envoie au joueur " + clientId)
+            console.log("messageString " + messageString)
+            client.send(messageString);
+        }
+    });
+}
 
 function broadcastMessage(message) {
     // Exemple : Diffuser le message à tous les clients connectés, sauf à la table
@@ -182,6 +207,8 @@ function broadcastMessagePlayer(message, targetPlayerId) {
         }
     });
 }
+
+
 
 // HTTP server
 app.get('/latest-message/:clientId', (req, res) => {

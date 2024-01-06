@@ -165,6 +165,10 @@ public class Player
                 case "giveCards":
                     HandleGiveCardsMessage(message);
                     break;
+                case "carteDetruite":
+                    Debug.Log("Carte détruite");
+                    HandleCarteDetruiteMessage(message);
+                    break;
                 default:
                     Debug.LogError("Type de message inconnu.");
                     break;
@@ -194,6 +198,32 @@ public class Player
         //         Debug.LogError("Type de message inconnu.");
         //         break;
         // }
+    }
+
+
+    public void HandleCarteDetruiteMessage(string message)
+    {
+        // Convertir la chaîne JSON en objet
+        Debug.Log("Message reçu du serveur : " + message);
+        InfosMessage carteDetruite = JsonUtility.FromJson<InfosMessage>(message);
+        Debug.Log("Action reçue : " + carteDetruite.type);
+        // Vérifier l'id du joueur
+        if (carteDetruite.idPlayer == 1)
+        {
+            GameManager.Instance.DecrementZoneIncarte1();
+        }
+        else if (carteDetruite.idPlayer == 2)
+        {
+            GameManager.Instance.DecrementZoneIncarte2();
+        }
+        else if (carteDetruite.idPlayer == 3)
+        {
+            GameManager.Instance.DecrementZoneIncarte3();
+        }
+        else if (carteDetruite.idPlayer == 4)
+        {
+            GameManager.Instance.DecrementZoneIncarte4();
+        }
     }
 
 
@@ -352,8 +382,17 @@ public class Player
     }
 
 
+    public void SendMessageToPlayer(string message)
+    {
+        if (PlayerSocket != null && PlayerSocket.ReadyState == WebSocketState.Open)
+        {
+            PlayerSocket.Send(message);
+        }
+    }
 
-    void AddTextToCardUI(GameObject cardObject, string text, Vector3 localPosition)
+
+
+    public void AddTextToCardUI(GameObject cardObject, string text, Vector3 localPosition)
     {
         // Créez un nouveau GameObject pour le Canvas s'il n'existe pas déjà sur la carte
         Canvas canvas = cardObject.GetComponentInChildren<Canvas>();
@@ -393,6 +432,8 @@ public class Player
         textObject.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f); // Ajustez cette échelle selon vos besoins
 
     }
+
+
 
     public void DestroyCard(int cardId)
     {

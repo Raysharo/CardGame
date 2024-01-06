@@ -29,11 +29,15 @@ public class TableManager : MonoBehaviour
         // Initialiser la connexion WebSocket
         ws = new WebSocket("wss://" + adresseNgrok + ".ngrok-free.app/0");
 
+
+
         ws.OnMessage += (sender, e) =>
         {
             Debug.Log("Message reçu: " + e.Data);
             HandleCardMessage(e.Data);
         };
+
+
 
         ws.Connect();
         // pvPlayer = new PvPlayer();
@@ -303,6 +307,14 @@ public class TableManager : MonoBehaviour
         if (currentPlayer > totalPlayers)
         {
             currentPlayer = 1; // Retour au premier joueur
+        }
+    }
+
+    public void SendMessageToPlayer(string message)
+    {
+        if (ws != null && ws.ReadyState == WebSocketState.Open)
+        {
+            ws.Send(message);
         }
     }
 

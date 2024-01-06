@@ -57,6 +57,9 @@ public class MessageManager : MonoBehaviour
                 case "giveCards":
                     owner.HandleGiveCardsMessage(message);
                     break;
+                case "carteDetruite":
+                    owner.HandleCarteDetruiteMessage(message);
+                    break;
                 default:
                     Debug.LogError("Type de message inconnu.");
                     break;

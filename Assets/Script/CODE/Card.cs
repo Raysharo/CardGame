@@ -39,32 +39,10 @@ public abstract class Card : MonoBehaviour
     public int idPlayer;
     public string iconCard;
     private int currentZonePlayerId = -1; // -1  la carte n'est dans aucune zone
+    private static Dictionary<Rect, Card> cartesEnModeDefenseParZone = new Dictionary<Rect, Card>();
+    // private static Dictionary<Rect, int> nombreDeCartesParZone = new Dictionary<Rect, int>();
+    // private static Dictionary<int, int> nombreDeCartesParZone = new Dictionary<int, int>();
 
-    // private Vector2 topLeftPlayer1 = new Vector2(-4.3f, -4.68f);
-    // private Vector2 topRightPlayer1 = new Vector2(4.3f, -4.68f);
-    // private Vector2 bottomLeftPlayer1 = new Vector2(-4.3f, -1.0f);
-    // private Vector2 bottomRightPlayer1 = new Vector2(4.3f, -2.27f);
-
-    // private Vector2 topLeftPlayer2 = new Vector2(-10.0f, -2.54f);
-    // private Vector2 topRightPlayer2 = new Vector2(-4.3f, 2.68f);
-    // private Vector2 bottomLeftPlayer2 = new Vector2(-10.0f, -7.0f);
-    // private Vector2 bottomRightPlayer2 = new Vector2(-4.3f, -6.27f);
-
-    // private Vector2 topLeftPlayer3 = new Vector2(-4.3f, 0.68f);
-    // private Vector2 topRightPlayer3 = new Vector2(4.3f, 0.68f);
-    // private Vector2 bottomLeftPlayer3 = new Vector2(-4.3f, -8.27f);
-    // private Vector2 bottomRightPlayer3 = new Vector2(4.3f, -8.27f);
-
-    // private Vector2 topLeftPlayer4 = new Vector2(4.3f, -2.54f);
-    // private Vector2 topRightPlayer4 = new Vector2(11.0f, 2.68f);
-    // private Vector2 bottomLeftPlayer4 = new Vector2(4.3f, -7.0f);
-    // private Vector2 bottomRightPlayer4 = new Vector2(11.0f, -6.27f);
-
-
-    // result of playerZone4  it's  playerZone4(x:4.30, y:-2.54, width:6.70, height:4.46)
-    // result of playerZone3  it's  playerZone3(x:-4.30, y:0.68, width:8.60, height:8.95)
-    // result of playerZone2  it's  playerZone2(x:-10.00, y:-2.54, width:5.70, height:4.46)
-    // result of playerZone1  it's  playerZone1(x:-4.30, y:-4.68, width:8.60, height:3.68)
 
 
 
@@ -114,6 +92,16 @@ public abstract class Card : MonoBehaviour
     private Rect playerZone3;
     private Rect playerZone4;
 
+    private bool initializedNombreDeCartesZone = false;
+
+    // private  int ZoneIncarte1 = 0;
+    // private  int ZoneIncarte2 = 0;
+    // private  int ZoneIncarte3 = 0;
+    // private  int ZoneIncarte4 = 0;
+    // private  int Zone2Id = 0;
+    // private  int Zone3Id = 0;
+    // private  int Zone4Id = 0;
+
     void Start()
     {
         Program = GameObject.Find("Program").GetComponent<Program>();
@@ -141,40 +129,15 @@ public abstract class Card : MonoBehaviour
     void Update()
     {
         string currentSceneName = SceneManager.GetActiveScene().name;
-
-
-        // if (transform.position.y != 0 && !onInteraction)
-        // {
-        //     if (currentSceneName == "TableScene")
-        //     {
-        //         // if(this.idPlayer !=){
-
-        //         // }
-        //         // StartCoroutine(ResetPosition());
-        //         CheckAndAdjustPositionTable();
-        //     }
-        //     else
-        //     {
-        //         // StartCoroutine(ResetPosition());
-        //         CheckAndAdjustPositionPlayer();
-        //         // CheckZonesForCards();
-        //     }
-        // }
         if (!onInteraction)
         {
             if (currentSceneName == "TableScene")
             {
-                // if(this.idPlayer !=){
-
-                // }
-                // StartCoroutine(ResetPosition());
                 CheckAndAdjustPositionTable();
             }
             else
             {
-                // StartCoroutine(ResetPosition());
                 CheckAndAdjustPositionPlayer();
-                // CheckZonesForCards();
             }
         }
     }
@@ -250,75 +213,231 @@ public abstract class Card : MonoBehaviour
         }
     }
 
+    // private void InitialiseNombreDeCartesParZone()
+    // {
+    //     nombreDeCartesParZone[playerZone1] = 0;
+    //     nombreDeCartesParZone[playerZone2] = 0;
+    //     nombreDeCartesParZone[playerZone3] = 0;
+    //     nombreDeCartesParZone[playerZone4] = 0;
+    // }
+
+    // private void InitialiseNombreDeCartesParZone()
+    // {
+    //     Debug.Log("InitialiseNombreDeCartesParZone");
+    //     nombreDeCartesParZone[Zone1Id] = 0;
+    //     nombreDeCartesParZone[Zone2Id] = 0;
+    //     nombreDeCartesParZone[Zone3Id] = 0;
+    //     nombreDeCartesParZone[Zone4Id] = 0;
+    // }
 
     void TaskOnClik()
     {
-
         Debug.Log("TaskOnClik");
         string currentSceneName = SceneManager.GetActiveScene().name;
         if (currentSceneName == "TableScene")
         {
+            // if (!initializedNombreDeCartesZone)
+            // {
+            //     // InitialiseNombreDeCartesParZone();
+            //     InitialiseNombreDeCartesParZone();
+            //     initializedNombreDeCartesZone = true;
+            // }
+            Rect zone = ObtenirZonePourLeJoueur(this.idPlayer);
             Debug.Log("TableManager found: " + tableManager.gameObject.name);
-            if (this.idPlayer == 1)
+            if (PeutOrienterEnDefense(zone))
             {
-                Debug.Log("this.transform.rotation.z" + this.transform.rotation.z);
-                if (this.transform.rotation.z == 0)
+                if (this.idPlayer == 1)
                 {
-                    this.transform.rotation = Quaternion.Euler(0, 0, -90);
+
+                    Debug.Log("this.transform.rotation.z" + this.transform.rotation.z);
+                    if (this.transform.rotation.z == 0)
+                    {
+                        this.transform.rotation = Quaternion.Euler(0, 0, -90);
+                        cartesEnModeDefenseParZone[zone] = this;
+                    }
+                    else
+                    {
+                        this.transform.rotation = Quaternion.Euler(0, 0, 0);
+                        cartesEnModeDefenseParZone.Remove(zone);
+                    }
                 }
-                else
+                else if (this.idPlayer == 2)
                 {
-                    this.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    Debug.Log("this.transform.rotation.z" + this.transform.rotation.z);
+                    if (this.transform.rotation.z == 0)
+                    {
+                        this.transform.rotation = Quaternion.Euler(0, 0, -90);
+                        cartesEnModeDefenseParZone[zone] = this;
+                    }
+                    else
+                    {
+                        this.transform.rotation = Quaternion.Euler(0, 0, 0);
+                        cartesEnModeDefenseParZone.Remove(zone);
+                    }
+                }
+                else if (this.idPlayer == 3)
+                {
+                    Debug.Log("this.transform.rotation.z" + this.transform.rotation.z);
+                    float currentZAngle = this.transform.rotation.eulerAngles.z;
+                    float tolerance = 1.0f;
+                    if (Mathf.Abs(currentZAngle - 180) < tolerance)
+                    {
+                        this.transform.rotation = Quaternion.Euler(0, 0, 90);
+                        cartesEnModeDefenseParZone[zone] = this;
+                    }
+                    else
+                    {
+                        this.transform.rotation = Quaternion.Euler(0, 0, -180);
+                        cartesEnModeDefenseParZone.Remove(zone);
+                    }
+                }
+                else if (this.idPlayer == 4)
+                {
+                    Debug.Log("this.transform.rotation.z" + this.transform.rotation.z);
+                    if (this.transform.rotation.z == 0)
+                    {
+                        this.transform.rotation = Quaternion.Euler(0, 0, 90);
+                        cartesEnModeDefenseParZone[zone] = this;
+                    }
+                    else
+                    {
+                        this.transform.rotation = Quaternion.Euler(0, 0, 0);
+                        cartesEnModeDefenseParZone.Remove(zone);
+                    }
                 }
             }
-            else if (this.idPlayer == 2)
+            else
             {
-                Debug.Log("this.transform.rotation.z" + this.transform.rotation.z);
-                if (this.transform.rotation.z == 0)
-                {
-                    this.transform.rotation = Quaternion.Euler(0, 0, -90);
-                }
-                else
-                {
-                    this.transform.rotation = Quaternion.Euler(0, 0, 0);
-                }
-            }
-            else if (this.idPlayer == 3)
-            {
-                Debug.Log("this.transform.rotation.z" + this.transform.rotation.z);
-                float currentZAngle = this.transform.rotation.eulerAngles.z;
-                float tolerance = 1.0f;
-                if (Mathf.Abs(currentZAngle - 180) < tolerance)
-                {
-                    this.transform.rotation = Quaternion.Euler(0, 0, 90);
-                }
-                else
-                {
-                    this.transform.rotation = Quaternion.Euler(0, 0, -180);
-                }
-            }
-            else if (this.idPlayer == 4)
-            {
-                Debug.Log("this.transform.rotation.z" + this.transform.rotation.z);
-                if (this.transform.rotation.z == 0)
-                {
-                    this.transform.rotation = Quaternion.Euler(0, 0, 90);
-                }
-                else
-                {
-                    this.transform.rotation = Quaternion.Euler(0, 0, 0);
-                }
+                Debug.Log("Carte ne peut pas etre orienter en mode defense");
             }
         }
         else
         {
-            CardMessage messageObject = new CardMessage(this.id, this.GetType().Name, attackPoints, defensePoints, this.iconCard);
-            string message = JsonUtility.ToJson(messageObject);
-            owner.SendMessageToTAble(message);
-            owner.DestroyCard(this.id);
+            if (this.idPlayer == 1)
+            {
+                if (GameManager.Instance.GetZoneIncarte1() < 2)
+                {
+                    Debug.Log("Carte peut etre poser");
+                    GameManager.Instance.IncrementZoneIncarte1();
+                    CardMessage messageObject = new CardMessage(this.id, this.GetType().Name, attackPoints, defensePoints, this.iconCard);
+                    string message = JsonUtility.ToJson(messageObject);
+                    owner.SendMessageToTAble(message);
+                    owner.DestroyCard(this.id);
+                    // nombreDeCartesParZone[Zone1Id]++;
+
+
+                }
+                else
+                {
+                    Debug.Log("Carte ne peut pas etre poser");
+                }
+            }
+            else if (this.idPlayer == 2)
+            {
+                if (GameManager.Instance.GetZoneIncarte2() < 2)
+                {
+                    Debug.Log("Carte peut etre poser");
+                    GameManager.Instance.IncrementZoneIncarte2();
+                    CardMessage messageObject = new CardMessage(this.id, this.GetType().Name, attackPoints, defensePoints, this.iconCard);
+                    string message = JsonUtility.ToJson(messageObject);
+                    owner.SendMessageToTAble(message);
+                    owner.DestroyCard(this.id);
+                    // nombreDeCartesParZone[Zone1Id]++;
+
+                }
+                else
+                {
+                    Debug.Log("Carte ne peut pas etre poser");
+                }
+            }
+            else if (this.idPlayer == 3)
+            {
+                if (GameManager.Instance.GetZoneIncarte3() < 2)
+                {
+                    Debug.Log("Carte peut etre poser");
+                    GameManager.Instance.IncrementZoneIncarte3();
+                    CardMessage messageObject = new CardMessage(this.id, this.GetType().Name, attackPoints, defensePoints, this.iconCard);
+                    string message = JsonUtility.ToJson(messageObject);
+                    owner.SendMessageToTAble(message);
+                    owner.DestroyCard(this.id);
+                    // nombreDeCartesParZone[Zone3Id]++;
+
+
+                }
+                else
+                {
+                    Debug.Log("Carte ne peut pas etre poser");
+                }
+            }
+            else if (this.idPlayer == 4)
+            {
+                if (GameManager.Instance.GetZoneIncarte4() < 2)
+                {
+                    Debug.Log("Carte peut etre poser");
+                    GameManager.Instance.IncrementZoneIncarte4();
+                    CardMessage messageObject = new CardMessage(this.id, this.GetType().Name, attackPoints, defensePoints, this.iconCard);
+                    string message = JsonUtility.ToJson(messageObject);
+                    owner.SendMessageToTAble(message);
+                    owner.DestroyCard(this.id);
+                    // nombreDeCartesParZone[Zone4Id]++;
+
+                }
+                else
+                {
+                    Debug.Log("Carte ne peut pas etre poser");
+                }
+            }
+
         }
 
+    }
 
+    // bool PeutPoserCarte(Rect zone)
+    // {
+    //     // Initialisation si la zone n'est pas encore dans le dictionnaire
+    //     if (!nombreDeCartesParZone.ContainsKey(zone))
+    //     {
+    //         nombreDeCartesParZone[zone] = 0;
+    //     }
+
+    //     // Vérifiez si moins de deux cartes sont dans la zone
+    //     return nombreDeCartesParZone[zone] < 2;
+    // }
+
+    // bool PeutPoserCarte(int zoneId)
+    // {
+    //     if (!nombreDeCartesParZone.ContainsKey(zoneId))
+    //     {
+    //         nombreDeCartesParZone[zoneId] = 0;
+    //     }
+
+    //     return nombreDeCartesParZone[zoneId] < 2;
+    // }
+
+
+
+    bool PeutOrienterEnDefense(Rect zone)
+    {
+        // Vérifiez si une carte dans cette zone est déjà en mode défense
+        return !cartesEnModeDefenseParZone.ContainsKey(zone) || cartesEnModeDefenseParZone[zone] == this;
+    }
+
+    Rect ObtenirZonePourLeJoueur(int idJoueur)
+    {
+        // Logique pour déterminer la zone basée sur l'idJoueur
+        // Par exemple :
+        switch (idJoueur)
+        {
+            case 1:
+                return playerZone1;
+            case 2:
+                return playerZone2;
+            case 3:
+                return playerZone3;
+            case 4:
+                return playerZone4;
+        }
+        return default(Rect);
     }
 
     void OnMouseDown()
@@ -413,48 +532,10 @@ public abstract class Card : MonoBehaviour
             else
             {
 
-                // playerZone1 = new Rect(
-                //             topLeftPlayer1.x,
-                //             topLeftPlayer1.y,
-                //             Mathf.Abs(bottomRightPlayer1.x - topLeftPlayer1.x), // width est la différence absolue en x
-                //             Mathf.Abs(topLeftPlayer1.y - bottomLeftPlayer1.y) // height est la différence absolue en y
-                //                 );
-
-                playerZone1 = new Rect(-5.0f,-5.0f,10.0f,5.0f);
-                playerZone2 = new Rect(-10.5f,-5.0f,5.0f,10.0f);
-                playerZone3 = new Rect(-5.0f,0.0f,10.0f,5.0f);
-                playerZone4 = new Rect(5.5f,-5.0f,5.0f,10.0f);
-
-                // playerZone2 = new Rect(
-                //             topLeftPlayer2.x,
-                //             topLeftPlayer2.y,
-                //             Mathf.Abs(bottomRightPlayer2.x - topLeftPlayer2.x), // width est la différence absolue en x
-                //             Mathf.Abs(topLeftPlayer2.y - bottomLeftPlayer2.y) // height est la différence absolue en y
-                //                 );
-
-
-
-
-                // playerZone3 = new Rect(
-                //             topLeftPlayer3.x,
-                //             topLeftPlayer3.y,
-                //             Mathf.Abs(bottomRightPlayer3.x - topLeftPlayer3.x), // width est la différence absolue en x
-                //             Mathf.Abs(topLeftPlayer3.y - bottomLeftPlayer3.y) // height est la différence absolue en y
-                //                 );
-
-
-                // playerZone4 = new Rect(
-                //             topLeftPlayer4.x,
-                //             topLeftPlayer4.y,
-                //             Mathf.Abs(bottomRightPlayer4.x - topLeftPlayer4.x), // width est la différence absolue en x
-                //             Mathf.Abs(topLeftPlayer4.y - bottomLeftPlayer4.y) // height est la différence absolue en y
-                //                 );
-
-
-                // private Vector2 topLeftPlayer4 = new Vector2(4.3f, -2.54f);
-                // private Vector2 topRightPlayer4 = new Vector2(11.0f, 2.68f);
-                // private Vector2 bottomLeftPlayer4 = new Vector2(4.3f, -7.0f);
-                // private Vector2 bottomRightPlayer4 = new Vector2(11.0f, -6.27f);
+                playerZone1 = new Rect(-5.0f, -5.0f, 10.0f, 5.0f);
+                playerZone2 = new Rect(-10.5f, -5.0f, 5.0f, 10.0f);
+                playerZone3 = new Rect(-5.0f, 0.0f, 10.0f, 5.0f);
+                playerZone4 = new Rect(5.5f, -5.0f, 5.0f, 10.0f);
 
                 OnDrawGizmost1();
                 OnDrawGizmost2();
@@ -473,7 +554,7 @@ public abstract class Card : MonoBehaviour
                     {
                         Debug.Log("Carte  peut attaque  ");
                         //attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone1, this.idPlayer);
-                        attackPoints = this.attackPoints - PointDeffenceCardsInZonetest(playerZone1, this.idPlayer);
+                        attackPoints = PointDeffenceCardsInZonetest(playerZone1, this.idPlayer, this.attackPoints);
                         Debug.Log("attackPoints" + attackPoints);
                         tableManager.AttackPlayer(this.idPlayer, 1, attackPoints);
                         //tableManager.UpdatePositionCards(this.idPlayer);
@@ -489,7 +570,7 @@ public abstract class Card : MonoBehaviour
                     {
                         Debug.Log("Carte  peut attaque  ");
                         //attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone2, this.idPlayer);
-                        attackPoints = this.attackPoints - PointDeffenceCardsInZonetest(playerZone2, this.idPlayer);
+                        attackPoints = PointDeffenceCardsInZonetest(playerZone2, this.idPlayer, this.attackPoints);
 
                         Debug.Log("attackPoints" + attackPoints);
                         tableManager.AttackPlayer(this.idPlayer, 2, attackPoints);
@@ -506,7 +587,7 @@ public abstract class Card : MonoBehaviour
                     {
                         Debug.Log("Carte  peut attaque  ");
                         //attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone3, this.idPlayer);
-                        attackPoints = this.attackPoints - PointDeffenceCardsInZonetest(playerZone3, this.idPlayer);
+                        attackPoints = PointDeffenceCardsInZonetest(playerZone3, this.idPlayer, this.attackPoints);
                         Debug.Log("attackPoints" + attackPoints);
                         tableManager.AttackPlayer(this.idPlayer, 3, attackPoints);
                         //tableManager.UpdatePositionCards(this.idPlayer);
@@ -522,7 +603,7 @@ public abstract class Card : MonoBehaviour
                     {
                         Debug.Log("Carte  peut attaque  ");
                         //attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone4, this.idPlayer);
-                        attackPoints = this.attackPoints - PointDeffenceCardsInZonetest(playerZone4, this.idPlayer);
+                        attackPoints = PointDeffenceCardsInZonetest(playerZone4, this.idPlayer, this.attackPoints);
                         Debug.Log("attackPoints" + attackPoints);
                         tableManager.AttackPlayer(this.idPlayer, 4, attackPoints);
                         //tableManager.UpdatePositionCards(this.idPlayer);
@@ -673,84 +754,11 @@ public abstract class Card : MonoBehaviour
         return pDeffence; // Retourne le nombre de cartes dans la zone
     }
 
-    public int PointDeffenceCardsInZonetest(Rect zone, int idPlayer)
+    public int PointDeffenceCardsInZonetest(Rect zone, int idPlayer, int attackPoints)
     {
-        // Card[] allCards = FindObjectsOfType<Card>(); // Trouvez toutes les cartes dans la scène
-        // int pDeffence = 0;
-        // int pAttack = 0;
-
-        // foreach (Card card in allCards)
-        // {
-        //     Vector2 cardPos = new Vector2(card.transform.position.x, card.transform.position.y);
-        //     if (zone.Contains(cardPos) && card.idPlayer != idPlayer)
-        //     {
-
-        //         if (zone == playerZone1 && card.transform.rotation.z != 0)
-        //         {
-        //             pDeffence += card.defensePoints;
-        //         }
-        //         else if (zone == playerZone2 && card.transform.rotation.z != -90)
-        //         {
-        //             pDeffence += card.defensePoints;
-        //         }
-        //         else if (zone == playerZone3 && card.transform.rotation.z != 180)
-        //         {
-        //             pDeffence += card.defensePoints;
-        //         }
-        //         else if (zone == playerZone4 && card.transform.rotation.z != 90)
-        //         {
-        //             pDeffence += card.defensePoints;
-        //         }
-        //     }
-        //     if (card.idPlayer == idPlayer)
-        //     {
-        //         pAttack += card.attackPoints;
-        //     }
-        // }
-
-
-        // Card[] allCards = FindObjectsOfType<Card>(); // Trouvez toutes les cartes dans la scène
-        // int pDeffence = 0;
-        // int pAttack = 0;
-
-        // foreach (Card card in allCards)
-        // {
-        //     Vector2 cardPos = new Vector2(card.transform.position.x, card.transform.position.y);
-        //     float zRotation = card.transform.eulerAngles.z;
-
-        //     // Normalize the rotation value to the 0-360 range
-        //     zRotation = (zRotation + 360) % 360;
-
-        //     if (zone.Contains(cardPos) && card.idPlayer != idPlayer)
-        //     {
-        //         if (zone == playerZone1 && Mathf.Abs(zRotation) < 5f) // within 5 degrees of 0
-        //         {
-        //             pDeffence += card.defensePoints;
-        //         }
-        //         else if (zone == playerZone2 && Mathf.Abs(zRotation - 90f) < 5f) // within 5 degrees of 90
-        //         {
-        //             pDeffence += card.defensePoints;
-        //         }
-        //         else if (zone == playerZone3 && Mathf.Abs(zRotation - 180f) < 5f) // within 5 degrees of 180
-        //         {
-        //             pDeffence += card.defensePoints;
-        //         }
-        //         else if (zone == playerZone4 && Mathf.Abs(zRotation - 270f) < 5f) // within 5 degrees of 270
-        //         {
-        //             pDeffence += card.defensePoints;
-        //         }
-        //     }
-
-        //     if (card.idPlayer == idPlayer)
-        //     {
-        //         pAttack += card.attackPoints;
-        //     }
-        // }
-
 
         Card[] allCards = FindObjectsOfType<Card>(); // Trouvez toutes les cartes dans la scène
-        int pDeffence = 0;
-        int pAttack = 0;
+        //int pDeffence = 0;
 
         foreach (Card card in allCards)
         {
@@ -762,47 +770,92 @@ public abstract class Card : MonoBehaviour
             {
                 if (zone == playerZone1 && !Mathf.Approximately(currentZAngle, 0))
                 {
-                    pDeffence += card.defensePoints;
+                    //pDeffence += card.defensePoints;
+                    if (attackPoints >= card.defensePoints)
+                    {
+                        //GameManager.Instance.DecrementZoneIncarte1();
+                        UnityEngine.Object.Destroy(card.gameObject);
+                        attackPoints -= card.defensePoints;
+
+                        //SendMessagetoplayer 1  use websocket
+                        InfosMessage messageObject = new InfosMessage("carteDetruite", 1);
+                        string message = JsonUtility.ToJson(messageObject);
+                        tableManager.SendMessageToPlayer(message);
+                        // nombreDeCartesParZone[Zone1Id]--;
+                    }
+                    else
+                    {
+                        card.defensePoints -= attackPoints;
+                        return 0;
+                    }
                 }
                 else if (zone == playerZone2 && Mathf.Approximately(currentZAngle, 0))
                 {
-                    pDeffence += card.defensePoints;
+                    //pDeffence += card.defensePoints;
+                    if (attackPoints >= card.defensePoints)
+                    {
+                        //GameManager.Instance.DecrementZoneIncarte2();
+                        InfosMessage messageObject = new InfosMessage("carteDetruite", 2);
+                        string message = JsonUtility.ToJson(messageObject);
+                        tableManager.SendMessageToPlayer(message);
+                        UnityEngine.Object.Destroy(card.gameObject);
+                        attackPoints -= card.defensePoints;
+                        // nombreDeCartesParZone[Zone2Id]--;
+
+
+                    }
+                    else
+                    {
+                        card.defensePoints -= attackPoints;
+                        return 0;
+                    }
                 }
                 else if (zone == playerZone3 && Mathf.Approximately(currentZAngle, 90))
                 {
-                    pDeffence += card.defensePoints;
+                    //pDeffence += card.defensePoints;
+                    if (attackPoints >= card.defensePoints)
+                    {
+                        //GameManager.Instance.DecrementZoneIncarte3();
+                        UnityEngine.Object.Destroy(card.gameObject);
+                        attackPoints -= card.defensePoints;
+                        // nombreDeCartesParZone[Zone3Id]--;
+                        InfosMessage messageObject = new InfosMessage("carteDetruite", 3);
+                        string message = JsonUtility.ToJson(messageObject);
+                        card.owner.SendMessageToPlayer(message);
+
+                    }
+                    else
+                    {
+                        card.defensePoints -= attackPoints;
+                        return 0;
+                    }
                 }
                 else if (zone == playerZone4 && Mathf.Approximately(currentZAngle, 0))
                 {
-                    pDeffence += card.defensePoints;
-                }
-            }
+                    //pDeffence += card.defensePoints;
+                    if (attackPoints >= card.defensePoints)
+                    {
+                        // GameManager.Instance.DecrementZoneIncarte4();
+                        UnityEngine.Object.Destroy(card.gameObject);
+                        attackPoints -= card.defensePoints;
+                        // nombreDeCartesParZone[Zone4Id]--;   
+                        InfosMessage messageObject = new InfosMessage("carteDetruite", 4);
+                        string message = JsonUtility.ToJson(messageObject);
+                        card.owner.SendMessageToPlayer(message);
+                    }
+                    else
+                    {
+                        card.defensePoints -= attackPoints;
+                        return 0;
+                    }
 
-            if (card.idPlayer == idPlayer)
-            {
-                pAttack += card.attackPoints;
+                }
             }
         }
 
-        Debug.Log("pAttackTest " + pAttack);
-        Debug.Log("pDeffence:Test  " + pDeffence);
-
-        // suppriemr toutes les cartes dans la zone sauf la carte qui attaque si elle est plus forte que la carte deffence
-        // foreach (Card card in allCards)
-        // {
-        //     Vector2 cardPos = new Vector2(card.transform.position.x, card.transform.position.y);
-        //     if (pAttack > pDeffence && zone.Contains(cardPos) && card.idPlayer != idPlayer)
-        //     {
-        //         Debug.Log("pAttack" + pAttack);
-        //         Debug.Log("pDeffence" + pDeffence);
-        //         Debug.Log("card dertroyed voir le paln ");
-        //         // how to destroy card;
-        //         UnityEngine.Object.Destroy(card.gameObject);
-        //     }
-        // }
-
-        return pDeffence; // Retourne le nombre de cartes dans la zone
+        return attackPoints; // Retourne le nombre de cartes dans la zone
     }
+
     public int PlayerIDCarteInZone(Rect zone)
     {
         Card[] allCards = FindObjectsOfType<Card>(); // Trouvez toutes les cartes dans la scène
