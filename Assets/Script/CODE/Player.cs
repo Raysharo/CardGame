@@ -29,12 +29,21 @@ public class Player
 
     // private Queue<string> messageQueue = new Queue<string>();
 
-    public Vector3 scaleCardOnTel = new Vector3(2, 3, 0.1f);
-
-
+    
+    public float widthCard;
+    public float heightCard;
+    public float sizeCard;
+    public Vector3 scaleCardOnTel;
 
     public Player(int id, string adresseNgrok)
     {
+
+        widthCard = 5.4f;
+        heightCard = 8.5f;
+        sizeCard = 0.1f;
+        scaleCardOnTel = new Vector3(widthCard*sizeCard, heightCard*sizeCard, 0.1f);
+
+
         this.id = id;
         PlayerSocket = new WebSocket("wss://" + adresseNgrok + ".ngrok-free.app/" + id);
         PlayerSocket.OnMessage += (sender, e) =>
@@ -52,6 +61,10 @@ public class Player
         PlayerSocket.Connect();
 
         CreateCardPlayer(id);
+
+        
+
+        
     }
 
 
@@ -80,6 +93,10 @@ public class Player
 
     public void CreateforCard(Type[] cardTypes, string[] iconNames)
     {
+        Debug.Log("Screen width : " + Screen.width);
+        Debug.Log("Screen height : " + Screen.height); 
+        
+        
         for (int i = 0; i < 4; i++)
         {
             Type randomCardType = cardTypes[UnityEngine.Random.Range(0, cardTypes.Length)];
