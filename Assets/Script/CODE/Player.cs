@@ -29,7 +29,6 @@ public class Player
 
     // private Queue<string> messageQueue = new Queue<string>();
 
-    
     public float widthCard;
     public float heightCard;
     public float sizeCard;
@@ -42,7 +41,6 @@ public class Player
         heightCard = 8.5f;
         sizeCard = 0.1f;
         scaleCardOnTel = new Vector3(widthCard*sizeCard, heightCard*sizeCard, 0.1f);
-
 
         this.id = id;
         PlayerSocket = new WebSocket("wss://" + adresseNgrok + ".ngrok-free.app/" + id);
@@ -61,9 +59,6 @@ public class Player
         PlayerSocket.Connect();
 
         CreateCardPlayer(id);
-
-        
-
         
     }
 

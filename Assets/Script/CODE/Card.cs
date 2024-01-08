@@ -23,7 +23,7 @@ public abstract class Card : MonoBehaviour
     public Program Program;
     public bool onInteraction = false;
 
-// hitbox + grande que la carte
+    // hitbox + grande que la carte
     private float boxScaleMargeX = 1;
     private float boxScaleFactorY = 1;
     public Color color;
@@ -54,27 +54,23 @@ public abstract class Card : MonoBehaviour
 
 
 
-   
+
     private Vector2 topLeftPlayer2 = new Vector2(-10.0f, -5.0f);
     private Vector2 topRightPlayer2 = new Vector2(-4.3f, 2.68f);
     private Vector2 bottomLeftPlayer2 = new Vector2(-10.0f, -10.0f);
     private Vector2 bottomRightPlayer2 = new Vector2(-4.3f, -6.27f);
 
 
-
-   
     private Vector2 topLeftPlayer3 = new Vector2(-5.0f, 0.0f);
     private Vector2 topRightPlayer3 = new Vector2(5.0f, 0.0f);
     private Vector2 bottomLeftPlayer3 = new Vector2(-5.0f, -5.0f);
     private Vector2 bottomRightPlayer3 = new Vector2(5.0f, -5.0f);
 
-   
+
     private Vector2 topLeftPlayer4 = new Vector2(5.50f, -5.0f);
     private Vector2 topRightPlayer4 = new Vector2(11.0f, 2.68f);
     private Vector2 bottomLeftPlayer4 = new Vector2(5.50f, -10.0f);
     private Vector2 bottomRightPlayer4 = new Vector2(11.0f, -6.27f);
-
-
 
 
     private Rect playerZone1;
@@ -473,105 +469,127 @@ public abstract class Card : MonoBehaviour
 
     void OnMouseUp()
     {
-        // Debug.Log("OnMouseUp");
-        onInteraction = false;
-        rend.material.color = this.color;
-        float clickDuration = Time.time - mouseDownTime;
 
-        if (SceneManager.GetActiveScene().name == "TableScene")
+        if (this.idPlayer != this.owner.id)
         {
-            tableManager = GameObject.Find("GameObject").GetComponent<TableManager>();
-            if (tableManager == null)
+            Debug.Log("Clique sur une carte qui ne vous appartient pas");
+            // mean la carte est celle du coéquipier
+            // ajoute une animation pour montrer que la carte est selectionnées
+            // envoie l'information au serveur pour dire que la carte est selectionnées
+
+            // DEBUG : mettre la carte en rouge
+            rend.material.color = Color.red;
+            // send message to the owner of the card
+            this.owner.SendMessageToPlayer("carteSelectionnee");
+
+        }
+        else
+        {
+
+
+
+
+
+            // Debug.Log("OnMouseUp");
+            onInteraction = false;
+            rend.material.color = this.color;
+            float clickDuration = Time.time - mouseDownTime;
+
+            if (SceneManager.GetActiveScene().name == "TableScene")
             {
-                Debug.LogError("TableManager not found in the scene!");
-            }
-            else
-            {
-
-                playerZone1 = new Rect(-5.0f, -5.0f, 10.0f, 5.0f);
-                playerZone2 = new Rect(-10.5f, -5.0f, 5.0f, 10.0f);
-                playerZone3 = new Rect(-5.0f, 0.0f, 10.0f, 5.0f);
-                playerZone4 = new Rect(5.5f, -5.0f, 5.0f, 10.0f);
-
-                OnDrawGizmost1();
-                OnDrawGizmost2();
-                OnDrawGizmost3();
-                OnDrawGizmost4();
-
-                CheckZonesForCards();
-                Vector2 cardPosition2D = new Vector2(this.transform.position.x, this.transform.position.y);
-                int attackPoints = 0;
-                if (playerZone1.Contains(cardPosition2D))
+                tableManager = GameObject.Find("GameObject").GetComponent<TableManager>();
+                if (tableManager == null)
                 {
-                    Debug.Log("Carte levée dans la zone du joueur " + currentZonePlayerId);
-                    // Vous pouvez appeler ici la fonction pour attaquer ou autre action
-                    Debug.Log("TableManager found: " + tableManager.gameObject.name);
-                    if (this.idPlayer != 1 && this.idPlayer != 3)
-                    {
-                        Debug.Log("Carte  peut attaque  ");
-                        //attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone1, this.idPlayer);
-                        attackPoints = PointDeffenceCardsInZonetest(playerZone1, this.idPlayer, this.attackPoints);
-                        Debug.Log("attackPoints" + attackPoints);
-                        tableManager.AttackPlayer(this.idPlayer, 1, attackPoints);
-                        //tableManager.UpdatePositionCards(this.idPlayer);
-                        tableManager.NextPlayerTurn();
-                    }
-                }
-                else if (playerZone2.Contains(cardPosition2D))
-                {
-                    Debug.Log("Carte levée dans la zone du joueur " + currentZonePlayerId);
-                    // Vous pouvez appeler ici la fonction pour attaquer ou autre action
-                    Debug.Log("TableManager found: " + tableManager.gameObject.name);
-                    if (this.idPlayer != 2 && this.idPlayer != 4)
-                    {
-                        Debug.Log("Carte  peut attaque  ");
-                        //attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone2, this.idPlayer);
-                        attackPoints = PointDeffenceCardsInZonetest(playerZone2, this.idPlayer, this.attackPoints);
-
-                        Debug.Log("attackPoints" + attackPoints);
-                        tableManager.AttackPlayer(this.idPlayer, 2, attackPoints);
-                        //tableManager.UpdatePositionCards(this.idPlayer);
-                        tableManager.NextPlayerTurn();
-                    }
-                }
-                else if (playerZone3.Contains(cardPosition2D))
-                {
-                    Debug.Log("Carte levée dans la zone du joueur " + currentZonePlayerId);
-                    // Vous pouvez appeler ici la fonction pour attaquer ou autre action
-                    Debug.Log("TableManager found: " + tableManager.gameObject.name);
-                    if (this.idPlayer != 1 && this.idPlayer != 3)
-                    {
-                        Debug.Log("Carte  peut attaque  ");
-                        //attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone3, this.idPlayer);
-                        attackPoints = PointDeffenceCardsInZonetest(playerZone3, this.idPlayer, this.attackPoints);
-                        Debug.Log("attackPoints" + attackPoints);
-                        tableManager.AttackPlayer(this.idPlayer, 3, attackPoints);
-                        //tableManager.UpdatePositionCards(this.idPlayer);
-                        tableManager.NextPlayerTurn();
-                    }
-                }
-                else if (playerZone4.Contains(cardPosition2D))
-                {
-                    Debug.Log("Carte levée dans la zone du joueur " + currentZonePlayerId);
-                    // Vous pouvez appeler ici la fonction pour attaquer ou autre action
-                    Debug.Log("TableManager found: " + tableManager.gameObject.name);
-                    if (this.idPlayer != 2 && this.idPlayer != 4)
-                    {
-                        Debug.Log("Carte  peut attaque  ");
-                        //attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone4, this.idPlayer);
-                        attackPoints = PointDeffenceCardsInZonetest(playerZone4, this.idPlayer, this.attackPoints);
-                        Debug.Log("attackPoints" + attackPoints);
-                        tableManager.AttackPlayer(this.idPlayer, 4, attackPoints);
-                        //tableManager.UpdatePositionCards(this.idPlayer);
-                        tableManager.NextPlayerTurn();
-                    }
+                    Debug.LogError("TableManager not found in the scene!");
                 }
                 else
                 {
-                    Debug.Log("Carte levée dans aucune zone");
-                }
 
-                tableManager.UpdatePositionCards(this.idPlayer);
+                    playerZone1 = new Rect(-5.0f, -5.0f, 10.0f, 5.0f);
+                    playerZone2 = new Rect(-10.5f, -5.0f, 5.0f, 10.0f);
+                    playerZone3 = new Rect(-5.0f, 0.0f, 10.0f, 5.0f);
+                    playerZone4 = new Rect(5.5f, -5.0f, 5.0f, 10.0f);
+
+                    OnDrawGizmost1();
+                    OnDrawGizmost2();
+                    OnDrawGizmost3();
+                    OnDrawGizmost4();
+
+                    CheckZonesForCards();
+                    Vector2 cardPosition2D = new Vector2(this.transform.position.x, this.transform.position.y);
+                    int attackPoints = 0;
+                    if (playerZone1.Contains(cardPosition2D))
+                    {
+                        Debug.Log("Carte levée dans la zone du joueur " + currentZonePlayerId);
+                        // Vous pouvez appeler ici la fonction pour attaquer ou autre action
+                        Debug.Log("TableManager found: " + tableManager.gameObject.name);
+                        if (this.idPlayer != 1 && this.idPlayer != 3)
+                        {
+                            Debug.Log("Carte  peut attaque  ");
+                            //attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone1, this.idPlayer);
+                            attackPoints = PointDeffenceCardsInZonetest(playerZone1, this.idPlayer, this.attackPoints);
+                            Debug.Log("attackPoints" + attackPoints);
+                            tableManager.AttackPlayer(this.idPlayer, 1, attackPoints);
+                            //tableManager.UpdatePositionCards(this.idPlayer);
+                            tableManager.NextPlayerTurn();
+                        }
+                    }
+                    else if (playerZone2.Contains(cardPosition2D))
+                    {
+                        Debug.Log("Carte levée dans la zone du joueur " + currentZonePlayerId);
+                        // Vous pouvez appeler ici la fonction pour attaquer ou autre action
+                        Debug.Log("TableManager found: " + tableManager.gameObject.name);
+                        if (this.idPlayer != 2 && this.idPlayer != 4)
+                        {
+                            Debug.Log("Carte  peut attaque  ");
+                            //attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone2, this.idPlayer);
+                            attackPoints = PointDeffenceCardsInZonetest(playerZone2, this.idPlayer, this.attackPoints);
+
+                            Debug.Log("attackPoints" + attackPoints);
+                            tableManager.AttackPlayer(this.idPlayer, 2, attackPoints);
+                            //tableManager.UpdatePositionCards(this.idPlayer);
+                            tableManager.NextPlayerTurn();
+                        }
+                    }
+                    else if (playerZone3.Contains(cardPosition2D))
+                    {
+                        Debug.Log("Carte levée dans la zone du joueur " + currentZonePlayerId);
+                        // Vous pouvez appeler ici la fonction pour attaquer ou autre action
+                        Debug.Log("TableManager found: " + tableManager.gameObject.name);
+                        if (this.idPlayer != 1 && this.idPlayer != 3)
+                        {
+                            Debug.Log("Carte  peut attaque  ");
+                            //attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone3, this.idPlayer);
+                            attackPoints = PointDeffenceCardsInZonetest(playerZone3, this.idPlayer, this.attackPoints);
+                            Debug.Log("attackPoints" + attackPoints);
+                            tableManager.AttackPlayer(this.idPlayer, 3, attackPoints);
+                            //tableManager.UpdatePositionCards(this.idPlayer);
+                            tableManager.NextPlayerTurn();
+                        }
+                    }
+                    else if (playerZone4.Contains(cardPosition2D))
+                    {
+                        Debug.Log("Carte levée dans la zone du joueur " + currentZonePlayerId);
+                        // Vous pouvez appeler ici la fonction pour attaquer ou autre action
+                        Debug.Log("TableManager found: " + tableManager.gameObject.name);
+                        if (this.idPlayer != 2 && this.idPlayer != 4)
+                        {
+                            Debug.Log("Carte  peut attaque  ");
+                            //attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone4, this.idPlayer);
+                            attackPoints = PointDeffenceCardsInZonetest(playerZone4, this.idPlayer, this.attackPoints);
+                            Debug.Log("attackPoints" + attackPoints);
+                            tableManager.AttackPlayer(this.idPlayer, 4, attackPoints);
+                            //tableManager.UpdatePositionCards(this.idPlayer);
+                            tableManager.NextPlayerTurn();
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log("Carte levée dans aucune zone");
+                    }
+
+                    tableManager.UpdatePositionCards(this.idPlayer);
+                }
             }
         }
 
@@ -751,13 +769,13 @@ public abstract class Card : MonoBehaviour
                     if (attackPoints >= card.defensePoints)
                     {
 
-                         UnityEngine.Object.Destroy(card.gameObject);
+                        UnityEngine.Object.Destroy(card.gameObject);
                         attackPoints -= card.defensePoints;
                         //GameManager.Instance.DecrementZoneIncarte2();
                         InfosMessage messageObject = new InfosMessage("carteDetruite", 2);
                         string message = JsonUtility.ToJson(messageObject);
                         tableManager.SendMessageToPlayer(message);
-                       
+
                         // nombreDeCartesParZone[Zone2Id]--;
                     }
                     else

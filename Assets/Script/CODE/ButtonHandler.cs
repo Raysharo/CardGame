@@ -1,7 +1,14 @@
+/**
+    * @file ButtonHandler.cs
+    * @brief Script permettant de gérer LE bouton "vor les cartes alliées" dans le jeu
+    */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
+
 
 public class ButtonHandler : MonoBehaviour
 {

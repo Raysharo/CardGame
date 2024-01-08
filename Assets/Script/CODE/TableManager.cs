@@ -8,7 +8,6 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 
-
 public class TableManager : MonoBehaviour
 {
     private WebSocket ws;

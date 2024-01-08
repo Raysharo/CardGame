@@ -86,6 +86,9 @@ wss.on('connection', (ws, req) => {
 
             broadcastMessagePlayerDecrement(command, idPlayer);
         }
+        else if (message === "carteSelectionnee"){
+            // TODO
+        }
         else {
             console.log('Format de message inconnu ou non pris en charge.', message);
         }
