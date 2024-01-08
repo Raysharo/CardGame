@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
+
 
 public class TableManager : MonoBehaviour
 {
@@ -270,6 +272,12 @@ public class TableManager : MonoBehaviour
     {
         Debug.Log("UpdateHealthDisplay - Mise à jour de l'affichage des PV du joueur " + playerNumber + " à " + newHealth);
         healthDisplays[playerNumber - 1].text = "PV: " + newHealth;
+        if(newHealth <= 0)
+        {
+            healthDisplays[playerNumber - 1].text = "MORT";
+            // TODO: execute new scene with winner
+            SceneManager.LoadScene("GameOver");
+        }
     }
 
     public void UpdatePositionCards(int playerId)

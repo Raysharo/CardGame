@@ -749,15 +749,15 @@ public abstract class Card : MonoBehaviour
                     //pDeffence += card.defensePoints;
                     if (attackPoints >= card.defensePoints)
                     {
+
+                         UnityEngine.Object.Destroy(card.gameObject);
+                        attackPoints -= card.defensePoints;
                         //GameManager.Instance.DecrementZoneIncarte2();
                         InfosMessage messageObject = new InfosMessage("carteDetruite", 2);
                         string message = JsonUtility.ToJson(messageObject);
                         tableManager.SendMessageToPlayer(message);
-                        UnityEngine.Object.Destroy(card.gameObject);
-                        attackPoints -= card.defensePoints;
+                       
                         // nombreDeCartesParZone[Zone2Id]--;
-
-
                     }
                     else
                     {
