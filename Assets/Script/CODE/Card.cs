@@ -23,8 +23,9 @@ public abstract class Card : MonoBehaviour
     public Program Program;
     public bool onInteraction = false;
 
-    private float boxScaleFactorX = 1.5f;
-    private float boxScaleFactorY = 1.5f;
+// hitbox + grande que la carte
+    private float boxScaleMargeX = 1;
+    private float boxScaleFactorY = 1;
     public Color color;
     Light pointLight;
     private TableManager tableManager;
@@ -104,7 +105,7 @@ public abstract class Card : MonoBehaviour
         // Stocke une référence au BoxCollider
         this.collid = gameObject.GetComponent<BoxCollider>();
 
-        this.collid.size = new Vector2(transform.localScale.x * boxScaleFactorX, transform.localScale.y * boxScaleFactorY);
+        // this.collid.size = new Vector2(transform.localScale.x + boxScaleMargeX, transform.localScale.y + boxScaleFactorY);
 
     }
 
