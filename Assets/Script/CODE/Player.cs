@@ -29,6 +29,8 @@ public class Player
 
     // private Queue<string> messageQueue = new Queue<string>();
 
+    public Vector3 scaleCardOnTel = new Vector3(2, 3, 0.1f);
+
 
 
     public Player(int id, string adresseNgrok)
@@ -84,7 +86,7 @@ public class Player
             string iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
             int attackPoints = UnityEngine.Random.Range(10, 25);
             int defensePoints = UnityEngine.Random.Range(1, 15);
-            CreateCard(new Vector3(-2 + 2 * i, 0, 0), new Vector3(1, 1.5f, 0.1f), randomCardType, attackPoints, defensePoints, iconSelected, false);
+            CreateCard(new Vector3(-2 + 2 * i, 0, 0), scaleCardOnTel, randomCardType, attackPoints, defensePoints, iconSelected, false);
         }
     }
 

@@ -23,6 +23,7 @@ public class TableManager : MonoBehaviour
     public int currentPlayer = 1; // Commencez avec le joueur 1
     public int totalPlayers = 4; // Nombre total de joueurs
 
+    public Vector3 scaleCardOnTable = new Vector3(1.5f, 2.25f, 0.1f);
 
     void Start()
     {
@@ -154,22 +155,22 @@ public class TableManager : MonoBehaviour
         if (playerId == 1)
         {
             rotationDegreesZ = 0.0f;
-            CreateCard(new Vector3(0, -4, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard);
+            CreateCard(new Vector3(0, -4, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard);
         }
         else if (playerId == 2)
         {
             rotationDegreesZ = -90.0f;
-            CreateCard(new Vector3(-9.5f, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard);
+            CreateCard(new Vector3(-9.5f, 0, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard);
         }
         else if (playerId == 3)
         {
             rotationDegreesZ = 180.0f;
-            CreateCard(new Vector3(0, 4, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard);
+            CreateCard(new Vector3(0, 4, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard);
         }
         else if (playerId == 4)
         {
             rotationDegreesZ = 90.0f;
-            CreateCard(new Vector3(9.5f, 0, 0), new Vector3(1, 1.5f, 0.1f), cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard);
+            CreateCard(new Vector3(9.5f, 0, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard);
         }
     }
 
