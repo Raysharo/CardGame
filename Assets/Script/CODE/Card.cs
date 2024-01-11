@@ -23,7 +23,7 @@ public abstract class Card : MonoBehaviour
     public Program Program;
     public bool onInteraction = false;
 
-// hitbox + grande que la carte
+    // hitbox + grande que la carte
     private float boxScaleMargeX = 1;
     private float boxScaleFactorY = 1;
     public Color color;
@@ -39,6 +39,8 @@ public abstract class Card : MonoBehaviour
     public int defensePoints;
     public int idPlayer;
     public string iconCard;
+    // c'est pour  market
+    public int prix;
     private int currentZonePlayerId = -1; // -1  la carte n'est dans aucune zone
     private static Dictionary<Rect, Card> cartesEnModeDefenseParZone = new Dictionary<Rect, Card>();
 
@@ -54,7 +56,7 @@ public abstract class Card : MonoBehaviour
 
 
 
-   
+
     private Vector2 topLeftPlayer2 = new Vector2(-10.0f, -5.0f);
     private Vector2 topRightPlayer2 = new Vector2(-4.3f, 2.68f);
     private Vector2 bottomLeftPlayer2 = new Vector2(-10.0f, -10.0f);
@@ -62,13 +64,13 @@ public abstract class Card : MonoBehaviour
 
 
 
-   
+
     private Vector2 topLeftPlayer3 = new Vector2(-5.0f, 0.0f);
     private Vector2 topRightPlayer3 = new Vector2(5.0f, 0.0f);
     private Vector2 bottomLeftPlayer3 = new Vector2(-5.0f, -5.0f);
     private Vector2 bottomRightPlayer3 = new Vector2(5.0f, -5.0f);
 
-   
+
     private Vector2 topLeftPlayer4 = new Vector2(5.50f, -5.0f);
     private Vector2 topRightPlayer4 = new Vector2(11.0f, 2.68f);
     private Vector2 bottomLeftPlayer4 = new Vector2(5.50f, -10.0f);
@@ -485,6 +487,19 @@ public abstract class Card : MonoBehaviour
             {
                 Debug.LogError("TableManager not found in the scene!");
             }
+            else if (this.idPlayer == -1)
+            {
+                Debug.Log("Carte Pour le marché");
+                tableManager.getCurrentPlayer();
+                int destinationMessage = tableManager.getCurrentPlayer();
+                this.idPlayer = destinationMessage;
+                this.prix = 0;
+                string type = "cartePourLeMarche";
+                CardMarket messageObject = new CardMarket(type, this, this.idPlayer);
+                UnityEngine.Object.Destroy(this.gameObject);
+                string message = JsonUtility.ToJson(messageObject);
+                tableManager.SendMessageToPlayer(message);
+            }
             else
             {
 
@@ -513,6 +528,7 @@ public abstract class Card : MonoBehaviour
                         attackPoints = PointDeffenceCardsInZonetest(playerZone1, this.idPlayer, this.attackPoints);
                         Debug.Log("attackPoints" + attackPoints);
                         tableManager.AttackPlayer(this.idPlayer, 1, attackPoints);
+                        UnityEngine.Object.Destroy(this.gameObject);
                         //tableManager.UpdatePositionCards(this.idPlayer);
                         tableManager.NextPlayerTurn();
                     }
@@ -531,6 +547,7 @@ public abstract class Card : MonoBehaviour
                         Debug.Log("attackPoints" + attackPoints);
                         tableManager.AttackPlayer(this.idPlayer, 2, attackPoints);
                         //tableManager.UpdatePositionCards(this.idPlayer);
+                        UnityEngine.Object.Destroy(this.gameObject);
                         tableManager.NextPlayerTurn();
                     }
                 }
@@ -547,6 +564,7 @@ public abstract class Card : MonoBehaviour
                         Debug.Log("attackPoints" + attackPoints);
                         tableManager.AttackPlayer(this.idPlayer, 3, attackPoints);
                         //tableManager.UpdatePositionCards(this.idPlayer);
+                        UnityEngine.Object.Destroy(this.gameObject);
                         tableManager.NextPlayerTurn();
                     }
                 }
@@ -563,6 +581,7 @@ public abstract class Card : MonoBehaviour
                         Debug.Log("attackPoints" + attackPoints);
                         tableManager.AttackPlayer(this.idPlayer, 4, attackPoints);
                         //tableManager.UpdatePositionCards(this.idPlayer);
+                        UnityEngine.Object.Destroy(this.gameObject);
                         tableManager.NextPlayerTurn();
                     }
                 }
@@ -571,7 +590,7 @@ public abstract class Card : MonoBehaviour
                     Debug.Log("Carte levée dans aucune zone");
                 }
 
-                tableManager.UpdatePositionCards(this.idPlayer);
+                //tableManager.UpdatePositionCards(this.idPlayer);
             }
         }
 
@@ -751,13 +770,13 @@ public abstract class Card : MonoBehaviour
                     if (attackPoints >= card.defensePoints)
                     {
 
-                         UnityEngine.Object.Destroy(card.gameObject);
+                        UnityEngine.Object.Destroy(card.gameObject);
                         attackPoints -= card.defensePoints;
                         //GameManager.Instance.DecrementZoneIncarte2();
                         InfosMessage messageObject = new InfosMessage("carteDetruite", 2);
                         string message = JsonUtility.ToJson(messageObject);
                         tableManager.SendMessageToPlayer(message);
-                       
+
                         // nombreDeCartesParZone[Zone2Id]--;
                     }
                     else

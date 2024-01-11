@@ -24,6 +24,7 @@ public class TableManager : MonoBehaviour
     public int totalPlayers = 4; // Nombre total de joueurs
 
     public Vector3 scaleCardOnTable = new Vector3(1.5f, 2.25f, 0.1f);
+    public bool isMarket = false;
 
     void Start()
     {
@@ -59,7 +60,29 @@ public class TableManager : MonoBehaviour
         {
             Debug.LogError("PvPlayer component not found!");
         }
+        
+        createMarket(currentPlayer);
+    }
 
+    public void supprimerMarket()
+    {
+         Card[] allCards = UnityEngine.Object.FindObjectsOfType<Card>();
+        foreach (var card in allCards)
+        {
+            // Vérifiez si l'ID de la carte correspond à celui que nous voulons détruire
+            Debug.Log("supprimerMarket - ID de la carte: " + card.idPlayer);
+            if (card.idPlayer == -1)
+            {
+                // Détruisez la carte
+                UnityEngine.Object.Destroy(card.gameObject);
+            }
+        }
+    }
+
+    public int getCurrentPlayer()
+    {
+        Debug.Log("getCurrentPlayer - Current player: " + currentPlayer);
+        return currentPlayer;
     }
 
     void InitializeHealthDisplays()
@@ -152,26 +175,28 @@ public class TableManager : MonoBehaviour
         Debug.Log("CreateOrUpdateCardOnTable - playerId " + playerId);
         string text = $"Attaque: {attackPoints}\nDéfense: {defensePoints}";
         float rotationDegreesZ = 0.0f;
+        isMarket = false;
         if (playerId == 1)
         {
             rotationDegreesZ = 0.0f;
-            CreateCard(new Vector3(0, -4, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard);
+            CreateCard(new Vector3(0, -3.8f, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard,isMarket);
         }
         else if (playerId == 2)
         {
             rotationDegreesZ = -90.0f;
-            CreateCard(new Vector3(-9.5f, 0, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard);
+            CreateCard(new Vector3(-7.5f, 0, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard, isMarket);
         }
         else if (playerId == 3)
         {
             rotationDegreesZ = 180.0f;
-            CreateCard(new Vector3(0, 4, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard);
+            CreateCard(new Vector3(0, 3.8f, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard, isMarket);
         }
         else if (playerId == 4)
         {
             rotationDegreesZ = 90.0f;
-            CreateCard(new Vector3(9.5f, 0, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard);
+            CreateCard(new Vector3(7.5f, 0, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard, isMarket);
         }
+
     }
 
     void AddTextToCardUI(GameObject cardObject, string text, Vector3 localPosition)
@@ -222,13 +247,14 @@ public class TableManager : MonoBehaviour
         return couleurOpposee;
     }
 
-    void CreateCard(Vector3 position, Vector3 scale, Type cardType, int attackPoints, int defensePoints, string text, float rotationDegreesZ, int playerId, string iconCard)
+    void CreateCard(Vector3 position, Vector3 scale, Type cardType, int attackPoints, int defensePoints, string text, float rotationDegreesZ, int playerId, string iconCard, bool isMarket)
     {
         actionsToExecuteOnMainThread.Enqueue(() =>
         {
             try
             {
                 Debug.Log("CreateCard - Tentative de création de la carte");
+               
                 // Créer l'objet de la carte
                 GameObject cardObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 // Modifier la taille pour en faire une carte
@@ -240,7 +266,16 @@ public class TableManager : MonoBehaviour
                 Card cardComponent = (Card)cardObject.AddComponent(cardType);
                 cardComponent.attackPoints = attackPoints;
                 cardComponent.defensePoints = defensePoints;
-                cardComponent.idPlayer = playerId;
+                 if (isMarket)
+                {
+                    int prix = UnityEngine.Random.Range(1, 5);
+                    text = $"Prix: {prix}\nAttaque: {attackPoints}\nDéfense: {defensePoints}";
+                    cardComponent.prix = prix;
+                    cardComponent.idPlayer = -1;
+                }else {
+                    cardComponent.prix = 0;
+                    cardComponent.idPlayer = playerId;
+                }
                 // Initialiser la carte
                 cardComponent.InitializeCard(attackPoints, defensePoints);
                 AddTextToCardUI(cardObject, text, new Vector3(0, -0.35f, 0));
@@ -273,7 +308,7 @@ public class TableManager : MonoBehaviour
     {
         Debug.Log("UpdateHealthDisplay - Mise à jour de l'affichage des PV du joueur " + playerNumber + " à " + newHealth);
         healthDisplays[playerNumber - 1].text = "PV: " + newHealth;
-        if(newHealth <= 0)
+        if (newHealth <= 0)
         {
             healthDisplays[playerNumber - 1].text = "MORT";
             // TODO: execute new scene with winner
@@ -316,7 +351,11 @@ public class TableManager : MonoBehaviour
         if (currentPlayer > totalPlayers)
         {
             currentPlayer = 1; // Retour au premier joueur
+                               //test
         }
+        isMarket = true;
+        supprimerMarket();
+        createMarket(currentPlayer);
     }
 
     public void SendMessageToPlayer(string message)
@@ -327,6 +366,95 @@ public class TableManager : MonoBehaviour
         }
     }
 
+    public void createMarket(int playerId)
+    {
+        //Créer le marché
+        Debug.Log("createMarket - Création du marché");
+
+        // GameObject market = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        // market.transform.localScale = new Vector3(5, 5, 0.1f);
+        string text = $"Marché";
+        if (playerId == 1)
+        {
+            CreateforCardMarket(text, 0.0f, playerId);
+        }
+        else if (playerId == 2)
+        {
+            CreateforCardMarket(text, -90.0f, playerId);
+        }
+        else if (playerId == 3)
+        {
+            CreateforCardMarket(text, 180.0f, playerId);
+        }
+        else if (playerId == 4)
+        {
+            CreateforCardMarket(text, 90.0f, playerId);
+        }
+
+    }
+
+    public void CreateforCardMarket(string text, float rotationDegreesZ, int playerId)
+    {
+        Type[] cardTypes = { typeof(GoldCard), typeof(BlueCard), typeof(GreenCard) };
+        string[] iconNames = { "Icon1", "Icon2", "Icon3", "Icon4", "Icon5", "Icon6", "Icon7" };
+
+
+        for (int i = 0; i < 4; i++)
+        {
+            Type randomCardType = cardTypes[UnityEngine.Random.Range(0, cardTypes.Length)];
+            string iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
+            int attackPoints = UnityEngine.Random.Range(10, 25);
+            int defensePoints = UnityEngine.Random.Range(1, 15);
+            isMarket = true;
+
+            if (playerId == 1)
+            {
+                CreateCard(new Vector3(-2 + 2 * i, 0, 0), scaleCardOnTable, randomCardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconSelected, isMarket);
+            }
+            else if (playerId == 2)
+            {
+                CreateCard(new Vector3(0, -2 + 2 * i, 0), scaleCardOnTable, randomCardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconSelected, isMarket);
+            }
+            else if (playerId == 3)
+            {
+                CreateCard(new Vector3(2 - 2 * i, 0, 0), scaleCardOnTable, randomCardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconSelected, isMarket);
+            }
+            else if (playerId == 4)
+            {
+                CreateCard(new Vector3(0, 2 - 2 * i, 0), scaleCardOnTable, randomCardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconSelected, isMarket);
+            }
+        }
+        
+    }
+
+    public void CreateCard(Vector3 position, Vector3 scale, Type cardType, int attackPoints, int defensePoints, string iconSelected, int prix)
+    {
+        GameObject cardObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        // Modifier la taille pour en faire une carte
+        cardObject.transform.localScale = scale;
+        cardObject.transform.position = position;
+        // Ajouter le composant de carte du type spécifié
+        //cardType.BaseType.GetMethod("InitializeCard").Invoke(cardObject.AddComponent(cardType), new object[] { attackPoints, defensePoints });
+        Card cardComponent = (Card)cardObject.AddComponent(cardType);
+        // Initialiser la carte (si vous avez une fonction pour cela dans votre classe Card)
+        //cardComponent.InitializeCard();
+        cardComponent.InitializeCard(attackPoints, defensePoints);
+        // Assigner le joueur comme propriétaire de la carte
+        string text = $"Attaque: {attackPoints}\nDéfense: {defensePoints}";
+        AddTextToCardUI(cardObject, text, new Vector3(0, -0.35f, 0));
+
+        GameObject icon = new GameObject("Icon");
+        icon.transform.SetParent(cardObject.transform, false);
+        icon.transform.localPosition = new Vector3(0, 0.17f, -1); // Centrez sur la carte
+        icon.transform.localScale = new Vector3(0.8f, 0.5f, 1f); //  // Adjust width (x) and height (y) as needed
+        SpriteRenderer spriteRenderer = icon.AddComponent<SpriteRenderer>();
+        cardComponent.iconCard = iconSelected;
+        spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/" + iconSelected);
+        spriteRenderer.sortingOrder = 1;
+        cardComponent.owner = null;
+        cardComponent.idPlayer = -1;
+
+    }
 
 
 
