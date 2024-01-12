@@ -145,23 +145,23 @@ public abstract class Card : MonoBehaviour
     }
 
     // Méthode pour générer les particules
-    void GenererParticules()
-    {
-        // Vérifier si le système de particules est valide
-        if (systemeParticules != null)
-        {
-            // Obtenir la position du rectangle
-            Vector3 positionRectangle = transform.position;
+    // void GenererParticules()
+    // {
+    //     // Vérifier si le système de particules est valide
+    //     if (systemeParticules != null)
+    //     {
+    //         // Obtenir la position du rectangle
+    //         Vector3 positionRectangle = transform.position;
 
-            // Générer les particules à partir de la position du rectangle
-            systemeParticules.transform.position = positionRectangle;
-            systemeParticules.Play();
-        }
-        else
-        {
-            Debug.LogError("Veuillez assigner le système de particules dans l'éditeur Unity.");
-        }
-    }
+    //         // Générer les particules à partir de la position du rectangle
+    //         systemeParticules.transform.position = positionRectangle;
+    //         systemeParticules.Play();
+    //     }
+    //     else
+    //     {
+    //         Debug.LogError("Veuillez assigner le système de particules dans l'éditeur Unity.");
+    //     }
+    // }
 
     void CheckAndAdjustPositionTable()
     {
@@ -663,49 +663,6 @@ public abstract class Card : MonoBehaviour
                 {
                     Debug.Log("Carte levée dans aucune zone");
                 }
-                            Debug.Log("attackPoints" + attackPoints);
-                            tableManager.AttackPlayer(this.idPlayer, 2, attackPoints);
-                            //tableManager.UpdatePositionCards(this.idPlayer);
-                            tableManager.NextPlayerTurn();
-                        }
-                    }
-                    else if (playerZone3.Contains(cardPosition2D))
-                    {
-                        Debug.Log("Carte levée dans la zone du joueur " + currentZonePlayerId);
-                        // Vous pouvez appeler ici la fonction pour attaquer ou autre action
-                        Debug.Log("TableManager found: " + tableManager.gameObject.name);
-                        if (this.idPlayer != 1 && this.idPlayer != 3)
-                        {
-                            Debug.Log("Carte  peut attaque  ");
-                            //attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone3, this.idPlayer);
-                            attackPoints = PointDeffenceCardsInZonetest(playerZone3, this.idPlayer, this.attackPoints);
-                            Debug.Log("attackPoints" + attackPoints);
-                            tableManager.AttackPlayer(this.idPlayer, 3, attackPoints);
-                            //tableManager.UpdatePositionCards(this.idPlayer);
-                            tableManager.NextPlayerTurn();
-                        }
-                    }
-                    else if (playerZone4.Contains(cardPosition2D))
-                    {
-                        Debug.Log("Carte levée dans la zone du joueur " + currentZonePlayerId);
-                        // Vous pouvez appeler ici la fonction pour attaquer ou autre action
-                        Debug.Log("TableManager found: " + tableManager.gameObject.name);
-                        if (this.idPlayer != 2 && this.idPlayer != 4)
-                        {
-                            Debug.Log("Carte  peut attaque  ");
-                            //attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone4, this.idPlayer);
-                            attackPoints = PointDeffenceCardsInZonetest(playerZone4, this.idPlayer, this.attackPoints);
-                            Debug.Log("attackPoints" + attackPoints);
-                            tableManager.AttackPlayer(this.idPlayer, 4, attackPoints);
-                            //tableManager.UpdatePositionCards(this.idPlayer);
-                            tableManager.NextPlayerTurn();
-                        }
-                    }
-                    else
-                    {
-                        Debug.Log("Carte levée dans aucune zone");
-                    }
-
                     //tableManager.UpdatePositionCards(this.idPlayer);
                 }
             }
