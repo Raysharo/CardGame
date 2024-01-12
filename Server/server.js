@@ -85,6 +85,10 @@ wss.on('connection', (ws, req) => {
             let idPlayer = message.idPlayer;
 
             broadcastMessagePlayerDecrement(command, idPlayer);
+        } else if (typeof message === 'object' && message.type === "cartePourLeMarche") {
+            idPlayer = message.idPlayer;
+            console.log("type de message: " + message.type)
+            broadcastMessageTableMarkettoPlayer(message, idPlayer);
         }
         
 //         else if (typeof message === 'object' && message.type === "cardSelected") {
@@ -123,6 +127,15 @@ function broadcastMessagePlayerDecrement(command, idPlayer) {
             console.log("envoie au joueur " + clientId)
             console.log("messageString " + messageString)
             client.send(messageString);
+        }
+    });
+}
+
+function broadcastMessageTableMarkettoPlayer(message, idPlayer) {
+    clients.forEach((client, clientId) => {
+        if (client.readyState === WebSocket.OPEN && clientId == idPlayer) {
+            lastMessages.set(clientId, message);
+            client.send(message);
         }
     });
 }
@@ -194,19 +207,6 @@ function handleCardRequest(command, targetPlayerId, requestingPlayerId) {
     broadcastMessagePlayer(messageString, targetPlayerId);
 }
 
-// function handleCardRequest(command, targetPlayerId, requestingPlayerId) {
-//     // Créer un objet représentant la demande
-//     let messageObject = {
-//         type: "giveCards", // Ajouter un type pour identifier le message
-//         action: command,
-//         targetPlayerId: targetPlayerId,
-//         requestingPlayerId: requestingPlayerId
-//     };
-//     // Convertir l'objet en chaîne JSON
-//     let messageString = JSON.stringify(messageObject);
-//     // Diffuser le message JSON à tous les clients
-//     broadcastMessagePlayer(messageString, targetPlayerId);
-// }
 
 function broadcastMessagePlayer(message, targetPlayerId) {
     // Exemple : Diffuser le message à tous les clients connectés, sauf à la table

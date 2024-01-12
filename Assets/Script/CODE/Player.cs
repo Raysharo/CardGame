@@ -25,6 +25,8 @@ public class Player
     // public List<Card> Deck;
     // public List<Card> Board;
 
+    public List<Card> Deck = new List<Card>();
+
     public WebSocket PlayerSocket;
 
     // private Queue<string> messageQueue = new Queue<string>();
@@ -103,6 +105,19 @@ public class Player
     }
 
 
+    // create function create card from deck 
+    public void CreateCardFromDeck()
+    {
+        //Random to deck
+        for(int i = 0; i < 4; i++)
+        {
+            Card card = Deck[UnityEngine.Random.Range(0, Deck.Count)];
+            CreateCard(new Vector3(-2 + 2 * i, 0, 0), scaleCardOnTel, card.GetType(), card.attackPoints, card.defensePoints, card.iconCard, false);
+            Deck.Remove(card);
+        }
+    }
+
+
     public void HandleCarteDetruiteMessage(string message)
     {
         // Convertir la chaîne JSON en objet
@@ -127,6 +142,7 @@ public class Player
             GameManager.Instance.DecrementZoneIncarte4();
         }
     }
+
 
 
     public void HandleRequestCardsMessage(string message)
@@ -161,6 +177,13 @@ public class Player
             CreateCard(new Vector3(x, 4, 0), new Vector3(1, 1.5f, 0.1f), cardType, card.attackPoints, card.defensePoints, card.iconCard, true);
             x += 2;
         }
+    }
+    
+    public void HandleCartePourLeMarcheMessage(string message){
+        // Convertir la chaîne JSON en objet
+        Debug.Log("Message reçu du serveur : " + message);
+        CardMarket cardMarket = JsonUtility.FromJson<CardMarket>(message);
+        Deck.Add(cardMarket.card);
     }
 
     public void HandleCardSelectedMessage(string message){
@@ -252,7 +275,6 @@ public class Player
             cardComponent.idPlayer = this.id;
             cards.Add(cardComponent); // Ajoutez la carte à la liste du joueur
         }
-
     }
 
 
@@ -297,6 +319,7 @@ public class Player
             if (card.id == idCard)
             {
                 cards.Remove(card);
+                Deck.Add(card);
             }
         }
     }

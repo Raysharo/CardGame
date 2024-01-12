@@ -39,6 +39,8 @@ public abstract class Card : MonoBehaviour
     public int defensePoints;
     public int idPlayer;
     public string iconCard;
+    // c'est pour  market
+    public int prix;
     private int currentZonePlayerId = -1; // -1  la carte n'est dans aucune zone
     private static Dictionary<Rect, Card> cartesEnModeDefenseParZone = new Dictionary<Rect, Card>();
 
@@ -559,7 +561,20 @@ public abstract class Card : MonoBehaviour
                 {
                     Debug.LogError("TableManager not found in the scene!");
                 }
-                else
+                else if (this.idPlayer == -1)
+            {
+                Debug.Log("Carte Pour le marché");
+                tableManager.getCurrentPlayer();
+                int destinationMessage = tableManager.getCurrentPlayer();
+                this.idPlayer = destinationMessage;
+                this.prix = 0;
+                string type = "cartePourLeMarche";
+                CardMarket messageObject = new CardMarket(type, this, this.idPlayer);
+                UnityEngine.Object.Destroy(this.gameObject);
+                string message = JsonUtility.ToJson(messageObject);
+                tableManager.SendMessageToPlayer(message);
+            }
+            else
                 {
 
                     playerZone1 = new Rect(-5.0f, -5.0f, 10.0f, 5.0f);
@@ -587,7 +602,8 @@ public abstract class Card : MonoBehaviour
                             attackPoints = PointDeffenceCardsInZonetest(playerZone1, this.idPlayer, this.attackPoints);
                             Debug.Log("attackPoints" + attackPoints);
                             tableManager.AttackPlayer(this.idPlayer, 1, attackPoints);
-                            //tableManager.UpdatePositionCards(this.idPlayer);
+                            UnityEngine.Object.Destroy(this.gameObject);
+                        //tableManager.UpdatePositionCards(this.idPlayer);
                             tableManager.NextPlayerTurn();
                         }
                     }
@@ -602,6 +618,51 @@ public abstract class Card : MonoBehaviour
                             //attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone2, this.idPlayer);
                             attackPoints = PointDeffenceCardsInZonetest(playerZone2, this.idPlayer, this.attackPoints);
 
+                        Debug.Log("attackPoints" + attackPoints);
+                        tableManager.AttackPlayer(this.idPlayer, 2, attackPoints);
+                        //tableManager.UpdatePositionCards(this.idPlayer);
+                        UnityEngine.Object.Destroy(this.gameObject);
+                        tableManager.NextPlayerTurn();
+                    }
+                }
+                else if (playerZone3.Contains(cardPosition2D))
+                {
+                    Debug.Log("Carte levée dans la zone du joueur " + currentZonePlayerId);
+                    // Vous pouvez appeler ici la fonction pour attaquer ou autre action
+                    Debug.Log("TableManager found: " + tableManager.gameObject.name);
+                    if (this.idPlayer != 1 && this.idPlayer != 3)
+                    {
+                        Debug.Log("Carte  peut attaque  ");
+                        //attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone3, this.idPlayer);
+                        attackPoints = PointDeffenceCardsInZonetest(playerZone3, this.idPlayer, this.attackPoints);
+                        Debug.Log("attackPoints" + attackPoints);
+                        tableManager.AttackPlayer(this.idPlayer, 3, attackPoints);
+                        //tableManager.UpdatePositionCards(this.idPlayer);
+                        UnityEngine.Object.Destroy(this.gameObject);
+                        tableManager.NextPlayerTurn();
+                    }
+                }
+                else if (playerZone4.Contains(cardPosition2D))
+                {
+                    Debug.Log("Carte levée dans la zone du joueur " + currentZonePlayerId);
+                    // Vous pouvez appeler ici la fonction pour attaquer ou autre action
+                    Debug.Log("TableManager found: " + tableManager.gameObject.name);
+                    if (this.idPlayer != 2 && this.idPlayer != 4)
+                    {
+                        Debug.Log("Carte  peut attaque  ");
+                        //attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone4, this.idPlayer);
+                        attackPoints = PointDeffenceCardsInZonetest(playerZone4, this.idPlayer, this.attackPoints);
+                        Debug.Log("attackPoints" + attackPoints);
+                        tableManager.AttackPlayer(this.idPlayer, 4, attackPoints);
+                        //tableManager.UpdatePositionCards(this.idPlayer);
+                        UnityEngine.Object.Destroy(this.gameObject);
+                        tableManager.NextPlayerTurn();
+                    }
+                }
+                else
+                {
+                    Debug.Log("Carte levée dans aucune zone");
+                }
                             Debug.Log("attackPoints" + attackPoints);
                             tableManager.AttackPlayer(this.idPlayer, 2, attackPoints);
                             //tableManager.UpdatePositionCards(this.idPlayer);
@@ -645,7 +706,7 @@ public abstract class Card : MonoBehaviour
                         Debug.Log("Carte levée dans aucune zone");
                     }
 
-                    tableManager.UpdatePositionCards(this.idPlayer);
+                    //tableManager.UpdatePositionCards(this.idPlayer);
                 }
             }
         }
@@ -827,11 +888,13 @@ public abstract class Card : MonoBehaviour
                     {
 
                         UnityEngine.Object.Destroy(card.gameObject);
+                        UnityEngine.Object.Destroy(card.gameObject);
                         attackPoints -= card.defensePoints;
                         //GameManager.Instance.DecrementZoneIncarte2();
                         InfosMessage messageObject = new InfosMessage("carteDetruite", 2);
                         string message = JsonUtility.ToJson(messageObject);
                         tableManager.SendMessageToPlayer(message);
+
 
                         // nombreDeCartesParZone[Zone2Id]--;
                     }
