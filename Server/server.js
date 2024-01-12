@@ -86,9 +86,19 @@ wss.on('connection', (ws, req) => {
 
             broadcastMessagePlayerDecrement(command, idPlayer);
         }
-        else if (message === "carteSelectionnee"){
-            // TODO
-        }
+        
+//         else if (typeof message === 'object' && message.type === "cardSelected") {
+//             /*
+// {
+//                 "type": "cardSelected",
+//                 "cardId": this.id,
+//                 "playerId": this.idPlayer
+//             }
+//             */
+
+//             broadcastMessagePlayer(message , message.playerId);
+//         }
+        
         else {
             console.log('Format de message inconnu ou non pris en charge.', message);
         }

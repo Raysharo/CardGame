@@ -163,6 +163,18 @@ public class Player
         }
     }
 
+    public void HandleCardSelectedMessage(string message){
+        
+        // Convertir la chaîne JSON en objet
+        Debug.Log("Message reçu du serveur : " + message);
+        // JSONObject data = new JSONObject(message);
+        // Debug.Log("Action reçue : " + data["type"].str);
+
+        // //TODO : make glow the card selected
+        
+        
+    }
+
     private void SendCardInfo(int requestingPlayerId, int targetPlayerId)
     {
         Debug.Log("Nombre de cartes trouvées : " + cards.Count);

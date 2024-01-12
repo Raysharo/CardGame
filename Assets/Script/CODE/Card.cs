@@ -107,6 +107,27 @@ public abstract class Card : MonoBehaviour
 
     void Update()
     {
+        /*
+
+        // particule systeme 
+
+        // Mettre à jour le temps écoulé
+        tempsEcoule += Time.deltaTime;
+
+        // Si le temps écoulé dépasse la fréquence de génération
+        if (tempsEcoule >= frequenceGenerateur)
+        {
+            // Générer les particules
+            GenererParticules();
+
+            // Réinitialiser le temps écoulé
+            tempsEcoule = 0f;
+        }
+        /////////////////////////
+        ///
+        */
+
+
         string currentSceneName = SceneManager.GetActiveScene().name;
         if (!onInteraction)
         {
@@ -118,6 +139,25 @@ public abstract class Card : MonoBehaviour
             {
                 CheckAndAdjustPositionPlayer();
             }
+        }
+    }
+
+    // Méthode pour générer les particules
+    void GenererParticules()
+    {
+        // Vérifier si le système de particules est valide
+        if (systemeParticules != null)
+        {
+            // Obtenir la position du rectangle
+            Vector3 positionRectangle = transform.position;
+
+            // Générer les particules à partir de la position du rectangle
+            systemeParticules.transform.position = positionRectangle;
+            systemeParticules.Play();
+        }
+        else
+        {
+            Debug.LogError("Veuillez assigner le système de particules dans l'éditeur Unity.");
         }
     }
 
@@ -463,9 +503,16 @@ public abstract class Card : MonoBehaviour
         Debug.Log("playerZone4" + playerZone4);
     }
 
+    /*
 
+    // Référence au système de particules
+    public ParticleSystem systemeParticules;
+    // Fréquence de génération des particules (en secondes)
+    public float frequenceGenerateur = 0.1f;
+    // Temps écoulé depuis la dernière génération de particules
+    private float tempsEcoule = 0f;
 
-
+    */
 
     void OnMouseUp()
     {
@@ -479,8 +526,18 @@ public abstract class Card : MonoBehaviour
 
             // DEBUG : mettre la carte en rouge
             rend.material.color = Color.red;
-            // send message to the owner of the card
-            this.owner.SendMessageToPlayer("carteSelectionnee");
+
+            /*
+            // Envoyer un message au propriétaire de la carte
+            this.idPlayer.SendMessageToPlayer(new
+            {
+                type = "cardSelected",
+                cardId = this.id,
+                playerId = this.idPlayer
+            });
+            */
+            
+
 
         }
         else

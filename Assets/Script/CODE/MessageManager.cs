@@ -60,6 +60,11 @@ public class MessageManager : MonoBehaviour
                 case "carteDetruite":
                     owner.HandleCarteDetruiteMessage(message);
                     break;
+                    /*
+                case "cardSelected":
+                    owner.HandleCardSelectedMessage(message);
+                    break;
+                */
                 default:
                     Debug.LogError("Type de message inconnu.");
                     break;
