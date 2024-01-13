@@ -230,12 +230,13 @@ public abstract class Card : MonoBehaviour
                     if (this.transform.rotation.z == 0)
                     {
                         this.transform.rotation = Quaternion.Euler(0, 0, -90);
-                        cartesEnModeDefenseParZone[zone] = this;
+                        cartesEnModeDefenseParZone.Remove(zone);
                     }
                     else
                     {
                         this.transform.rotation = Quaternion.Euler(0, 0, 0);
-                        cartesEnModeDefenseParZone.Remove(zone);
+                        cartesEnModeDefenseParZone[zone] = this;
+                        
                     }
                 }
                 else if (this.idPlayer == 3)
@@ -260,12 +261,13 @@ public abstract class Card : MonoBehaviour
                     if (this.transform.rotation.z == 0)
                     {
                         this.transform.rotation = Quaternion.Euler(0, 0, 90);
-                        cartesEnModeDefenseParZone[zone] = this;
+                        cartesEnModeDefenseParZone.Remove(zone);
+                        
                     }
                     else
                     {
                         this.transform.rotation = Quaternion.Euler(0, 0, 0);
-                        cartesEnModeDefenseParZone.Remove(zone);
+                        cartesEnModeDefenseParZone[zone] = this;
                     }
                 }
             }
@@ -503,15 +505,10 @@ public abstract class Card : MonoBehaviour
             else
             {
 
-                playerZone1 = new Rect(-5.0f, -5.0f, 10.0f, 5.0f);
-                playerZone2 = new Rect(-10.5f, -5.0f, 5.0f, 10.0f);
-                playerZone3 = new Rect(-5.0f, 0.0f, 10.0f, 5.0f);
-                playerZone4 = new Rect(5.5f, -5.0f, 5.0f, 10.0f);
-
-                OnDrawGizmost1();
-                OnDrawGizmost2();
-                OnDrawGizmost3();
-                OnDrawGizmost4();
+                playerZone1 = new Rect(-9.6f, -5.5f, 9.6f, 3.3f);
+                playerZone2 = new Rect(-9.6f, -2.0f, 5.1f, 7.3f);
+                playerZone3 = new Rect(0.0f, 2.0f, 9.6f, 3.3f);
+                playerZone4 = new Rect(4.5f, -5.5f, 5.1f, 7.3f);
 
                 CheckZonesForCards();
                 Vector2 cardPosition2D = new Vector2(this.transform.position.x, this.transform.position.y);
