@@ -47,32 +47,32 @@ public abstract class Card : MonoBehaviour
 
 
 
-    private Vector2 topLeftPlayer1 = new Vector2(-5.0f, -5.0f);
-    private Vector2 topRightPlayer1 = new Vector2(5.0f, -5.0f);
-    private Vector2 bottomLeftPlayer1 = new Vector2(-5.0f, -10.0f);
-    private Vector2 bottomRightPlayer1 = new Vector2(5.0f, -6.27f);
+    // private Vector2 topLeftPlayer1 = new Vector2(-5.0f, -5.0f);
+    // private Vector2 topRightPlayer1 = new Vector2(5.0f, -5.0f);
+    // private Vector2 bottomLeftPlayer1 = new Vector2(-5.0f, -10.0f);
+    // private Vector2 bottomRightPlayer1 = new Vector2(5.0f, -6.27f);
 
 
 
-   
-    private Vector2 topLeftPlayer2 = new Vector2(-10.0f, -5.0f);
-    private Vector2 topRightPlayer2 = new Vector2(-4.3f, 2.68f);
-    private Vector2 bottomLeftPlayer2 = new Vector2(-10.0f, -10.0f);
-    private Vector2 bottomRightPlayer2 = new Vector2(-4.3f, -6.27f);
+
+    // private Vector2 topLeftPlayer2 = new Vector2(-10.0f, -5.0f);
+    // private Vector2 topRightPlayer2 = new Vector2(-4.3f, 2.68f);
+    // private Vector2 bottomLeftPlayer2 = new Vector2(-10.0f, -10.0f);
+    // private Vector2 bottomRightPlayer2 = new Vector2(-4.3f, -6.27f);
 
 
 
-   
-    private Vector2 topLeftPlayer3 = new Vector2(-5.0f, 0.0f);
-    private Vector2 topRightPlayer3 = new Vector2(5.0f, 0.0f);
-    private Vector2 bottomLeftPlayer3 = new Vector2(-5.0f, -5.0f);
-    private Vector2 bottomRightPlayer3 = new Vector2(5.0f, -5.0f);
 
-   
-    private Vector2 topLeftPlayer4 = new Vector2(5.50f, -5.0f);
-    private Vector2 topRightPlayer4 = new Vector2(11.0f, 2.68f);
-    private Vector2 bottomLeftPlayer4 = new Vector2(5.50f, -10.0f);
-    private Vector2 bottomRightPlayer4 = new Vector2(11.0f, -6.27f);
+    // private Vector2 topLeftPlayer3 = new Vector2(-5.0f, 0.0f);
+    // private Vector2 topRightPlayer3 = new Vector2(5.0f, 0.0f);
+    // private Vector2 bottomLeftPlayer3 = new Vector2(-5.0f, -5.0f);
+    // private Vector2 bottomRightPlayer3 = new Vector2(5.0f, -5.0f);
+
+
+    // private Vector2 topLeftPlayer4 = new Vector2(5.50f, -5.0f);
+    // private Vector2 topRightPlayer4 = new Vector2(11.0f, 2.68f);
+    // private Vector2 bottomLeftPlayer4 = new Vector2(5.50f, -10.0f);
+    // private Vector2 bottomRightPlayer4 = new Vector2(11.0f, -6.27f);
 
 
 
@@ -82,7 +82,7 @@ public abstract class Card : MonoBehaviour
     private Rect playerZone3;
     private Rect playerZone4;
 
-    private bool initializedNombreDeCartesZone = false;
+    // private bool initializedNombreDeCartesZone = false;
 
 
     void Start()
@@ -227,13 +227,15 @@ public abstract class Card : MonoBehaviour
                     Debug.Log("this.transform.rotation.z" + this.transform.rotation.z);
                     if (this.transform.rotation.z == 0)
                     {
+                        Debug.Log("Carte ajouter en mode deffence ");
                         this.transform.rotation = Quaternion.Euler(0, 0, -90);
-                        cartesEnModeDefenseParZone[zone] = this;
+                        cartesEnModeDefenseParZone.Remove(zone);
                     }
                     else
                     {
+                        Debug.Log("Carte retirer en mode deffence ");
                         this.transform.rotation = Quaternion.Euler(0, 0, 0);
-                        cartesEnModeDefenseParZone.Remove(zone);
+                        cartesEnModeDefenseParZone[zone] = this;
                     }
                 }
                 else if (this.idPlayer == 3)
@@ -258,12 +260,12 @@ public abstract class Card : MonoBehaviour
                     if (this.transform.rotation.z == 0)
                     {
                         this.transform.rotation = Quaternion.Euler(0, 0, 90);
-                        cartesEnModeDefenseParZone[zone] = this;
+                        cartesEnModeDefenseParZone.Remove(zone);
                     }
                     else
                     {
                         this.transform.rotation = Quaternion.Euler(0, 0, 0);
-                        cartesEnModeDefenseParZone.Remove(zone);
+                        cartesEnModeDefenseParZone[zone] = this;
                     }
                 }
             }
@@ -369,6 +371,7 @@ public abstract class Card : MonoBehaviour
         }
 
     }
+
 
 
 
@@ -488,15 +491,20 @@ public abstract class Card : MonoBehaviour
             else
             {
 
-                playerZone1 = new Rect(-5.0f, -5.0f, 10.0f, 5.0f);
-                playerZone2 = new Rect(-10.5f, -5.0f, 5.0f, 10.0f);
-                playerZone3 = new Rect(-5.0f, 0.0f, 10.0f, 5.0f);
-                playerZone4 = new Rect(5.5f, -5.0f, 5.0f, 10.0f);
+                // playerZone1 = new Rect(-5.0f, -5.0f, 10.0f, 5.0f);
+                // playerZone2 = new Rect(-10.5f, -5.0f, 5.0f, 10.0f);
+                // playerZone3 = new Rect(-5.0f, 0.0f, 10.0f, 5.0f);
+                // playerZone4 = new Rect(5.5f, -5.0f, 5.0f, 10.0f);
 
-                OnDrawGizmost1();
-                OnDrawGizmost2();
-                OnDrawGizmost3();
-                OnDrawGizmost4();
+                playerZone1 = new Rect(-9.6f, -5.5f, 9.6f, 3.3f);
+                playerZone2 = new Rect(-9.6f, -2.0f, 5.1f, 7.3f);
+                playerZone3 = new Rect(0.0f, 2.0f, 9.6f, 3.3f);
+                playerZone4 = new Rect(4.5f, -5.5f, 5.1f, 7.3f);
+
+                // OnDrawGizmost1();
+                // OnDrawGizmost2();
+                // OnDrawGizmost3();
+                // OnDrawGizmost4();
 
                 CheckZonesForCards();
                 Vector2 cardPosition2D = new Vector2(this.transform.position.x, this.transform.position.y);

@@ -23,7 +23,10 @@ public class TableManager : MonoBehaviour
     public int currentPlayer = 1; // Commencez avec le joueur 1
     public int totalPlayers = 4; // Nombre total de joueurs
 
-    public Vector3 scaleCardOnTable = new Vector3(1.5f, 2.25f, 0.1f);
+    //public Vector3 scaleCardOnTable = new Vector3(1.5f, 2.25f, 0.1f);
+
+    public Vector3 scaleCardOnTable = new Vector3(1, 1, 0);
+    public bool isMarket = false;
 
     void Start()
     {
@@ -59,6 +62,10 @@ public class TableManager : MonoBehaviour
         {
             Debug.LogError("PvPlayer component not found!");
         }
+        
+        // createMarket(currentPlayer);
+        createMarket(currentPlayer);
+    }
 
     }
 
@@ -155,22 +162,26 @@ public class TableManager : MonoBehaviour
         if (playerId == 1)
         {
             rotationDegreesZ = 0.0f;
-            CreateCard(new Vector3(0, -4, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard);
+            //CreateCard(new Vector3(0, -3.8f, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard,isMarket);
+            CreateCard(new Vector3(-4.5f, -3.8f, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard,isMarket);
         }
         else if (playerId == 2)
         {
             rotationDegreesZ = -90.0f;
-            CreateCard(new Vector3(-9.5f, 0, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard);
+            //CreateCard(new Vector3(-7.5f, 0, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard, isMarket);
+            CreateCard(new Vector3(-7.7f, 2.7f, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard, isMarket);
         }
         else if (playerId == 3)
         {
             rotationDegreesZ = 180.0f;
-            CreateCard(new Vector3(0, 4, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard);
+            //CreateCard(new Vector3(0, 3.8f, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard, isMarket);
+            CreateCard(new Vector3(4.5f, 3.8f, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard,isMarket);
         }
         else if (playerId == 4)
         {
             rotationDegreesZ = 90.0f;
-            CreateCard(new Vector3(9.5f, 0, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard);
+            //CreateCard(new Vector3(7.5f, 0, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard, isMarket);
+            CreateCard(new Vector3(7.7f, -2.7f, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard, isMarket);
         }
     }
 
@@ -210,7 +221,8 @@ public class TableManager : MonoBehaviour
         textComponent.color = Color.black;
 
         // Ajuster la taille de l'échelle pour rendre le texte proportionnel à la carte
-        textObject.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f); // Ajustez cette échelle selon vos besoins
+        // textObject.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f); // Ajustez cette échelle selon vos besoins
+        textObject.transform.localScale = new Vector3(0.03f, 0.03f, 0.03f); // pour market 
 
     }
 
@@ -240,9 +252,18 @@ public class TableManager : MonoBehaviour
                 Card cardComponent = (Card)cardObject.AddComponent(cardType);
                 cardComponent.attackPoints = attackPoints;
                 cardComponent.defensePoints = defensePoints;
-                cardComponent.idPlayer = playerId;
                 // Initialiser la carte
                 cardComponent.InitializeCard(attackPoints, defensePoints);
+                 if (isMarket)
+                {
+                    int prix = UnityEngine.Random.Range(1, 5);
+                    text = $"Prix: {prix}\nAttaque: {attackPoints}\nDéfense: {defensePoints}";
+                    cardComponent.prix = prix;
+                    cardComponent.idPlayer = -1;
+                }else {
+                    cardComponent.prix = 0;
+                    cardComponent.idPlayer = playerId;
+                }
                 AddTextToCardUI(cardObject, text, new Vector3(0, -0.35f, 0));
                 GameObject icon = new GameObject("Icon");
                 icon.transform.SetParent(cardObject.transform, false);
@@ -326,6 +347,97 @@ public class TableManager : MonoBehaviour
             ws.Send(message);
         }
     }
+
+    public void createMarket(int playerId)
+    {
+        //Créer le marché
+        Debug.Log("createMarket - Création du marché");
+
+        // GameObject market = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        // market.transform.localScale = new Vector3(5, 5, 0.1f);
+        string text = $"Marché";
+        if (playerId == 1)
+        {
+            CreateforCardMarket(text, 0.0f, playerId);
+        }
+        else if (playerId == 2)
+        {
+            CreateforCardMarket(text, -90.0f, playerId);
+        }
+        else if (playerId == 3)
+        {
+            CreateforCardMarket(text, 180.0f, playerId);
+        }
+        else if (playerId == 4)
+        {
+            CreateforCardMarket(text, 90.0f, playerId);
+        }
+
+    }
+
+    public void CreateforCardMarket(string text, float rotationDegreesZ, int playerId)
+    {
+        Type[] cardTypes = { typeof(GoldCard), typeof(BlueCard), typeof(GreenCard) };
+        string[] iconNames = { "Icon1", "Icon2", "Icon3", "Icon4", "Icon5", "Icon6", "Icon7" };
+
+
+        for (int i = 0; i < 4; i++)
+        {
+            Type randomCardType = cardTypes[UnityEngine.Random.Range(0, cardTypes.Length)];
+            string iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
+            int attackPoints = UnityEngine.Random.Range(10, 25);
+            int defensePoints = UnityEngine.Random.Range(1, 15);
+            isMarket = true;
+
+            if (playerId == 1)
+            {
+                CreateCard(new Vector3(-3 + 2 * i, 0, 0), scaleCardOnTable, randomCardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconSelected, isMarket);
+            }
+            else if (playerId == 2)
+            {
+                CreateCard(new Vector3(-2, -1 + 1.7f * i, 0), scaleCardOnTable, randomCardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconSelected, isMarket);
+            }
+            else if (playerId == 3)
+            {
+                CreateCard(new Vector3(3 - 2 * i, 0, 0), scaleCardOnTable, randomCardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconSelected, isMarket);
+            }
+            else if (playerId == 4)
+            {
+                CreateCard(new Vector3(2, 1 - 1.7f * i, 0), scaleCardOnTable, randomCardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconSelected, isMarket);
+            }
+        }
+        
+    }
+
+    public void CreateCard(Vector3 position, Vector3 scale, Type cardType, int attackPoints, int defensePoints, string iconSelected, int prix)
+    {
+        GameObject cardObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        // Modifier la taille pour en faire une carte
+        cardObject.transform.localScale = scale;
+        cardObject.transform.position = position;
+        // Ajouter le composant de carte du type spécifié
+        //cardType.BaseType.GetMethod("InitializeCard").Invoke(cardObject.AddComponent(cardType), new object[] { attackPoints, defensePoints });
+        Card cardComponent = (Card)cardObject.AddComponent(cardType);
+        // Initialiser la carte (si vous avez une fonction pour cela dans votre classe Card)
+        //cardComponent.InitializeCard();
+        cardComponent.InitializeCard(attackPoints, defensePoints);
+        // Assigner le joueur comme propriétaire de la carte
+        string text = $"Attaque: {attackPoints}\nDéfense: {defensePoints}";
+        AddTextToCardUI(cardObject, text, new Vector3(0, -0.35f, 0));
+
+        GameObject icon = new GameObject("Icon");
+        icon.transform.SetParent(cardObject.transform, false);
+        icon.transform.localPosition = new Vector3(0, 0.17f, -1); // Centrez sur la carte
+        icon.transform.localScale = new Vector3(0.8f, 0.5f, 1f); //  // Adjust width (x) and height (y) as needed
+        SpriteRenderer spriteRenderer = icon.AddComponent<SpriteRenderer>();
+        cardComponent.iconCard = iconSelected;
+        spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/" + iconSelected);
+        spriteRenderer.sortingOrder = 1;
+        cardComponent.owner = null;
+        cardComponent.idPlayer = -1;
+
+    }
+
 
 
 }
