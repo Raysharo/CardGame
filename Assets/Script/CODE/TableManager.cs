@@ -22,7 +22,7 @@ public class TableManager : MonoBehaviour
     public int currentPlayer = 1; // Commencez avec le joueur 1
     public int totalPlayers = 4; // Nombre total de joueurs
 
-    public Vector3 scaleCardOnTable = new Vector3(1.5f, 2.25f, 0.1f);
+    public Vector3 scaleCardOnTable = new Vector3(1, 1, 0);
     public bool isMarket = false;
 
     void Start()
@@ -178,22 +178,22 @@ public class TableManager : MonoBehaviour
         if (playerId == 1)
         {
             rotationDegreesZ = 0.0f;
-            CreateCard(new Vector3(0, -3.8f, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard,isMarket);
+            CreateCard(new Vector3(-4.5f, -3.8f, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard,isMarket);
         }
         else if (playerId == 2)
         {
             rotationDegreesZ = -90.0f;
-            CreateCard(new Vector3(-7.5f, 0, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard, isMarket);
+            CreateCard(new Vector3(-7.7f, 2.7f, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard, isMarket);
         }
         else if (playerId == 3)
         {
             rotationDegreesZ = 180.0f;
-            CreateCard(new Vector3(0, 3.8f, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard, isMarket);
+            CreateCard(new Vector3(4.5f, 3.8f, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard,isMarket);
         }
         else if (playerId == 4)
         {
             rotationDegreesZ = 90.0f;
-            CreateCard(new Vector3(7.5f, 0, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard, isMarket);
+            CreateCard(new Vector3(7.7f, -2.7f, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard, isMarket);
         }
 
     }
@@ -234,7 +234,7 @@ public class TableManager : MonoBehaviour
         textComponent.color = Color.black;
 
         // Ajuster la taille de l'échelle pour rendre le texte proportionnel à la carte
-        textObject.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f); // Ajustez cette échelle selon vos besoins
+        textObject.transform.localScale = new Vector3(0.03f, 0.03f, 0.03f); // Ajustez cette échelle selon vos besoins
 
     }
 
@@ -406,21 +406,21 @@ public class TableManager : MonoBehaviour
             int defensePoints = UnityEngine.Random.Range(1, 15);
             isMarket = true;
 
-            if (playerId == 1)
+             if (playerId == 1)
             {
-                CreateCard(new Vector3(-2 + 2 * i, 0, 0), scaleCardOnTable, randomCardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconSelected, isMarket);
+                CreateCard(new Vector3(-3 + 2 * i, 0, 0), scaleCardOnTable, randomCardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconSelected, isMarket);
             }
             else if (playerId == 2)
             {
-                CreateCard(new Vector3(0, -2 + 2 * i, 0), scaleCardOnTable, randomCardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconSelected, isMarket);
+                CreateCard(new Vector3(-2, -1 + 1.7f * i, 0), scaleCardOnTable, randomCardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconSelected, isMarket);
             }
             else if (playerId == 3)
             {
-                CreateCard(new Vector3(2 - 2 * i, 0, 0), scaleCardOnTable, randomCardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconSelected, isMarket);
+                CreateCard(new Vector3(3 - 2 * i, 0, 0), scaleCardOnTable, randomCardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconSelected, isMarket);
             }
             else if (playerId == 4)
             {
-                CreateCard(new Vector3(0, 2 - 2 * i, 0), scaleCardOnTable, randomCardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconSelected, isMarket);
+                CreateCard(new Vector3(2, 1 - 1.7f * i, 0), scaleCardOnTable, randomCardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconSelected, isMarket);
             }
         }
         
