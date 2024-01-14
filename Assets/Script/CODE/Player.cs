@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using WebSocketSharp;
 using UnityEngine.UI;
+using TMPro;
 
 
 using WebSocketSharp;
@@ -33,10 +34,13 @@ public class Player
 
     public Vector3 scaleCardOnTel = new Vector3(2, 3, 0.1f);
 
+    private TextMeshProUGUI deckCountDisplay;
 
 
-    public Player(int id, string adresseNgrok)
+
+    public Player(int id, string adresseNgrok, TextMeshProUGUI deckCountDisplay)
     {
+        this.deckCountDisplay = deckCountDisplay;
         this.id = id;
         PlayerSocket = new WebSocket("wss://" + adresseNgrok + ".ngrok-free.app/" + id);
         PlayerSocket.OnMessage += (sender, e) =>
@@ -54,6 +58,7 @@ public class Player
         PlayerSocket.Connect();
 
         CreateCardPlayer(id);
+        UpdateDeckCountDisplay(); // Afficher le nombre de cartes dans le deck
     }
 
 
@@ -77,6 +82,15 @@ public class Player
         {
             CreateforCard(cardTypes, iconNames);
         }
+        //UpdateDeckCountDisplay();
+    }
+
+    public void UpdateDeckCountDisplay()
+    {
+        if (deckCountDisplay != null)
+        {
+            deckCountDisplay.text = "Deck: " + Deck.Count.ToString();
+        }
     }
 
 
@@ -97,11 +111,12 @@ public class Player
     public void CreateCardFromDeck()
     {
         //Random to deck
-        for(int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++)
         {
             Card card = Deck[UnityEngine.Random.Range(0, Deck.Count)];
             CreateCard(new Vector3(-2 + 2 * i, 0, 0), scaleCardOnTel, card.GetType(), card.attackPoints, card.defensePoints, card.iconCard, false);
             Deck.Remove(card);
+            UpdateDeckCountDisplay();
         }
     }
 
@@ -166,12 +181,33 @@ public class Player
             x += 2;
         }
     }
-    
-    public void HandleCartePourLeMarcheMessage(string message){
+
+    public void HandleCartePourLeMarcheMessage(string message)
+    {
         // Convertir la chaîne JSON en objet
         Debug.Log("Message reçu du serveur : " + message);
         CardMarket cardMarket = JsonUtility.FromJson<CardMarket>(message);
-        Deck.Add(cardMarket.card);
+
+        Debug.Log("Carte trouvée : " + cardMarket.attackPoints + "  " + cardMarket.defensePoints + "  " + cardMarket.idPlayer + "  " + cardMarket.typeCard + "  " + cardMarket.iconCard);
+
+        CreateCardforDeck(cardMarket.id, cardMarket.idPlayer, cardMarket.attackPoints, cardMarket.defensePoints, cardMarket.iconCard, cardMarket.type, cardMarket.typeCard);
+
+    }
+
+    public void CreateCardforDeck(int id, int idPlayer, int attackPoints, int defensePoints, string iconCard, string type, string typeCard)
+    {
+        // Créer l'objet de la carte
+        GameObject cardObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        Card cardComponent = (Card)cardObject.AddComponent(Type.GetType(typeCard));
+        cardComponent.InitializeCard(attackPoints, defensePoints);
+        cardComponent.iconCard = iconCard;
+        cardComponent.owner = this;
+        cardComponent.idPlayer = idPlayer;
+        cardComponent.id = id;
+        Deck.Add(cardComponent);
+        // destroy card from scene after create card for deck
+        DestroyCard(id);
+        UpdateDeckCountDisplay();
     }
 
     private void SendCardInfo(int requestingPlayerId, int targetPlayerId)
@@ -296,6 +332,7 @@ public class Player
             {
                 cards.Remove(card);
                 Deck.Add(card);
+                UpdateDeckCountDisplay();
             }
         }
     }

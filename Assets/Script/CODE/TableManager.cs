@@ -145,8 +145,12 @@ public class TableManager : MonoBehaviour
         UpdatePiecesDisplay(currentPlayer, pvPlayer.GetPiecesForPlayer(currentPlayer));
     }
 
-    // Ajoutez une méthode pour mettre à jour l'affichage des PV quand ils changent
+    public void IncrementPieces(int piece){
+        pvPlayer.AddPieces(currentPlayer, piece);
+        UpdatePiecesDisplay(currentPlayer, pvPlayer.GetPiecesForPlayer(currentPlayer));
+    }
 
+    // Ajoutez une méthode pour mettre à jour l'affichage des PV quand ils changent
 
     void Update()
     {
@@ -390,6 +394,9 @@ public class TableManager : MonoBehaviour
 
     public void NextPlayerTurn()
     {
+        //increment piece player
+        IncrementPieces(1);
+
         currentPlayer++;
         if (currentPlayer > totalPlayers)
         {
@@ -398,6 +405,8 @@ public class TableManager : MonoBehaviour
         }
         isMarket = true;
         supprimerMarket();
+        // incremrnt piece
+        
         createMarket(currentPlayer);
     }
 

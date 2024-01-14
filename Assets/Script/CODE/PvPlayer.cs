@@ -21,12 +21,12 @@ public class PvPlayer : MonoBehaviour
 
     void Start()
     {
-        ReduceLifePoints(1, 30); // Réduit de 30 points la vie du joueur 1 pour tester
-        ReduceLifePoints(2, 50); // Réduit de 50 points la vie du joueur 2 pour tester
-        ReduceLifePoints(3, 80); // Réduit de 80 points la vie du joueur 3 pour tester
-        ReduceLifePoints(4, 70); // Réduit de 70 points la vie du joueur 4 pour tester
-        Debug.Log("Start: PV Joueur 1 après réduction = " + lifePointsPlayer1);
-        Debug.Log("Start: PV Joueur 2 après réduction = " + lifePointsPlayer2);
+        // ReduceLifePoints(1, 30); // Réduit de 30 points la vie du joueur 1 pour tester
+        // ReduceLifePoints(2, 50); // Réduit de 50 points la vie du joueur 2 pour tester
+        // ReduceLifePoints(3, 80); // Réduit de 80 points la vie du joueur 3 pour tester
+        // ReduceLifePoints(4, 70); // Réduit de 70 points la vie du joueur 4 pour tester
+        // Debug.Log("Start: PV Joueur 1 après réduction = " + lifePointsPlayer1);
+        // Debug.Log("Start: PV Joueur 2 après réduction = " + lifePointsPlayer2);
     }
 
     public int GetLifePointsForPlayer(int playerNumber)
@@ -114,6 +114,18 @@ public class PvPlayer : MonoBehaviour
             case 2: PiecesPlayer2 -= damage; break;
             case 3: PiecesPlayer3 -= damage; break;
             case 4: PiecesPlayer4 -= damage; break;
+            default: Debug.LogError("Invalid player number!"); break;
+        }
+    }
+
+    public void AddPieces(int playerId, int damage)
+    {
+        switch (playerId)
+        {
+            case 1: PiecesPlayer1 += damage; break;
+            case 2: PiecesPlayer2 += damage; break;
+            case 3: PiecesPlayer3 += damage; break;
+            case 4: PiecesPlayer4 += damage; break;
             default: Debug.LogError("Invalid player number!"); break;
         }
     }

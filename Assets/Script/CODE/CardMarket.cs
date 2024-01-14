@@ -1,14 +1,20 @@
 [System.Serializable] // Assurez-vous d'ajouter ceci pour permettre la sérialisation
 public class CardMarket {
-    public string type;
-    public Card card; 
-    public int playerId;
+    public int id;
+    public int idPlayer;
+    public int attackPoints;
+    public int defensePoints;
+    public string iconCard;
+     public string type;
+    public string typeCard;
 
-
-
-    public CardMarket(string type, Card card, int playerId) {
+    public CardMarket(int id, int idPlayer, int attackPoints, int defensePoints, string iconCard, string type, string typeCard) {
+        this.id = id;
+        this.idPlayer = idPlayer;
+        this.attackPoints = attackPoints;
+        this.defensePoints = defensePoints;
+        this.iconCard = iconCard;
+        this.typeCard = typeCard;
         this.type = type;
-        this.card = card;
-        this.playerId = playerId;
     }
 }

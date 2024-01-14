@@ -86,9 +86,25 @@ wss.on('connection', (ws, req) => {
 
             broadcastMessagePlayerDecrement(command, idPlayer);
         } else if (typeof message === 'object' && message.type === "cartePourLeMarche") {
-            idPlayer = message.idPlayer;
+
+            let id = message.id;
+            let idPlayer = message.idPlayer;
+            let attackPoints = message.attackPoints;
+            let defensePoints = message.defensePoints;
+            let iconCard = message.iconCard;
+            let typeCard = message.typeCard;
+            let type = message.type;
+
             console.log("type de message: " + message.type)
-            broadcastMessageTableMarkettoPlayer(message, idPlayer);
+            console.log("idPlayer: " + idPlayer)
+            console.log("cardId: " + id)
+            console.log("attackPoints: " + attackPoints)
+            console.log("defensePoints: " + defensePoints)
+            console.log("iconCard: " + iconCard)
+            console.log("typeCard: " + typeCard)
+            console.log("type: " + type)
+            //broadcastMessageTableMarkettoPlayer(message, cardId, idPlayer);
+            broadcastMessageTableMarkettoPlayer(id, idPlayer, attackPoints, defensePoints, iconCard, typeCard, type);
         }
         else {
             console.log('Format de message inconnu ou non pris en charge.', message);
@@ -118,11 +134,23 @@ function broadcastMessagePlayerDecrement(command, idPlayer) {
     });
 }
 
-function broadcastMessageTableMarkettoPlayer(message, idPlayer) {
+function broadcastMessageTableMarkettoPlayer(id, idPlayer, attackPoints, defensePoints, iconCard, typeCard, type) {
+    let messageObject = {
+        type: 'cartePourLeMarche',
+        id: id,
+        playerId: idPlayer,
+        attackPoints: attackPoints,
+        defensePoints: defensePoints,
+        iconCard: iconCard,
+        typeCard: typeCard,
+        type: type
+    };
+    // Convertir l'objet en chaîne JSON
+    let messageString = JSON.stringify(messageObject);
     clients.forEach((client, clientId) => {
         if (client.readyState === WebSocket.OPEN && clientId == idPlayer) {
-            lastMessages.set(clientId, message);
-            client.send(message);
+            // lastMessages.set(clientId, message);
+            client.send(messageString);
         }
     });
 }
