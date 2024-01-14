@@ -236,7 +236,7 @@ public abstract class Card : MonoBehaviour
                     {
                         this.transform.rotation = Quaternion.Euler(0, 0, 0);
                         cartesEnModeDefenseParZone[zone] = this;
-                        
+
                     }
                 }
                 else if (this.idPlayer == 3)
@@ -262,7 +262,7 @@ public abstract class Card : MonoBehaviour
                     {
                         this.transform.rotation = Quaternion.Euler(0, 0, 90);
                         cartesEnModeDefenseParZone.Remove(zone);
-                        
+
                     }
                     else
                     {
@@ -492,15 +492,24 @@ public abstract class Card : MonoBehaviour
             else if (this.idPlayer == -1)
             {
                 Debug.Log("Carte Pour le marché");
-                tableManager.getCurrentPlayer();
-                int destinationMessage = tableManager.getCurrentPlayer();
-                this.idPlayer = destinationMessage;
-                this.prix = 0;
-                string type = "cartePourLeMarche";
-                CardMarket messageObject = new CardMarket(type, this, this.idPlayer);
-                UnityEngine.Object.Destroy(this.gameObject);
-                string message = JsonUtility.ToJson(messageObject);
-                tableManager.SendMessageToPlayer(message);
+                if (tableManager.GetPieces() >= this.prix)
+                {
+                    //this.owner.DecrementPieces(this.prix);
+                    tableManager.SetPieces(this.prix);
+                    tableManager.getCurrentPlayer();
+                    int destinationMessage = tableManager.getCurrentPlayer();
+                    this.idPlayer = destinationMessage;
+                    this.prix = 0;
+                    string type = "cartePourLeMarche";
+                    CardMarket messageObject = new CardMarket(type, this, this.idPlayer);
+                    UnityEngine.Object.Destroy(this.gameObject);
+                    string message = JsonUtility.ToJson(messageObject);
+                    tableManager.SendMessageToPlayer(message);
+                }
+                else
+                {
+                    Debug.Log("Vous n'avez pas assez de pièces");
+                }
             }
             else
             {

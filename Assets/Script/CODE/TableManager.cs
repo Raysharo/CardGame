@@ -19,6 +19,9 @@ public class TableManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI[] healthDisplays;
 
+    [SerializeField]
+    private TextMeshProUGUI[] piecesDisplays;
+
     public int currentPlayer = 1; // Commencez avec le joueur 1
     public int totalPlayers = 4; // Nombre total de joueurs
 
@@ -54,6 +57,7 @@ public class TableManager : MonoBehaviour
         if (pvPlayer != null)
         {
             InitializeHealthDisplays();
+            InitializepiecesDisplays();
         }
         else
         {
@@ -105,6 +109,40 @@ public class TableManager : MonoBehaviour
         {
             Debug.LogError("HealthDisplays array is not properly assigned in the inspector!");
         }
+    }
+
+
+    public void InitializepiecesDisplays()
+    {
+        if (piecesDisplays != null && piecesDisplays.Length == 4)
+        {
+            // Mettre à jour le texte pour chaque affichage de PV
+            for (int i = 0; i < piecesDisplays.Length; i++)
+            {
+                if (piecesDisplays[i] != null)
+                {
+                    piecesDisplays[i].text = "Pièces: " + pvPlayer.GetPiecesForPlayer(i + 1);
+                }
+                else
+                {
+                    Debug.LogError("Pieces display Text object for player " + (i + 1) + " is not assigned in the inspector!");
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError("PiecesDisplays array is not properly assigned in the inspector!");
+        }
+    }
+
+
+    public int GetPieces(){
+        return pvPlayer.GetPiecesForPlayer(currentPlayer);
+    }
+
+    public void SetPieces(int piece){
+        pvPlayer.ReducePieces(currentPlayer, piece);
+        UpdatePiecesDisplay(currentPlayer, pvPlayer.GetPiecesForPlayer(currentPlayer));
     }
 
     // Ajoutez une méthode pour mettre à jour l'affichage des PV quand ils changent
@@ -313,6 +351,12 @@ public class TableManager : MonoBehaviour
             // TODO: execute new scene with winner
             SceneManager.LoadScene("GameOver");
         }
+    }
+
+    public void UpdatePiecesDisplay(int playerNumber, int newPieces)
+    {
+        Debug.Log("UpdatePiecesDisplay - Mise à jour de l'affichage des Pièces du joueur " + playerNumber + " à " + newPieces);
+        piecesDisplays[playerNumber - 1].text = "Pièces: " + newPieces;
     }
 
     public void UpdatePositionCards(int playerId)
