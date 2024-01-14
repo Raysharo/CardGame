@@ -93,6 +93,9 @@ public abstract class Card : MonoBehaviour
     private AudioClip sound2_lock;
     // private AudioClip sound3;
 
+    private Coroutine sizeCardCoroutine;
+    float originalScale;
+
 
 
 
@@ -128,6 +131,8 @@ public abstract class Card : MonoBehaviour
         sound1_correct = Resources.Load<AudioClip>("Sound/mixkit-correct-answer-tone-2870");
         sound2_lock = Resources.Load<AudioClip>("Sound/mixkit-gaming-lock-2848");
         // sound3 = Resources.Load<AudioClip>("Sound3");
+
+        originalScale = transform.localScale.x;
     }
 
     void Update()
@@ -161,6 +166,30 @@ public abstract class Card : MonoBehaviour
         audioSource.clip = clip;
         audioSource.Play();
     }
+
+    float speedChangeSize = 10f;
+
+    IEnumerator ChangeCardSize(bool isNormalSize)
+    {
+
+        if (isNormalSize)
+        {
+            while (transform.localScale.x > originalScale * 2/3)
+            {
+                transform.localScale -= new Vector3(speedChangeSize, speedChangeSize, 0) * Time.deltaTime;
+                yield return null;
+            }
+        }
+        else
+        {
+            while (transform.localScale.x < originalScale)
+            {
+                transform.localScale += new Vector3(speedChangeSize, speedChangeSize, 0) * Time.deltaTime;
+                yield return null;
+            }
+        }
+    }
+
 
     void CheckAndAdjustPositionTable()
     {
@@ -325,7 +354,7 @@ public abstract class Card : MonoBehaviour
                     string message = JsonUtility.ToJson(messageObject);
                     owner.SendMessageToTAble(message);
                     PlaySound(sound1_correct);
-                    StartCoroutine(DelayedDestroy(0.3f,this.id));
+                    StartCoroutine(DelayedDestroy(0.3f, this.id));
 
                     if (owner.CompteCarte() == 0)
                     {
@@ -357,7 +386,7 @@ public abstract class Card : MonoBehaviour
 
 
 
-                    StartCoroutine(DelayedDestroy(0.3f,this.id));
+                    StartCoroutine(DelayedDestroy(0.3f, this.id));
 
                     // nombreDeCartesParZone[Zone1Id]++;
                     if (owner.CompteCarte() == 0)
@@ -383,7 +412,7 @@ public abstract class Card : MonoBehaviour
                     string message = JsonUtility.ToJson(messageObject);
                     owner.SendMessageToTAble(message);
                     PlaySound(sound1_correct);
-                    StartCoroutine(DelayedDestroy(0.3f,this.id));
+                    StartCoroutine(DelayedDestroy(0.3f, this.id));
 
                     // nombreDeCartesParZone[Zone3Id]++;
                     if (owner.CompteCarte() == 0)
@@ -410,8 +439,8 @@ public abstract class Card : MonoBehaviour
                     string message = JsonUtility.ToJson(messageObject);
                     owner.SendMessageToTAble(message);
                     PlaySound(sound1_correct);
-                    StartCoroutine(DelayedDestroy(0.3f,this.id));
-                    
+                    StartCoroutine(DelayedDestroy(0.3f, this.id));
+
 
                     // nombreDeCartesParZone[Zone4Id]++;
                     if (owner.CompteCarte() == 0)
@@ -431,7 +460,7 @@ public abstract class Card : MonoBehaviour
 
     }
 
-   private IEnumerator DelayedDestroy(float time, int idCard)
+    private IEnumerator DelayedDestroy(float time, int idCard)
     {
         yield return new WaitForSeconds(time);
         owner.DestroyCard(idCard);
@@ -464,7 +493,12 @@ public abstract class Card : MonoBehaviour
 
     void OnMouseDown()
     {
-        // Debug.Log("OnMouseDown");
+        Debug.Log("OnMouseDown");
+        if(sizeCardCoroutine != null){
+            StopCoroutine(sizeCardCoroutine);
+        }
+        sizeCardCoroutine = StartCoroutine(ChangeCardSize(true));
+        
 
         onInteraction = true;
         mouseDownTime = Time.time;
@@ -539,7 +573,11 @@ public abstract class Card : MonoBehaviour
 
     void OnMouseUp()
     {
-
+        if(sizeCardCoroutine != null){
+            StopCoroutine(sizeCardCoroutine);
+        }
+        
+        sizeCardCoroutine = StartCoroutine(ChangeCardSize(false));
         // Debug.Log("OnMouseUp");
         onInteraction = false;
         rend.material.color = this.color;
