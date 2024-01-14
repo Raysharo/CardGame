@@ -88,10 +88,24 @@ public abstract class Card : MonoBehaviour
 
     private bool initializedNombreDeCartesZone = false;
 
+    private AudioSource audioSource;
+    private AudioClip sound1;
+    // private AudioClip sound2;
+    // private AudioClip sound3;
+
+
+
+
 
     void Start()
     {
         Program = GameObject.Find("Program").GetComponent<Program>();
+
+
+
+
+
+
 
     }
 
@@ -110,10 +124,24 @@ public abstract class Card : MonoBehaviour
         this.collid = gameObject.GetComponent<BoxCollider>();
 
         // this.collid.size = new Vector2(transform.localScale.x + boxScaleMargeX, transform.localScale.y + boxScaleFactorY);
+
+        // Ajouter le composant AudioSource à l'objet
+        audioSource = gameObject.AddComponent<AudioSource>();
+
+        // Charger les AudioClip depuis le dossier "Resources"
+        sound1 = Resources.Load<AudioClip>("Sound1");
+        // sound2 = Resources.Load<AudioClip>("Sound2");
+        // sound3 = Resources.Load<AudioClip>("Sound3");
     }
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            PlaySound(sound1);
+        }
+
+
         string currentSceneName = SceneManager.GetActiveScene().name;
         if (!onInteraction)
         {
@@ -126,6 +154,16 @@ public abstract class Card : MonoBehaviour
                 CheckAndAdjustPositionPlayer();
             }
         }
+    }
+
+    void PlaySound(AudioClip clip)
+    {
+        // Arrêter la lecture actuelle
+        audioSource.Stop();
+
+        // Charger et jouer le nouveau son
+        audioSource.clip = clip;
+        audioSource.Play();
     }
 
     void CheckAndAdjustPositionTable()
@@ -479,10 +517,13 @@ public abstract class Card : MonoBehaviour
 
     void OnMouseUp()
     {
+
         // Debug.Log("OnMouseUp");
         onInteraction = false;
         rend.material.color = this.color;
         float clickDuration = Time.time - mouseDownTime;
+
+        PlaySound(sound1);
 
         if (SceneManager.GetActiveScene().name == "TableScene")
         {
