@@ -47,10 +47,6 @@ public abstract class Card : MonoBehaviour
     private static Dictionary<Rect, Card> cartesEnModeDefenseParZone = new Dictionary<Rect, Card>();
 
 
-
-
-
-
     private Vector2 topLeftPlayer1 = new Vector2(-5.0f, -5.0f);
     private Vector2 topRightPlayer1 = new Vector2(5.0f, -5.0f);
     private Vector2 bottomLeftPlayer1 = new Vector2(-5.0f, -10.0f);
@@ -79,25 +75,14 @@ public abstract class Card : MonoBehaviour
     private Vector2 bottomRightPlayer4 = new Vector2(11.0f, -6.27f);
 
 
-
-
-    private Rect playerZone1;
-    private Rect playerZone2;
-    private Rect playerZone3;
-    private Rect playerZone4;
+    private Rect playerZone1, playerZone2, playerZone3, playerZone4;
 
     private bool initializedNombreDeCartesZone = false;
 
     private AudioSource audioSource;
-    private AudioClip sound1_correct;
-    private AudioClip sound2_lock;
-    // private AudioClip sound3;
-
+    private AudioClip sound1_correct, sound2_lock;
     private Coroutine sizeCardCoroutine;
     float originalScale;
-
-
-
 
 
     void Start()
@@ -127,7 +112,6 @@ public abstract class Card : MonoBehaviour
 
         // Charger les AudioClip depuis le dossier "Resources" ET NE PAS METTRE L'EXTENSION !!!!!
 
-
         sound1_correct = Resources.Load<AudioClip>("Sound/mixkit-correct-answer-tone-2870");
         sound2_lock = Resources.Load<AudioClip>("Sound/mixkit-gaming-lock-2848");
         // sound3 = Resources.Load<AudioClip>("Sound3");
@@ -141,7 +125,6 @@ public abstract class Card : MonoBehaviour
         {
             PlaySound(sound2_lock);
         }
-
 
         string currentSceneName = SceneManager.GetActiveScene().name;
         if (!onInteraction)
@@ -379,12 +362,6 @@ public abstract class Card : MonoBehaviour
                     string message = JsonUtility.ToJson(messageObject);
                     owner.SendMessageToTAble(message);
                     PlaySound(sound1_correct);
-
-
-
-
-
-
 
                     StartCoroutine(DelayedDestroy(0.3f, this.id));
 

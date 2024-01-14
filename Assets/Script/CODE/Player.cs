@@ -17,26 +17,15 @@ public class Player
 
     public int id;
     public List<Card> cards = new List<Card>(); // Liste pour suivre les cartes du joueur
-    // Deck
-    // Hand
-    // Board
     public int lifePoints;
-
-    // public List<Card> Hand;
-    // public List<Card> Deck;
-    // public List<Card> Board;
 
     public List<Card> Deck = new List<Card>();
 
     public WebSocket PlayerSocket;
 
-    // private Queue<string> messageQueue = new Queue<string>();
-
     public Vector3 scaleCardOnTel = new Vector3(2, 3, 0.1f);
 
     private TextMeshProUGUI deckCountDisplay;
-
-
 
     public Player(int id, string adresseNgrok, TextMeshProUGUI deckCountDisplay)
     {
@@ -82,7 +71,6 @@ public class Player
         {
             CreateforCard(cardTypes, iconNames);
         }
-        //UpdateDeckCountDisplay();
     }
 
     public void UpdateDeckCountDisplay()
@@ -262,7 +250,6 @@ public class Player
         //cardType.BaseType.GetMethod("InitializeCard").Invoke(cardObject.AddComponent(cardType), new object[] { attackPoints, defensePoints });
         Card cardComponent = (Card)cardObject.AddComponent(cardType);
         // Initialiser la carte (si vous avez une fonction pour cela dans votre classe Card)
-        //cardComponent.InitializeCard();
         cardComponent.InitializeCard(attackPoints, defensePoints);
         // Assigner le joueur comme propriétaire de la carte
         string text = $"Attaque: {attackPoints}\nDéfense: {defensePoints}";
@@ -276,9 +263,6 @@ public class Player
         cardComponent.iconCard = iconSelected;
         spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/" + iconSelected);
         spriteRenderer.sortingOrder = 1;
-
-        // spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/" + iconNames[UnityEngine.Random.Range(0, iconNames.Length)]);
-        // spriteRenderer.sortingOrder = 1;
 
         if (isGetCard == false)
         {
@@ -396,8 +380,6 @@ public class Player
         textObject.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f); // Ajustez cette échelle selon vos besoins
 
     }
-
-
 
     public void DestroyCard(int cardId)
     {

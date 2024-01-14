@@ -82,3 +82,6 @@ crashlytics-build.properties
 Server/certificate.pem
 Server/private-key.pem
 [Pp]ackages/
+
+
+/Android/
