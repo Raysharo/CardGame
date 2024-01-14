@@ -89,8 +89,8 @@ public abstract class Card : MonoBehaviour
     private bool initializedNombreDeCartesZone = false;
 
     private AudioSource audioSource;
-    private AudioClip sound1;
-    // private AudioClip sound2;
+    private AudioClip sound1_correct;
+    private AudioClip sound2_lock;
     // private AudioClip sound3;
 
 
@@ -100,12 +100,6 @@ public abstract class Card : MonoBehaviour
     void Start()
     {
         Program = GameObject.Find("Program").GetComponent<Program>();
-
-
-
-
-
-
 
     }
 
@@ -128,9 +122,11 @@ public abstract class Card : MonoBehaviour
         // Ajouter le composant AudioSource à l'objet
         audioSource = gameObject.AddComponent<AudioSource>();
 
-        // Charger les AudioClip depuis le dossier "Resources"
-        sound1 = Resources.Load<AudioClip>("Sound1");
-        // sound2 = Resources.Load<AudioClip>("Sound2");
+        // Charger les AudioClip depuis le dossier "Resources" ET NE PAS METTRE L'EXTENSION !!!!!
+
+
+        sound1_correct = Resources.Load<AudioClip>("Sound/mixkit-correct-answer-tone-2870");
+        sound2_lock = Resources.Load<AudioClip>("Sound/mixkit-gaming-lock-2848");
         // sound3 = Resources.Load<AudioClip>("Sound3");
     }
 
@@ -138,7 +134,7 @@ public abstract class Card : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            PlaySound(sound1);
+            PlaySound(sound2_lock);
         }
 
 
@@ -313,6 +309,7 @@ public abstract class Card : MonoBehaviour
             else
             {
                 Debug.Log("Carte ne peut pas etre orienter en mode defense");
+                PlaySound(sound2_lock);
             }
         }
         else
@@ -327,7 +324,9 @@ public abstract class Card : MonoBehaviour
                     CardMessage messageObject = new CardMessage(this.id, this.GetType().Name, attackPoints, defensePoints, this.iconCard);
                     string message = JsonUtility.ToJson(messageObject);
                     owner.SendMessageToTAble(message);
-                    owner.DestroyCard(this.id);
+                    PlaySound(sound1_correct);
+                    StartCoroutine(DelayedDestroy(0.3f,this.id));
+
                     if (owner.CompteCarte() == 0)
                     {
                         //owner.CreateCardPlayer(this.idPlayer);
@@ -337,6 +336,7 @@ public abstract class Card : MonoBehaviour
                 else
                 {
                     Debug.Log("Carte ne peut pas etre poser");
+                    PlaySound(sound2_lock);
                 }
             }
             else if (this.idPlayer == 2)
@@ -349,7 +349,16 @@ public abstract class Card : MonoBehaviour
                     CardMessage messageObject = new CardMessage(this.id, this.GetType().Name, attackPoints, defensePoints, this.iconCard);
                     string message = JsonUtility.ToJson(messageObject);
                     owner.SendMessageToTAble(message);
-                    owner.DestroyCard(this.id);
+                    PlaySound(sound1_correct);
+
+
+
+
+
+
+
+                    StartCoroutine(DelayedDestroy(0.3f,this.id));
+
                     // nombreDeCartesParZone[Zone1Id]++;
                     if (owner.CompteCarte() == 0)
                     {
@@ -360,6 +369,7 @@ public abstract class Card : MonoBehaviour
                 else
                 {
                     Debug.Log("Carte ne peut pas etre poser");
+                    PlaySound(sound2_lock);
                 }
             }
             else if (this.idPlayer == 3)
@@ -372,7 +382,9 @@ public abstract class Card : MonoBehaviour
                     CardMessage messageObject = new CardMessage(this.id, this.GetType().Name, attackPoints, defensePoints, this.iconCard);
                     string message = JsonUtility.ToJson(messageObject);
                     owner.SendMessageToTAble(message);
-                    owner.DestroyCard(this.id);
+                    PlaySound(sound1_correct);
+                    StartCoroutine(DelayedDestroy(0.3f,this.id));
+
                     // nombreDeCartesParZone[Zone3Id]++;
                     if (owner.CompteCarte() == 0)
                     {
@@ -384,6 +396,7 @@ public abstract class Card : MonoBehaviour
                 else
                 {
                     Debug.Log("Carte ne peut pas etre poser");
+                    PlaySound(sound2_lock);
                 }
             }
             else if (this.idPlayer == 4)
@@ -396,7 +409,10 @@ public abstract class Card : MonoBehaviour
                     CardMessage messageObject = new CardMessage(this.id, this.GetType().Name, attackPoints, defensePoints, this.iconCard);
                     string message = JsonUtility.ToJson(messageObject);
                     owner.SendMessageToTAble(message);
-                    owner.DestroyCard(this.id);
+                    PlaySound(sound1_correct);
+                    StartCoroutine(DelayedDestroy(0.3f,this.id));
+                    
+
                     // nombreDeCartesParZone[Zone4Id]++;
                     if (owner.CompteCarte() == 0)
                     {
@@ -407,6 +423,7 @@ public abstract class Card : MonoBehaviour
                 else
                 {
                     Debug.Log("Carte ne peut pas etre poser");
+                    PlaySound(sound2_lock);
                 }
             }
 
@@ -414,6 +431,11 @@ public abstract class Card : MonoBehaviour
 
     }
 
+   private IEnumerator DelayedDestroy(float time, int idCard)
+    {
+        yield return new WaitForSeconds(time);
+        owner.DestroyCard(idCard);
+    }
 
 
     bool PeutOrienterEnDefense(Rect zone)
@@ -523,7 +545,7 @@ public abstract class Card : MonoBehaviour
         rend.material.color = this.color;
         float clickDuration = Time.time - mouseDownTime;
 
-        PlaySound(sound1);
+        PlaySound(sound1_correct);
 
         if (SceneManager.GetActiveScene().name == "TableScene")
         {
