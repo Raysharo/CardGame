@@ -109,6 +109,8 @@ public abstract class Card : MonoBehaviour
 
         // Ajouter le composant AudioSource à l'objet
         audioSource = gameObject.AddComponent<AudioSource>();
+        // setr volume
+        audioSource.volume = 0.15f;
 
         // Charger les AudioClip depuis le dossier "Resources" ET NE PAS METTRE L'EXTENSION !!!!!
 
