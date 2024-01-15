@@ -360,7 +360,35 @@ public class TableManager : MonoBehaviour
     public void UpdatePiecesDisplay(int playerNumber, int newPieces)
     {
         Debug.Log("UpdatePiecesDisplay - Mise à jour de l'affichage des Pièces du joueur " + playerNumber + " à " + newPieces);
+        /*
+        // parse the old text to get the number of pieces
+        string oldText = piecesDisplays[playerNumber - 1].text;
+        string[] words = oldText.Split(' ');
+        int oldPieces = Int32.Parse(words[1]);
+        Debug.Log("UpdatePiecesDisplay - oldPieces: " + oldPieces);
+        if(newPieces > oldPieces){
+            // create a cylinder object under the piecesDisplays object for each piece added
+            for(int i = 0; i < newPieces - oldPieces; i++){
+                GameObject coinObject = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                coinObject.name = "CoinPlayer" + playerNumber + "_PiecesNum_" + newPieces;
+                coinObject.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                coinObject.transform.position = piecesDisplays[playerNumber - 1].transform.position + new Vector3(0, -1 * i, 0);
+            }
+        } else {
+            // destroy a cylinder object under the piecesDisplays object for each piece removed
+            for(int i = 0; i < oldPieces - newPieces; i++){
+                GameObject coinObject = GameObject.Find("CoinPlayer" + playerNumber + "_PiecesNum_" + (newPieces + i + 1));
+                Destroy(coinObject);
+            }
+        }
+        */
+            
+        
+
         piecesDisplays[playerNumber - 1].text = "Pièces: " + newPieces;
+
+
+
     }
 
     public void UpdatePositionCards(int playerId)
