@@ -617,7 +617,7 @@ public abstract class Card : MonoBehaviour
                     if (this.idPlayer != 1 && this.idPlayer != 3)
                     {
                         Debug.Log("Carte  peut attaque  ");
-                        //attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone1, this.idPlayer);
+                        // attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone1, this.idPlayer);
                         tableManager.getCurrentPlayer();
                         int destinationMessage = tableManager.getCurrentPlayer();
                         int id = this.id;
@@ -652,7 +652,7 @@ public abstract class Card : MonoBehaviour
                         Debug.Log("Carte  peut attaque  ");
                         //attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone2, this.idPlayer);
 
-                         tableManager.getCurrentPlayer();
+                        tableManager.getCurrentPlayer();
                         int destinationMessage = tableManager.getCurrentPlayer();
                         int id = this.id;
                         int idPlayer = destinationMessage;
