@@ -315,8 +315,8 @@ public class Player
             if (card.id == idCard)
             {
                 cards.Remove(card);
-                Deck.Add(card);
-                UpdateDeckCountDisplay();
+                //Deck.Add(card);
+                //UpdateDeckCountDisplay();
             }
         }
     }

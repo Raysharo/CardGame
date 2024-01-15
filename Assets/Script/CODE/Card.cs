@@ -157,7 +157,7 @@ public abstract class Card : MonoBehaviour
 
         if (isNormalSize)
         {
-            while (transform.localScale.x > originalScale * 2/3)
+            while (transform.localScale.x > originalScale * 2 / 3)
             {
                 transform.localScale -= new Vector3(speedChangeSize, speedChangeSize, 0) * Time.deltaTime;
                 yield return null;
@@ -471,11 +471,12 @@ public abstract class Card : MonoBehaviour
     void OnMouseDown()
     {
         Debug.Log("OnMouseDown");
-        if(sizeCardCoroutine != null){
+        if (sizeCardCoroutine != null)
+        {
             StopCoroutine(sizeCardCoroutine);
         }
         sizeCardCoroutine = StartCoroutine(ChangeCardSize(true));
-        
+
 
         onInteraction = true;
         mouseDownTime = Time.time;
@@ -550,10 +551,11 @@ public abstract class Card : MonoBehaviour
 
     void OnMouseUp()
     {
-        if(sizeCardCoroutine != null){
+        if (sizeCardCoroutine != null)
+        {
             StopCoroutine(sizeCardCoroutine);
         }
-        
+
         sizeCardCoroutine = StartCoroutine(ChangeCardSize(false));
         // Debug.Log("OnMouseUp");
         onInteraction = false;
@@ -616,16 +618,27 @@ public abstract class Card : MonoBehaviour
                     {
                         Debug.Log("Carte  peut attaque  ");
                         //attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone1, this.idPlayer);
+                        tableManager.getCurrentPlayer();
+                        int destinationMessage = tableManager.getCurrentPlayer();
+                        int id = this.id;
+                        int idPlayer = destinationMessage;
+                        int defensePoints = this.defensePoints;
+                        string iconCard = this.iconCard;
+                        string type = "cartePourLeMarche";
+                        string typeCard = this.GetType().Name;
                         attackPoints = PointDeffenceCardsInZonetest(playerZone1, this.idPlayer, this.attackPoints);
                         Debug.Log("attackPoints" + attackPoints);
                         tableManager.AttackPlayer(this.idPlayer, 1, attackPoints);
 
-                        InfosMessage messageObject = new InfosMessage("carteDetruite", this.idPlayer);
-                        string message = JsonUtility.ToJson(messageObject);
-                        tableManager.SendMessageToPlayer(message);
+                        InfosMessage messageObject1 = new InfosMessage("carteDetruite", this.idPlayer);
+                        string message1 = JsonUtility.ToJson(messageObject1);
+                        tableManager.SendMessageToPlayer(message1);
+
+                        CardMarket messageObject2 = new CardMarket(id, idPlayer, this.attackPoints, defensePoints, iconCard, type, typeCard);
+                        string message2 = JsonUtility.ToJson(messageObject2);
+                        tableManager.SendMessageToPlayer(message2);
 
                         UnityEngine.Object.Destroy(this.gameObject);
-                        //tableManager.UpdatePositionCards(this.idPlayer);
                         tableManager.NextPlayerTurn();
                     }
                 }
@@ -638,15 +651,28 @@ public abstract class Card : MonoBehaviour
                     {
                         Debug.Log("Carte  peut attaque  ");
                         //attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone2, this.idPlayer);
-                        attackPoints = PointDeffenceCardsInZonetest(playerZone2, this.idPlayer, this.attackPoints);
 
+                         tableManager.getCurrentPlayer();
+                        int destinationMessage = tableManager.getCurrentPlayer();
+                        int id = this.id;
+                        int idPlayer = destinationMessage;
+                        int defensePoints = this.defensePoints;
+                        string iconCard = this.iconCard;
+                        string type = "cartePourLeMarche";
+                        string typeCard = this.GetType().Name;
+                        attackPoints = PointDeffenceCardsInZonetest(playerZone2, this.idPlayer, this.attackPoints);
                         Debug.Log("attackPoints" + attackPoints);
                         tableManager.AttackPlayer(this.idPlayer, 2, attackPoints);
 
 
-                        InfosMessage messageObject = new InfosMessage("carteDetruite", this.idPlayer);
-                        string message = JsonUtility.ToJson(messageObject);
-                        tableManager.SendMessageToPlayer(message);
+                        InfosMessage messageObject1 = new InfosMessage("carteDetruite", this.idPlayer);
+                        string message1 = JsonUtility.ToJson(messageObject1);
+                        tableManager.SendMessageToPlayer(message1);
+
+                        CardMarket messageObject2 = new CardMarket(id, idPlayer, this.attackPoints, defensePoints, iconCard, type, typeCard);
+                        string message2 = JsonUtility.ToJson(messageObject2);
+                        tableManager.SendMessageToPlayer(message2);
+
 
                         //tableManager.UpdatePositionCards(this.idPlayer);
                         UnityEngine.Object.Destroy(this.gameObject);
@@ -661,15 +687,27 @@ public abstract class Card : MonoBehaviour
                     if (this.idPlayer != 1 && this.idPlayer != 3)
                     {
                         Debug.Log("Carte  peut attaque  ");
-                        //attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone3, this.idPlayer);
+
+                        tableManager.getCurrentPlayer();
+                        int destinationMessage = tableManager.getCurrentPlayer();
+                        int id = this.id;
+                        int idPlayer = destinationMessage;
+                        int defensePoints = this.defensePoints;
+                        string iconCard = this.iconCard;
+                        string type = "cartePourLeMarche";
+                        string typeCard = this.GetType().Name;
                         attackPoints = PointDeffenceCardsInZonetest(playerZone3, this.idPlayer, this.attackPoints);
                         Debug.Log("attackPoints" + attackPoints);
                         tableManager.AttackPlayer(this.idPlayer, 3, attackPoints);
-                        //tableManager.UpdatePositionCards(this.idPlayer);
 
-                        InfosMessage messageObject = new InfosMessage("carteDetruite", this.idPlayer);
-                        string message = JsonUtility.ToJson(messageObject);
-                        tableManager.SendMessageToPlayer(message);
+                        InfosMessage messageObject1 = new InfosMessage("carteDetruite", this.idPlayer);
+                        string message1 = JsonUtility.ToJson(messageObject1);
+                        tableManager.SendMessageToPlayer(message1);
+
+
+                        CardMarket messageObject2 = new CardMarket(id, idPlayer, this.attackPoints, defensePoints, iconCard, type, typeCard);
+                        string message2 = JsonUtility.ToJson(messageObject2);
+                        tableManager.SendMessageToPlayer(message2);
 
                         UnityEngine.Object.Destroy(this.gameObject);
                         tableManager.NextPlayerTurn();
@@ -683,14 +721,28 @@ public abstract class Card : MonoBehaviour
                     if (this.idPlayer != 2 && this.idPlayer != 4)
                     {
                         Debug.Log("Carte  peut attaque  ");
-                        //attackPoints = this.attackPoints - PointDeffenceCardsInZone(playerZone4, this.idPlayer);
+
+                        tableManager.getCurrentPlayer();
+                        int destinationMessage = tableManager.getCurrentPlayer();
+                        int id = this.id;
+                        int idPlayer = destinationMessage;
+                        int defensePoints = this.defensePoints;
+                        string iconCard = this.iconCard;
+                        string type = "cartePourLeMarche";
+                        string typeCard = this.GetType().Name;
                         attackPoints = PointDeffenceCardsInZonetest(playerZone4, this.idPlayer, this.attackPoints);
                         Debug.Log("attackPoints" + attackPoints);
                         tableManager.AttackPlayer(this.idPlayer, 4, attackPoints);
 
-                        InfosMessage messageObject = new InfosMessage("carteDetruite", this.idPlayer);
-                        string message = JsonUtility.ToJson(messageObject);
-                        tableManager.SendMessageToPlayer(message);
+                        InfosMessage messageObject1 = new InfosMessage("carteDetruite", this.idPlayer);
+                        string message1 = JsonUtility.ToJson(messageObject1);
+                        tableManager.SendMessageToPlayer(message1);
+
+
+
+                        CardMarket messageObject2 = new CardMarket(id, idPlayer, this.attackPoints, defensePoints, iconCard, type, typeCard);
+                        string message2 = JsonUtility.ToJson(messageObject2);
+                        tableManager.SendMessageToPlayer(message2);
 
                         //tableManager.UpdatePositionCards(this.idPlayer);
                         UnityEngine.Object.Destroy(this.gameObject);
@@ -862,15 +914,28 @@ public abstract class Card : MonoBehaviour
                     //pDeffence += card.defensePoints;
                     if (attackPoints >= card.defensePoints)
                     {
-                        //GameManager.Instance.DecrementZoneIncarte1();
-                        UnityEngine.Object.Destroy(card.gameObject);
+                        // nouveau
+                        int id = card.id;
+                        int defensePoints = card.defensePoints;
+                        string iconCard = card.iconCard;
+                        string type = "cartePourLeMarche";
+                        string typeCard = card.GetType().Name;
+
+
                         attackPoints -= card.defensePoints;
+                        UnityEngine.Object.Destroy(card.gameObject);
                         cartesEnModeDefenseParZone.Remove(zone);
-                        //SendMessagetoplayer 1  use websocket
+
+
+                        //nouveau
+                        CardMarket messageObject2 = new CardMarket(id, 1, this.attackPoints, defensePoints, iconCard, type, typeCard);
+                        string message2 = JsonUtility.ToJson(messageObject2);
+                        tableManager.SendMessageToPlayer(message2);
+
+
                         InfosMessage messageObject = new InfosMessage("carteDetruite", 1);
                         string message = JsonUtility.ToJson(messageObject);
                         tableManager.SendMessageToPlayer(message);
-                        // nombreDeCartesParZone[Zone1Id]--;
                     }
                     else
                     {
@@ -884,15 +949,32 @@ public abstract class Card : MonoBehaviour
                     if (attackPoints >= card.defensePoints)
                     {
 
-                        UnityEngine.Object.Destroy(card.gameObject);
+                        
+
+                        // nouveau
+                        int id = card.id;
+                        int defensePoints = card.defensePoints;
+                        string iconCard = card.iconCard;
+                        string type = "cartePourLeMarche";
+                        string typeCard = card.GetType().Name;
+
+
                         attackPoints -= card.defensePoints;
+                        UnityEngine.Object.Destroy(card.gameObject);
                         cartesEnModeDefenseParZone.Remove(zone);
-                        //GameManager.Instance.DecrementZoneIncarte2();
+                       
+
+                        //nouveau
+                        CardMarket messageObject2 = new CardMarket(id, 2, this.attackPoints, defensePoints, iconCard, type, typeCard);
+                        string message2 = JsonUtility.ToJson(messageObject2);
+                        tableManager.SendMessageToPlayer(message2);
+
+
                         InfosMessage messageObject = new InfosMessage("carteDetruite", 2);
                         string message = JsonUtility.ToJson(messageObject);
                         tableManager.SendMessageToPlayer(message);
 
-                        // nombreDeCartesParZone[Zone2Id]--;
+                        
                     }
                     else
                     {
@@ -905,11 +987,28 @@ public abstract class Card : MonoBehaviour
                     //pDeffence += card.defensePoints;
                     if (attackPoints >= card.defensePoints)
                     {
-                        //GameManager.Instance.DecrementZoneIncarte3();
-                        UnityEngine.Object.Destroy(card.gameObject);
+
+                         // nouveau
+                        int id = card.id;
+                        int defensePoints = card.defensePoints;
+                        string iconCard = card.iconCard;
+                        string type = "cartePourLeMarche";
+                        string typeCard = card.GetType().Name;
+
+                        
                         attackPoints -= card.defensePoints;
+                        UnityEngine.Object.Destroy(card.gameObject);
                         cartesEnModeDefenseParZone.Remove(zone);
-                        // nombreDeCartesParZone[Zone3Id]--;
+
+
+                        //nouveau
+                        CardMarket messageObject2 = new CardMarket(id, 3, this.attackPoints, defensePoints, iconCard, type, typeCard);
+                        string message2 = JsonUtility.ToJson(messageObject2);
+                        tableManager.SendMessageToPlayer(message2);
+                        
+
+
+
                         InfosMessage messageObject = new InfosMessage("carteDetruite", 3);
                         string message = JsonUtility.ToJson(messageObject);
                         card.owner.SendMessageToPlayer(message);
@@ -926,10 +1025,27 @@ public abstract class Card : MonoBehaviour
                     //pDeffence += card.defensePoints;
                     if (attackPoints >= card.defensePoints)
                     {
-                        // GameManager.Instance.DecrementZoneIncarte4();
-                        UnityEngine.Object.Destroy(card.gameObject);
+
+                        // nouveau
+                        int id = card.id;
+                        int defensePoints = card.defensePoints;
+                        string iconCard = card.iconCard;
+                        string type = "cartePourLeMarche";
+                        string typeCard = card.GetType().Name;
+                        
+                        
                         attackPoints -= card.defensePoints;
+                        UnityEngine.Object.Destroy(card.gameObject);
                         cartesEnModeDefenseParZone.Remove(zone);
+
+
+
+ //nouveau
+                        CardMarket messageObject2 = new CardMarket(id, 4, this.attackPoints, defensePoints, iconCard, type, typeCard);
+                        string message2 = JsonUtility.ToJson(messageObject2);
+                        tableManager.SendMessageToPlayer(message2);
+
+
                         // nombreDeCartesParZone[Zone4Id]--;   
                         InfosMessage messageObject = new InfosMessage("carteDetruite", 4);
                         string message = JsonUtility.ToJson(messageObject);

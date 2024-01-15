@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class NgrokManager : MonoBehaviour
 {
-    private static string adresseNgrok = "7161-46-193-3-79";
+    private static string adresseNgrok = "4082-134-59-215-253";
 
 
     public static string GetAdresseNgrok()
