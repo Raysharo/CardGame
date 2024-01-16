@@ -32,7 +32,7 @@ public class Player
         this.deckCountDisplay = deckCountDisplay;
         this.id = id;
         // PlayerSocket = new WebSocket("wss://" + adresseNgrok + "/" + id);
-        PlayerSocket = new WebSocket(adresseNgrok +"/" + id);
+        PlayerSocket = new WebSocket(adresseNgrok + id);
 
         PlayerSocket.OnMessage += (sender, e) =>
         {
