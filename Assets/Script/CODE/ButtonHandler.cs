@@ -8,6 +8,7 @@ public class ButtonHandler : MonoBehaviour
     public Button seeCardPlayButton; // Assurez-vous d'assigner ceci dans l'inspecteur Unity ou via le code.
 
     public bool isGetCard = false;
+    private bool isButtonCooldown = false;
 
     public int idPlayer = -1;
 
@@ -22,14 +23,24 @@ public class ButtonHandler : MonoBehaviour
     }
 
     // Fonction de rappel appelée lorsque le bouton est cliqué
-    void OnSeeCardPlayClicked()
+
+    public void OnSeeCardPlayClicked()
     {
+        if (isButtonCooldown) return; // Ignore les clics supplémentaires
+        isButtonCooldown = true; // Commence le cooldown
         Debug.Log("Bouton 'see card play' cliqué!");
+        Debug.Log("isGetCard eb de if  avant : " + isGetCard);
         // Ici, mettez la logique à exécuter lors du clic sur le bouton.
         // Par exemple, changer les cartes affichées à l'écran.
         FindAllCards();
+        StartCoroutine(ResetButtonCooldown());
     }
 
+    private IEnumerator ResetButtonCooldown()
+    {
+        yield return new WaitForSeconds(0.5f); // Attendez 0.5 seconde
+        isButtonCooldown = false; // Réactive le bouton
+    }
     public void FindAllCards()
     {
         // Trouvez toutes les cartes dans la scène
@@ -38,13 +49,14 @@ public class ButtonHandler : MonoBehaviour
         {
             // Vérifiez si la carte appartient au joueur actuel
             // Logique pour traiter les cartes du joueur actuel
-            Debug.Log("Carte trouvée : att : " + card.attackPoints + " def :  " + card.defensePoints + " idPlayer : " + card.idPlayer );
+            Debug.Log("Carte trouvée : att : " + card.attackPoints + " def :  " + card.defensePoints + " idPlayer : " + card.idPlayer);
             // Par exemple, vous pourriez ajouter une logique pour afficher ou mettre à jour l'UI ici
-            if (isGetCard == false){
+            if (isGetCard == false)
+            {
                 idPlayer = card.owner.id;
             }
 
-            if ( (isGetCard == true) && (card.idPlayer != idPlayer))
+            if ((isGetCard == true) && (card.idPlayer != idPlayer))
             {
                 Debug.Log("Carte trouvée : ID : " + card.idPlayer);
                 card.gameObject.SetActive(false);
@@ -88,7 +100,7 @@ public class ButtonHandler : MonoBehaviour
         }
 
         // Debug.Log("isGetCard eb de if  avant : " + isGetCard);
-        
+
         // Debug.Log("isGetCard eb de if apres  : " + isGetCard);
     }
 }
