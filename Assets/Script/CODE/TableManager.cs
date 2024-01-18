@@ -33,7 +33,7 @@ public class TableManager : MonoBehaviour
         //string adresseNgrok = "8354-46-193-3-79";
         string adresseNgrok = NgrokManager.GetAdresseNgrok();
         // Initialiser la connexion WebSocket
-        ws = new WebSocket(adresseNgrok);
+        ws = new WebSocket(adresseNgrok + "0");
 
 
 
