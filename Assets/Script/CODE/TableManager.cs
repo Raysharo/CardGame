@@ -121,7 +121,7 @@ public class TableManager : MonoBehaviour
             {
                 if (piecesDisplays[i] != null)
                 {
-                    piecesDisplays[i].text = "Pièces: " + pvPlayer.GetPiecesForPlayer(i + 1);
+                    piecesDisplays[i].text = "Pièces: " + pvPlayer.GetPiecesForPlayer(i + 1) * Constant.COINS_MULTIPLIER;
                 }
                 else
                 {
@@ -313,7 +313,7 @@ public class TableManager : MonoBehaviour
                 if (isMarket)
                 {
                     int prix = UnityEngine.Random.Range(1, 5);
-                    text = $"Prix: {prix}\nAttaque: {attackPoints}\nDéfense: {defensePoints}";
+                    text = $"Prix: {prix * Constant.COINS_MULTIPLIER}\nAttaque: {attackPoints}\nDéfense: {defensePoints}";
                     cardComponent.prix = prix;
                     cardComponent.idPlayer = -1;
                 }
@@ -390,7 +390,7 @@ public class TableManager : MonoBehaviour
 
 
 
-        piecesDisplays[playerNumber - 1].text = "Pièces: " + newPieces;
+        piecesDisplays[playerNumber - 1].text = "Pièces: " + newPieces * Constant.COINS_MULTIPLIER;
 
 
 
