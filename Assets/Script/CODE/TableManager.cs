@@ -441,8 +441,45 @@ public class TableManager : MonoBehaviour
 
         StartCoroutine(AlphaColorZoneAnimation(currentPlayer));
 
+        ShowPlayerTurn(currentPlayer);
 
         createMarket(currentPlayer);
+    }
+
+    void ShowPlayerTurn(int currentPlayer){
+        // Add a TextMeshPro text to the middle of the scene to indicate the current player turn
+        // Bold, 43.5 font size, centered text, Middle Center alignment, white color, auto size
+        GameObject textObject = new GameObject("Text");
+        textObject.transform.SetParent(GameObject.Find("Canvas").transform, false);
+        textObject.transform.localPosition = new Vector3(0, 0, 0); // Centrez sur la carte
+        textObject.transform.localScale = new Vector3(1, 1, 1); //  // Adjust width (x) and height (y) as needed
+        TextMeshProUGUI textComponent = textObject.AddComponent<TextMeshProUGUI>();
+        textComponent.text = "Tour du joueur " + currentPlayer;
+        textComponent.fontSize = 43.5f;
+        textComponent.alignment = TextAlignmentOptions.Center;
+        textComponent.color = Color.white;
+        textComponent.autoSizeTextContainer = true;
+
+        // make the text rotate to be visible by the current player
+        if (currentPlayer == 1)
+        {
+            textObject.transform.Rotate(0, 0, 0);
+        }
+        else if (currentPlayer == 2)
+        {
+            textObject.transform.Rotate(0, 0, -90);
+        }
+        else if (currentPlayer == 3)
+        {
+            textObject.transform.Rotate(0, 0, 180);
+        }
+        else if (currentPlayer == 4)
+        {
+            textObject.transform.Rotate(0, 0, 90);
+        }
+
+        // Destroy the text after 5 seconds
+        Destroy(textObject, 5.0f);
     }
 
     // DO NOT WORK : make the border picture appear over the zone of the player

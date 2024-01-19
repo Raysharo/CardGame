@@ -1924,6 +1924,8 @@ MonoBehaviour:
   PiecesPlayer2: 1
   PiecesPlayer3: 1
   PiecesPlayer4: 1
+  audioSource: {fileID: 0}
+  damageAudioClip: {fileID: 0}
 --- !u!4 &1113900718
 Transform:
   m_ObjectHideFlags: 0
