@@ -365,11 +365,16 @@ public class TableManager : MonoBehaviour
     public void UpdatePiecesDisplay(int playerNumber, int newPieces)
     {
         Debug.Log("UpdatePiecesDisplay - Mise à jour de l'affichage des Pièces du joueur " + playerNumber + " à " + newPieces);
+        
         /*
+
+        TODO : HERE
+        ça marche presque
+
         // parse the old text to get the number of pieces
         string oldText = piecesDisplays[playerNumber - 1].text;
         string[] words = oldText.Split(' ');
-        int oldPieces = Int32.Parse(words[1]);
+        int oldPieces = Int32.Parse(words[1]) / Constant.COINS_MULTIPLIER;
         Debug.Log("UpdatePiecesDisplay - oldPieces: " + oldPieces);
         if(newPieces > oldPieces){
             // create a cylinder object under the piecesDisplays object for each piece added
@@ -387,8 +392,6 @@ public class TableManager : MonoBehaviour
             }
         }
         */
-
-
 
         piecesDisplays[playerNumber - 1].text = "Pièces: " + newPieces * Constant.COINS_MULTIPLIER;
 
