@@ -63,13 +63,13 @@ public class TableManager : MonoBehaviour
         {
             Debug.LogError("PvPlayer component not found!");
         }
-        
+
         createMarket(currentPlayer);
     }
 
     public void supprimerMarket()
     {
-         Card[] allCards = UnityEngine.Object.FindObjectsOfType<Card>();
+        Card[] allCards = UnityEngine.Object.FindObjectsOfType<Card>();
         foreach (var card in allCards)
         {
             // Vérifiez si l'ID de la carte correspond à celui que nous voulons détruire
@@ -136,16 +136,19 @@ public class TableManager : MonoBehaviour
     }
 
 
-    public int GetPieces(){
+    public int GetPieces()
+    {
         return pvPlayer.GetPiecesForPlayer(currentPlayer);
     }
 
-    public void SetPieces(int piece){
+    public void SetPieces(int piece)
+    {
         pvPlayer.ReducePieces(currentPlayer, piece);
         UpdatePiecesDisplay(currentPlayer, pvPlayer.GetPiecesForPlayer(currentPlayer));
     }
 
-    public void IncrementPieces(int piece){
+    public void IncrementPieces(int piece)
+    {
         pvPlayer.AddPieces(currentPlayer, piece);
         UpdatePiecesDisplay(currentPlayer, pvPlayer.GetPiecesForPlayer(currentPlayer));
     }
@@ -220,7 +223,7 @@ public class TableManager : MonoBehaviour
         if (playerId == 1)
         {
             rotationDegreesZ = 0.0f;
-            CreateCard(new Vector3(-4.5f, -3.8f, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard,isMarket);
+            CreateCard(new Vector3(-4.5f, -3.8f, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard, isMarket);
         }
         else if (playerId == 2)
         {
@@ -230,7 +233,7 @@ public class TableManager : MonoBehaviour
         else if (playerId == 3)
         {
             rotationDegreesZ = 180.0f;
-            CreateCard(new Vector3(4.5f, 3.8f, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard,isMarket);
+            CreateCard(new Vector3(4.5f, 3.8f, 0), scaleCardOnTable, cardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconCard, isMarket);
         }
         else if (playerId == 4)
         {
@@ -295,7 +298,7 @@ public class TableManager : MonoBehaviour
             try
             {
                 Debug.Log("CreateCard - Tentative de création de la carte");
-               
+
                 // Créer l'objet de la carte
                 GameObject cardObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 // Modifier la taille pour en faire une carte
@@ -307,13 +310,15 @@ public class TableManager : MonoBehaviour
                 Card cardComponent = (Card)cardObject.AddComponent(cardType);
                 cardComponent.attackPoints = attackPoints;
                 cardComponent.defensePoints = defensePoints;
-                 if (isMarket)
+                if (isMarket)
                 {
                     int prix = UnityEngine.Random.Range(1, 5);
                     text = $"Prix: {prix}\nAttaque: {attackPoints}\nDéfense: {defensePoints}";
                     cardComponent.prix = prix;
                     cardComponent.idPlayer = -1;
-                }else {
+                }
+                else
+                {
                     cardComponent.prix = 0;
                     cardComponent.idPlayer = playerId;
                 }
@@ -382,8 +387,8 @@ public class TableManager : MonoBehaviour
             }
         }
         */
-            
-        
+
+
 
         piecesDisplays[playerNumber - 1].text = "Pièces: " + newPieces;
 
@@ -434,9 +439,72 @@ public class TableManager : MonoBehaviour
         isMarket = true;
         supprimerMarket();
         // incremrnt piece
-        
+
+        StartCoroutine(AlphaColorZoneAnimation(currentPlayer));
+
         createMarket(currentPlayer);
     }
+
+    IEnumerator AlphaColorZoneAnimation(int playerNumber)
+    {
+        Debug.Log("AlphaColorZoneAnimation - Animation de la zone de couleur du joueur " + playerNumber);
+        // Récupérer le composant de couleur de la zone de couleur du joueur
+        Image image = GameObject.Find("Image Zone_player_" + playerNumber).GetComponent<Image>();
+        float originalColorAlpha = image.color.a;
+
+        StartCoroutine(IncreaseAlphaColorZoneAnimationCoroutine(image, 1));
+        yield return new WaitForSeconds(1.0f); // Adjust the duration as needed
+        StartCoroutine(DecreaseAlphaColorZoneAnimationCoroutine(image, originalColorAlpha, 1));
+    }
+
+
+    IEnumerator IncreaseAlphaColorZoneAnimationCoroutine(Image image, float targetAlpha, float duration = 0.5f)
+    {
+        Debug.Log("IncreaseAlphaColorZoneAnimationCoroutine - Animation de la zone de couleur du joueur " + image.name);
+        // Récupérer la couleur actuelle de la zone de couleur
+        Color originalColor = image.color;
+
+        float elapsedTime = 0;
+
+        while (elapsedTime < duration)
+        {
+            // Augmenter progressivement l'alpha de la couleur
+            float newAlpha = Mathf.Lerp(originalColor.a, targetAlpha, elapsedTime / duration);
+            Color newColor = new Color(originalColor.r, originalColor.g, originalColor.b, newAlpha);
+            image.color = newColor;
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ensure that the final alpha value is exactly the target alpha
+        image.color = new Color(originalColor.r, originalColor.g, originalColor.b, targetAlpha);
+    }
+
+    IEnumerator DecreaseAlphaColorZoneAnimationCoroutine(Image image, float targetAlpha, float duration = 0.5f)
+    {
+        Debug.Log("DecreaseAlphaColorZoneAnimationCoroutine - Animation de la zone de couleur du joueur " + image.name);
+        // Récupérer la couleur actuelle de la zone de couleur
+        Color originalColor = image.color;
+
+        float elapsedTime = 0;
+
+        while (elapsedTime < duration)
+        {
+            // Diminuer progressivement l'alpha de la couleur
+            float newAlpha = Mathf.Lerp(originalColor.a, targetAlpha, elapsedTime / duration);
+            Color newColor = new Color(originalColor.r, originalColor.g, originalColor.b, newAlpha);
+            image.color = newColor;
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ensure that the final alpha value is exactly the target alpha
+        image.color = new Color(originalColor.r, originalColor.g, originalColor.b, targetAlpha);
+    }
+
+
 
     public void SendMessageToPlayer(string message)
     {
@@ -487,7 +555,7 @@ public class TableManager : MonoBehaviour
             int defensePoints = UnityEngine.Random.Range(1, 15);
             isMarket = true;
 
-             if (playerId == 1)
+            if (playerId == 1)
             {
                 CreateCard(new Vector3(-3 + 2 * i, 0, 0), scaleCardOnTable, randomCardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconSelected, isMarket);
             }
@@ -504,7 +572,7 @@ public class TableManager : MonoBehaviour
                 CreateCard(new Vector3(2, 1 - 1.7f * i, 0), scaleCardOnTable, randomCardType, attackPoints, defensePoints, text, rotationDegreesZ, playerId, iconSelected, isMarket);
             }
         }
-        
+
     }
 
     public void CreateCard(Vector3 position, Vector3 scale, Type cardType, int attackPoints, int defensePoints, string iconSelected, int prix)
