@@ -79,7 +79,44 @@ public class Player
     {
         if (deckCountDisplay != null)
         {
+            // previous value
+            int previousValue;
+            try {
+                previousValue = int.Parse(deckCountDisplay.text.Split(':')[1]);
+            } catch (Exception e) {
+                Debug.Log("Deck count display text is not in the expected format: " + deckCountDisplay.text);
+                previousValue = 0;
+            }
+
+            // remove DeckCard as child of Deck object
+            if(previousValue > Deck.Count)
+            {
+                for (int i = 0; i < previousValue - Deck.Count; i++)
+                {
+                    GameObject deckCard = GameObject.Find("DeckCard_" + (previousValue - i));
+                    GameObject.Destroy(deckCard);
+                }
+            }
+            // add DeckCard as child of Deck object
+            else if(previousValue < Deck.Count)
+            {
+                // load Assets/Resources/Card_Shirts_Lite/PNG/Card_shirt_01.png
+                Sprite sprite = Resources.Load<Sprite>("Card_Shirts_Lite/PNG/Card_shirt_01");
+                for (int i = 0; i < Deck.Count - previousValue; i++)
+                {
+                    GameObject deckCard = new GameObject("DeckCard_" + (previousValue + i + 1));
+                    deckCard.transform.SetParent(GameObject.Find("Deck").transform, false);
+                    deckCard.transform.localPosition = new Vector3( 30 * (previousValue + i), -274, 0);
+                    deckCard.transform.localScale = new Vector3(30, 30, 0.1f);
+                    SpriteRenderer spriteRenderer = deckCard.AddComponent<SpriteRenderer>();
+                    spriteRenderer.sprite = sprite;
+                    spriteRenderer.sortingOrder = 1;
+                }
+            }
+           
+
             deckCountDisplay.text = "Deck: " + Deck.Count.ToString();
+            // -275
         }
     }
 
@@ -106,6 +143,7 @@ public class Player
             Card card = Deck[UnityEngine.Random.Range(0, Deck.Count)];
             CreateCard(new Vector3(-2 + 2 * i, 0, 0), scaleCardOnTel, card.GetType(), card.attackPoints, card.defensePoints, card.iconCard, false);
             Deck.Remove(card);
+
             UpdateDeckCountDisplay();
         }
     }

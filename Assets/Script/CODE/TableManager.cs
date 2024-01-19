@@ -429,7 +429,6 @@ public class TableManager : MonoBehaviour
     {
         //increment piece player
         IncrementPieces(1);
-
         currentPlayer++;
         if (currentPlayer > totalPlayers)
         {
@@ -442,8 +441,49 @@ public class TableManager : MonoBehaviour
 
         StartCoroutine(AlphaColorZoneAnimation(currentPlayer));
 
+
         createMarket(currentPlayer);
     }
+
+    // DO NOT WORK : make the border picture appear over the zone of the player
+    void AddBorder(int playerID, Color borderColor, float borderWidth = 10f)
+    {
+        // Create an empty GameObject for the border
+        GameObject borderObject = new GameObject("Border");
+        RectTransform borderRectTransform = borderObject.AddComponent<RectTransform>();
+
+        // Get the original image
+        Image originalImage = GameObject.Find("Image Zone_player_" + playerID).GetComponent<Image>();
+
+        // Set the parent of the border to be the same as the original image
+        borderObject.transform.SetParent(originalImage.transform, false);
+
+        // Adjust the size of the border
+        borderRectTransform.sizeDelta = new Vector2(
+            originalImage.rectTransform.sizeDelta.x + 2 * borderWidth,
+            originalImage.rectTransform.sizeDelta.y + 2 * borderWidth
+        );
+
+        // Set the z position to be behind the original image
+        borderRectTransform.localPosition = new Vector3(0, 0, -1);
+
+        // Add an Image component to the border
+        Image borderImage = borderObject.AddComponent<Image>();
+        borderImage.color = borderColor;
+    }
+
+    void RemoveBorder(int playerID)
+    {
+        // Find the border GameObject
+        GameObject borderObject = GameObject.Find("Image Zone_player_" + playerID + "/Border");
+
+        // If the border GameObject exists, destroy it
+        if (borderObject != null)
+        {
+            Destroy(borderObject);
+        }
+    }
+
 
     IEnumerator AlphaColorZoneAnimation(int playerNumber)
     {
