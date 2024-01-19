@@ -23,8 +23,6 @@ public class Player
 
     public WebSocket PlayerSocket;
 
-    public Vector3 scaleCardOnTel = new Vector3(2, 3, 0.1f);
-
     private TextMeshProUGUI deckCountDisplay;
 
     public Player(int id, string adresseNgrok, TextMeshProUGUI deckCountDisplay)
@@ -128,7 +126,7 @@ public class Player
             string iconSelected = iconNames[UnityEngine.Random.Range(0, iconNames.Length)];
             int attackPoints = UnityEngine.Random.Range(10, 25);
             int defensePoints = UnityEngine.Random.Range(1, 15);
-            CreateCard(new Vector3(-2 + 2 * i, 0, 0), scaleCardOnTel, randomCardType, attackPoints, defensePoints, iconSelected, false);
+            CreateCard(new Vector3(-2 + 2 * i, 0, 0), Constant.SCALE_CARD_ON_TEL, randomCardType, attackPoints, defensePoints, iconSelected, false);
         }
     }
 
@@ -140,7 +138,7 @@ public class Player
         for (int i = 0; i < 4; i++)
         {
             Card card = Deck[UnityEngine.Random.Range(0, Deck.Count)];
-            CreateCard(new Vector3(-2 + 2 * i, 0, 0), scaleCardOnTel, card.GetType(), card.attackPoints, card.defensePoints, card.iconCard, false);
+            CreateCard(new Vector3(-2 + 2 * i, 0, 0), Constant.SCALE_CARD_ON_TEL, card.GetType(), card.attackPoints, card.defensePoints, card.iconCard, false);
             Deck.Remove(card);
 
             UpdateDeckCountDisplay();
