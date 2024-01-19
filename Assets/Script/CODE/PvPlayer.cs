@@ -19,6 +19,10 @@ public class PvPlayer : MonoBehaviour
     public int PiecesPlayer3 = 1;
     public int PiecesPlayer4 = 1;
 
+    // audio
+    public AudioSource audioSource;
+    public AudioClip damageAudioClip;
+
     void Start()
     {
         // ReduceLifePoints(1, 30); // Réduit de 30 points la vie du joueur 1 pour tester
@@ -27,6 +31,17 @@ public class PvPlayer : MonoBehaviour
         // ReduceLifePoints(4, 70); // Réduit de 70 points la vie du joueur 4 pour tester
         // Debug.Log("Start: PV Joueur 1 après réduction = " + lifePointsPlayer1);
         // Debug.Log("Start: PV Joueur 2 après réduction = " + lifePointsPlayer2);
+
+        // audio add
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+        if (damageAudioClip == null)
+        {
+            // Assets\Resources\Sound\minecraft_hit_soundmp3converter.mp3
+            damageAudioClip = Resources.Load<AudioClip>("Sound/minecraft_hit_soundmp3converter");
+        }
     }
 
     public int GetLifePointsForPlayer(int playerNumber)
@@ -94,6 +109,8 @@ public class PvPlayer : MonoBehaviour
 
     public void ReduceLifePoints(int playerId, int damage)
     {
+        
+
         switch (playerId)
         {
             case 1: lifePointsPlayer1 -= damage; break;
@@ -103,6 +120,8 @@ public class PvPlayer : MonoBehaviour
             default: Debug.LogError("Invalid player number!"); break;
         }
         Debug.Log("ReduceLifePoints: PV Joueur " + playerId + " après dégâts = " + GetLifePointsForPlayer(playerId));
+        // Play damage sound
+        audioSource.PlayOneShot(damageAudioClip);
         UpdateHealthBar(playerId);
     }
 

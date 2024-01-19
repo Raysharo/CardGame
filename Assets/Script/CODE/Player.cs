@@ -106,8 +106,8 @@ public class Player
                 {
                     GameObject deckCard = new GameObject("DeckCard_" + (previousValue + i + 1));
                     deckCard.transform.SetParent(GameObject.Find("Deck").transform, false);
-                    deckCard.transform.localPosition = new Vector3( 30 * (previousValue + i), -274, 0);
-                    deckCard.transform.localScale = new Vector3(30, 30, 0.1f);
+                    deckCard.transform.localPosition = new Vector3( Constant.DIST_BETWEEN_DECK_CARDS * (previousValue + i), -274, 0);
+                    deckCard.transform.localScale = new Vector3(Constant.SCALE_DECK_CARDS, Constant.SCALE_DECK_CARDS, 0.1f);
                     SpriteRenderer spriteRenderer = deckCard.AddComponent<SpriteRenderer>();
                     spriteRenderer.sprite = sprite;
                     spriteRenderer.sortingOrder = 1;
@@ -116,7 +116,6 @@ public class Player
            
 
             deckCountDisplay.text = "Deck: " + Deck.Count.ToString();
-            // -275
         }
     }
 
