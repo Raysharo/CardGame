@@ -452,10 +452,10 @@ public class TableManager : MonoBehaviour
         GameObject textObject = new GameObject("Text");
         textObject.transform.SetParent(GameObject.Find("Canvas").transform, false);
         textObject.transform.localPosition = new Vector3(0, 0, 0); // Centrez sur la carte
-        textObject.transform.localScale = new Vector3(1, 1, 1); //  // Adjust width (x) and height (y) as needed
+        // textObject.transform.localScale = new Vector3(1, 1, 1); //  // Adjust width (x) and height (y) as needed
         TextMeshProUGUI textComponent = textObject.AddComponent<TextMeshProUGUI>();
         textComponent.text = "Tour du joueur " + currentPlayer;
-        textComponent.fontSize = 43.5f;
+        textComponent.fontSize = Constant.CHANGE_TURN_TEXT_FONT_SIZE;
         textComponent.alignment = TextAlignmentOptions.Center;
         textComponent.color = Color.white;
         textComponent.autoSizeTextContainer = true;
@@ -479,7 +479,7 @@ public class TableManager : MonoBehaviour
         }
 
         // Destroy the text after 5 seconds
-        Destroy(textObject, 5.0f);
+        Destroy(textObject, Constant.DURATION_SHOW_CHANGE_TURN_TEXT);
     }
 
     // DO NOT WORK : make the border picture appear over the zone of the player
