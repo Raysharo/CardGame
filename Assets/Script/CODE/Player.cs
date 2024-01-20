@@ -404,16 +404,6 @@ public class Player
         Card[] allCards = UnityEngine.Object.FindObjectsOfType<Card>();
         foreach (var card in allCards)
         {
-            // Check if all attributes match
-            /*
-            this.type = type;
-        this.idPlayerCoequipier = idPlayerCoequipier;
-        this.idCard = idCard;
-        this.cardType = cardType;
-        this.attackPoints = attackPoints;
-        this.defensePoints = defensePoints;
-        this.iconCard = iconCard;
-            */
             if (card.idPlayer == cardDataCoequipier.idPlayerCoequipier &&
                 card.attackPoints == cardDataCoequipier.attackPoints &&
                 card.defensePoints == cardDataCoequipier.defensePoints &&
@@ -422,15 +412,25 @@ public class Player
             {
                 // Create a square over the card
                 GameObject square = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                // Remove collider 
+                UnityEngine.Object.Destroy(square.GetComponent<BoxCollider>());
+
+
                 square.transform.SetParent(card.gameObject.transform, false);
-                square.transform.localPosition = new Vector3(0, 0, -3); // Centrez sur la carte
-                square.transform.localScale = new Vector3(1.5f, 2.5f, 0.1f); //  // Adjust width (x) and height (y) as needed
-                SpriteRenderer spriteRenderer = square.AddComponent<SpriteRenderer>();
-                spriteRenderer.color = Color.red;
-                spriteRenderer.sortingOrder = 1;
+                square.transform.localPosition = new Vector3(0, 0, 0); // Centrez sur la carte
+                
+                square.transform.localScale = new Vector3(1.05f, 1.05f, 0.1f); //  // Adjust width (x) and height (y) as needed
+                
+                // Make it red
+                square.GetComponent<Renderer>().material.color = Color.red;
+
+
+                
+                // SpriteRenderer spriteRenderer = square.AddComponent<SpriteRenderer>();
+                // spriteRenderer.sortingOrder = 1;
 
                 // Delay the destruction of the square
-                UnityEngine.Object.Destroy(square, 8);
+                UnityEngine.Object.Destroy(square, Constant.DURATION_CARD_TARGETED);
 
                 break;
 
