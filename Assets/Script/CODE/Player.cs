@@ -385,24 +385,65 @@ public class Player
         // Rappel format name card object "GoldCard" or "GreenCard" + the id of the card
         
         // Get the card object
-        GameObject cardObject = GameObject.Find(cardDataCoequipier.cardType + cardDataCoequipier.idCard);
-        if(cardObject == null)
-        {
-            Debug.Log("Card not found: " + cardDataCoequipier.cardType + cardDataCoequipier.idCard);
-            return;
-        }
+        // GameObject cardObject = GameObject.Find(cardDataCoequipier.cardType + cardDataCoequipier.idCard);
+        // if(cardObject == null)
+        // {
+        //     Debug.Log("Card not found: " + cardDataCoequipier.cardType + cardDataCoequipier.idCard);
+        //     return;
+        // }
 
         // TEMPORARY : add a square over the card
-        GameObject square = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        square.transform.SetParent(cardObject.transform, false);
-        square.transform.localPosition = new Vector3(0, 0, -3); // Centrez sur la carte
-        square.transform.localScale = new Vector3(1.5f, 2.5f, 0.1f); //  // Adjust width (x) and height (y) as needed
-        SpriteRenderer spriteRenderer = square.AddComponent<SpriteRenderer>();
-        spriteRenderer.color = Color.red;
-        spriteRenderer.sortingOrder = 1;
+        // GameObject square = GameObject.CreatePrimitive(PrimitiveType.Cube);
 
-        // Delay the destruction of the square
-        UnityEngine.Object.Destroy(square, 8);
+        // attention code dégueulasse
+
+        // Get all object of type 'Card' in the scene
+        Card[] allCards = UnityEngine.Object.FindObjectsOfType<Card>();
+        foreach (var card in allCards)
+        {
+            // Check if all attributes match
+            /*
+            this.type = type;
+        this.idPlayerCoequipier = idPlayerCoequipier;
+        this.idCard = idCard;
+        this.cardType = cardType;
+        this.attackPoints = attackPoints;
+        this.defensePoints = defensePoints;
+        this.iconCard = iconCard;
+            */
+            if (card.id == cardDataCoequipier.idCard && card.idPlayer == cardDataCoequipier.idPlayerCoequipier && card.attackPoints == cardDataCoequipier.attackPoints && card.defensePoints == cardDataCoequipier.defensePoints && card.iconCard == cardDataCoequipier.iconCard && card.GetType().ToString() == cardDataCoequipier.cardType)
+            {
+                // Create a square over the card
+                GameObject square = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                square.transform.SetParent(card.gameObject.transform, false);
+                square.transform.localPosition = new Vector3(0, 0, -3); // Centrez sur la carte
+                square.transform.localScale = new Vector3(1.5f, 2.5f, 0.1f); //  // Adjust width (x) and height (y) as needed
+                SpriteRenderer spriteRenderer = square.AddComponent<SpriteRenderer>();
+                spriteRenderer.color = Color.red;
+                spriteRenderer.sortingOrder = 1;
+
+                // Delay the destruction of the square
+                UnityEngine.Object.Destroy(square, 8);
+
+                break;
+
+            }
+        }
+        
+
+
+
+
+
+        // square.transform.SetParent(cardObject.transform, false);
+        // square.transform.localPosition = new Vector3(0, 0, -3); // Centrez sur la carte
+        // square.transform.localScale = new Vector3(1.5f, 2.5f, 0.1f); //  // Adjust width (x) and height (y) as needed
+        // SpriteRenderer spriteRenderer = square.AddComponent<SpriteRenderer>();
+        // spriteRenderer.color = Color.red;
+        // spriteRenderer.sortingOrder = 1;
+
+        // // Delay the destruction of the square
+        // UnityEngine.Object.Destroy(square, 8);
 
 
         //CreateCardforDeck(cardDataCoequipier.idCard, cardDataCoequipier.idPlayerCoequipier, cardDataCoequipier.attackPoints, cardDataCoequipier.defensePoints, cardDataCoequipier.iconCard, cardDataCoequipier.type, cardDataCoequipier.cardType);
