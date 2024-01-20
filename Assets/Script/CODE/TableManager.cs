@@ -122,6 +122,15 @@ public class TableManager : MonoBehaviour
                 if (piecesDisplays[i] != null)
                 {
                     piecesDisplays[i].text = "Pièces: " + pvPlayer.GetPiecesForPlayer(i + 1) * Constant.COINS_MULTIPLIER;
+
+
+                    // Add a picture of a coin under the piecesDisplays object for each piece
+                    for (int j = 0; j < pvPlayer.GetPiecesForPlayer(i + 1); j++)
+                    {
+                        // id of the array + 1 because the array start at 0
+                        CreatePhysicalCoin(i , j );
+                    }
+
                 }
                 else
                 {
@@ -133,6 +142,26 @@ public class TableManager : MonoBehaviour
         {
             Debug.LogError("PiecesDisplays array is not properly assigned in the inspector!");
         }
+    }
+
+    void CreatePhysicalCoin(int playerID, int pieceID)
+    {
+        Debug.Log("CreatePhysicalCoin - Création d'une pièce physique pour le joueur " + playerID + " et la pièce " + pieceID);
+        GameObject coinObject = new GameObject("CoinPlayer" + playerID + "_PiecesNum_" + pieceID) ;
+        // as child of the piecesDisplays object
+        coinObject.transform.SetParent(piecesDisplays[playerID].transform, false);
+        // position of the coin
+        coinObject.transform.localPosition = new Vector3(-84 + 3 * pieceID, -25 , 0);
+        // Add a SpriteRenderer component
+        SpriteRenderer spriteRenderer = coinObject.AddComponent<SpriteRenderer>();
+        // Set the sprite to be the coin sprite (Assets\Resources\Pictures\coin.jpg)
+        spriteRenderer.sprite = Resources.Load<Sprite>("Pictures/coin");
+        // Set the sorting order to be 1 so that the coin is always on top of the text
+        spriteRenderer.sortingOrder = 1;
+        // Set the scale of the coin
+        const int COIN_SCALE = 7;
+        coinObject.transform.localScale = new Vector3(COIN_SCALE, COIN_SCALE, COIN_SCALE);
+
     }
 
 
@@ -365,11 +394,6 @@ public class TableManager : MonoBehaviour
     public void UpdatePiecesDisplay(int playerNumber, int newPieces)
     {
         Debug.Log("UpdatePiecesDisplay - Mise à jour de l'affichage des Pièces du joueur " + playerNumber + " à " + newPieces);
-        
-        /*
-
-        TODO : HERE
-        ça marche presque
 
         // parse the old text to get the number of pieces
         string oldText = piecesDisplays[playerNumber - 1].text;
@@ -377,21 +401,17 @@ public class TableManager : MonoBehaviour
         int oldPieces = Int32.Parse(words[1]) / Constant.COINS_MULTIPLIER;
         Debug.Log("UpdatePiecesDisplay - oldPieces: " + oldPieces);
         if(newPieces > oldPieces){
-            // create a cylinder object under the piecesDisplays object for each piece added
             for(int i = 0; i < newPieces - oldPieces; i++){
-                GameObject coinObject = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-                coinObject.name = "CoinPlayer" + playerNumber + "_PiecesNum_" + newPieces;
-                coinObject.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-                coinObject.transform.position = piecesDisplays[playerNumber - 1].transform.position + new Vector3(0, -1 * i, 0);
+                CreatePhysicalCoin(playerNumber -1 , oldPieces + i + 1);
             }
         } else {
             // destroy a cylinder object under the piecesDisplays object for each piece removed
             for(int i = 0; i < oldPieces - newPieces; i++){
-                GameObject coinObject = GameObject.Find("CoinPlayer" + playerNumber + "_PiecesNum_" + (newPieces + i + 1));
+                GameObject coinObject = GameObject.Find("CoinPlayer" + (playerNumber-1) + "_PiecesNum_" + (newPieces + i));
                 Destroy(coinObject);
             }
         }
-        */
+        
 
         piecesDisplays[playerNumber - 1].text = "Pièces: " + newPieces * Constant.COINS_MULTIPLIER;
 
@@ -449,7 +469,8 @@ public class TableManager : MonoBehaviour
         createMarket(currentPlayer);
     }
 
-    void ShowPlayerTurn(int currentPlayer){
+    void ShowPlayerTurn(int currentPlayer)
+    {
         // Add a TextMeshPro text to the middle of the scene to indicate the current player turn
         // Bold, 43.5 font size, centered text, Middle Center alignment, white color, auto size
         GameObject textObject = new GameObject("Text");
