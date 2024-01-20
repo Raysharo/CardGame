@@ -382,7 +382,27 @@ public class Player
         CardDataCoequipier cardDataCoequipier = JsonUtility.FromJson<CardDataCoequipier>(message);
         Debug.Log("Carte trouvée : " + cardDataCoequipier.attackPoints + "  " + cardDataCoequipier.defensePoints + "  " + cardDataCoequipier.idPlayerCoequipier + "  " + cardDataCoequipier.cardType + "  " + cardDataCoequipier.iconCard);
 
+        // Rappel format name card object "GoldCard" or "GreenCard" + the id of the card
         
+        // Get the card object
+        GameObject cardObject = GameObject.Find(cardDataCoequipier.cardType + cardDataCoequipier.idCard);
+        if(cardObject == null)
+        {
+            Debug.Log("Card not found: " + cardDataCoequipier.cardType + cardDataCoequipier.idCard);
+            return;
+        }
+
+        // TEMPORARY : add a square over the card
+        GameObject square = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        square.transform.SetParent(cardObject.transform, false);
+        square.transform.localPosition = new Vector3(0, 0, -3); // Centrez sur la carte
+        square.transform.localScale = new Vector3(1.5f, 2.5f, 0.1f); //  // Adjust width (x) and height (y) as needed
+        SpriteRenderer spriteRenderer = square.AddComponent<SpriteRenderer>();
+        spriteRenderer.color = Color.red;
+        spriteRenderer.sortingOrder = 1;
+
+        // Delay the destruction of the square
+        UnityEngine.Object.Destroy(square, 8);
 
 
         //CreateCardforDeck(cardDataCoequipier.idCard, cardDataCoequipier.idPlayerCoequipier, cardDataCoequipier.attackPoints, cardDataCoequipier.defensePoints, cardDataCoequipier.iconCard, cardDataCoequipier.type, cardDataCoequipier.cardType);
