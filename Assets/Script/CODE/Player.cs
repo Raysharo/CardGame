@@ -283,7 +283,7 @@ public class Player
         // Modifier la taille pour en faire une carte
         cardObject.transform.localScale = scale;
         cardObject.transform.position = position;
-        // Ajouter le composant de carte du type spécifié
+                // Ajouter le composant de carte du type spécifié
         //cardType.BaseType.GetMethod("InitializeCard").Invoke(cardObject.AddComponent(cardType), new object[] { attackPoints, defensePoints });
         Card cardComponent = (Card)cardObject.AddComponent(cardType);
         // Initialiser la carte (si vous avez une fonction pour cela dans votre classe Card)
@@ -379,42 +379,16 @@ public class Player
 
     public void AddTextToCardUI(GameObject cardObject, string text, Vector3 localPosition)
     {
-        // Créez un nouveau GameObject pour le Canvas s'il n'existe pas déjà sur la carte
-        Canvas canvas = cardObject.GetComponentInChildren<Canvas>();
-        if (canvas == null)
-        {
-            GameObject canvasObject = new GameObject("CardCanvas");
-            canvasObject.transform.SetParent(cardObject.transform, false);
-            canvas = canvasObject.AddComponent<Canvas>();
-            canvas.renderMode = RenderMode.WorldSpace;
-            CanvasScaler canvasScaler = canvasObject.AddComponent<CanvasScaler>();
-            canvasScaler.scaleFactor = 0.1f; // Ajustez selon la taille de la carte
-            canvasScaler.dynamicPixelsPerUnit = 10f;
-            canvasObject.AddComponent<GraphicRaycaster>();
-            // Ajustez la taille et la position du Canvas pour qu'il corresponde à la carte
-            RectTransform canvasRectTransform = canvasObject.GetComponent<RectTransform>();
-            canvasRectTransform.sizeDelta = new Vector2(100, 100); // Ajustez cette taille selon vos besoins
-            //canvasRectTransform.localPosition = new Vector3(0, 0, 0); // Centrez sur la carte
-            canvasRectTransform.localPosition = localPosition; // Centrez sur la carte
-        }
-
-        // Créer l'objet de texte en tant qu'enfant de cardObject
-        GameObject textObject = new GameObject("CardTextUI");
-        textObject.transform.SetParent(canvas.transform, false);
-
-        RectTransform rectTransform = textObject.AddComponent<RectTransform>();
-        rectTransform.localPosition = new Vector3(0, 0, -1); // Centrez sur la carte
-
-        // Ajouter et configurer le composant de texte
-        Text textComponent = textObject.AddComponent<Text>();
-        textComponent.text = text;
-        textComponent.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        textComponent.fontSize = 3;
-        textComponent.alignment = TextAnchor.MiddleCenter;
-        textComponent.color = Color.black;
-
-        // Ajuster la taille de l'échelle pour rendre le texte proportionnel à la carte
-        textObject.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f); // Ajustez cette échelle selon vos besoins
+        // Add a textMeshPro to the card autosized to fit the card
+        GameObject textObject = new GameObject(cardObject.name + "_textObject");
+        textObject.transform.SetParent(cardObject.transform, false);
+        // make z position = -2 to make sure it is over the card
+        textObject.transform.localPosition = new Vector3(localPosition.x, localPosition.y, localPosition.y-2); // Centrez sur la carte
+        TextMeshPro textMeshPro = textObject.AddComponent<TextMeshPro>();
+        textMeshPro.text = text;
+        textMeshPro.fontSize = 1.5f;
+        textMeshPro.alignment = TextAlignmentOptions.Center;
+        textMeshPro.color = Color.black;
 
     }
 
