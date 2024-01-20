@@ -79,15 +79,18 @@ public class Player
         {
             // previous value
             int previousValue;
-            try {
+            try
+            {
                 previousValue = int.Parse(deckCountDisplay.text.Split(':')[1]);
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Debug.Log("Deck count display text is not in the expected format: " + deckCountDisplay.text);
                 previousValue = 0;
             }
 
             // remove DeckCard as child of Deck object
-            if(previousValue > Deck.Count)
+            if (previousValue > Deck.Count)
             {
                 for (int i = 0; i < previousValue - Deck.Count; i++)
                 {
@@ -96,7 +99,7 @@ public class Player
                 }
             }
             // add DeckCard as child of Deck object
-            else if(previousValue < Deck.Count)
+            else if (previousValue < Deck.Count)
             {
                 // load Assets/Resources/Card_Shirts_Lite/PNG/Card_shirt_01.png
                 Sprite sprite = Resources.Load<Sprite>("Card_Shirts_Lite/PNG/Card_shirt_01");
@@ -104,14 +107,14 @@ public class Player
                 {
                     GameObject deckCard = new GameObject("DeckCard_" + (previousValue + i + 1));
                     deckCard.transform.SetParent(GameObject.Find("Deck").transform, false);
-                    deckCard.transform.localPosition = new Vector3( Constant.DIST_BETWEEN_DECK_CARDS * (previousValue + i), -274, 0);
+                    deckCard.transform.localPosition = new Vector3(Constant.DIST_BETWEEN_DECK_CARDS * (previousValue + i), -274, 0);
                     deckCard.transform.localScale = new Vector3(Constant.SCALE_DECK_CARDS, Constant.SCALE_DECK_CARDS, 0.1f);
                     SpriteRenderer spriteRenderer = deckCard.AddComponent<SpriteRenderer>();
                     spriteRenderer.sprite = sprite;
                     spriteRenderer.sortingOrder = 1;
                 }
             }
-           
+
 
             deckCountDisplay.text = "Deck: " + Deck.Count.ToString();
         }
@@ -283,7 +286,7 @@ public class Player
         // Modifier la taille pour en faire une carte
         cardObject.transform.localScale = scale;
         cardObject.transform.position = position;
-                // Ajouter le composant de carte du type spécifié
+        // Ajouter le composant de carte du type spécifié
         //cardType.BaseType.GetMethod("InitializeCard").Invoke(cardObject.AddComponent(cardType), new object[] { attackPoints, defensePoints });
         Card cardComponent = (Card)cardObject.AddComponent(cardType);
         // Initialiser la carte (si vous avez une fonction pour cela dans votre classe Card)
@@ -383,7 +386,7 @@ public class Player
         Debug.Log("Carte trouvée : " + cardDataCoequipier.attackPoints + "  " + cardDataCoequipier.defensePoints + "  " + cardDataCoequipier.idPlayerCoequipier + "  " + cardDataCoequipier.cardType + "  " + cardDataCoequipier.iconCard);
 
         // Rappel format name card object "GoldCard" or "GreenCard" + the id of the card
-        
+
         // Get the card object
         // GameObject cardObject = GameObject.Find(cardDataCoequipier.cardType + cardDataCoequipier.idCard);
         // if(cardObject == null)
@@ -411,7 +414,11 @@ public class Player
         this.defensePoints = defensePoints;
         this.iconCard = iconCard;
             */
-            if (card.id == cardDataCoequipier.idCard && card.idPlayer == cardDataCoequipier.idPlayerCoequipier && card.attackPoints == cardDataCoequipier.attackPoints && card.defensePoints == cardDataCoequipier.defensePoints && card.iconCard == cardDataCoequipier.iconCard && card.GetType().ToString() == cardDataCoequipier.cardType)
+            if (card.idPlayer == cardDataCoequipier.idPlayerCoequipier &&
+                card.attackPoints == cardDataCoequipier.attackPoints &&
+                card.defensePoints == cardDataCoequipier.defensePoints &&
+                card.iconCard == cardDataCoequipier.iconCard &&
+                card.GetType().ToString() == cardDataCoequipier.cardType)
             {
                 // Create a square over the card
                 GameObject square = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -429,7 +436,7 @@ public class Player
 
             }
         }
-        
+
 
 
 
@@ -448,7 +455,7 @@ public class Player
 
         //CreateCardforDeck(cardDataCoequipier.idCard, cardDataCoequipier.idPlayerCoequipier, cardDataCoequipier.attackPoints, cardDataCoequipier.defensePoints, cardDataCoequipier.iconCard, cardDataCoequipier.type, cardDataCoequipier.cardType);
 
-    } 
+    }
 
 
 
@@ -458,7 +465,7 @@ public class Player
         GameObject textObject = new GameObject(cardObject.name + "_textObject");
         textObject.transform.SetParent(cardObject.transform, false);
         // make z position = -2 to make sure it is over the card
-        textObject.transform.localPosition = new Vector3(localPosition.x, localPosition.y, localPosition.y-2); // Centrez sur la carte
+        textObject.transform.localPosition = new Vector3(localPosition.x, localPosition.y, localPosition.y - 2); // Centrez sur la carte
         TextMeshPro textMeshPro = textObject.AddComponent<TextMeshPro>();
         textMeshPro.text = text;
         textMeshPro.fontSize = 1.5f;
