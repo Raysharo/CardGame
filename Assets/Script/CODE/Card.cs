@@ -435,9 +435,89 @@ public abstract class Card : MonoBehaviour
                 }
             }
 
+
+            else
+            {
+                if (this.idPlayer == 0)
+                {
+                    Debug.Log("Carte a envoyer au jouer coequipier");
+                    int idPlayerCoequipier = GetIdplayerCoequipier();
+                    Debug.Log("idPlayerCoequipier :" + idPlayerCoequipier);
+                    if (idPlayerCoequipier == 1)
+                    {
+                        Debug.Log("Carte peut etre poser");
+                        // inofs cart send to player coequipier 3 
+                        CardDataCoequipier messageObject = new CardDataCoequipier("carteCoequipier", 3, this.id, this.GetType().Name, this.attackPoints, this.defensePoints, this.iconCard);
+                        string message = JsonUtility.ToJson(messageObject);
+                        Debug.Log("message : " + message);
+                        GetOwner().SendMessageToPlayer(message);
+                    }
+                    else if (idPlayerCoequipier == 2)
+                    {
+                        Debug.Log("Carte peut etre poser");
+                        // inofs cart send to player coequipier 4
+                        Debug.Log("Carte peut etre poser");
+                        CardDataCoequipier messageObject = new CardDataCoequipier("carteCoequipier", 4, this.id, this.GetType().Name, this.attackPoints, this.defensePoints, this.iconCard);
+                        string message = JsonUtility.ToJson(messageObject);
+                        Debug.Log("message : " + message);
+                        GetOwner().SendMessageToPlayer(message);
+                    }
+                    else if (idPlayerCoequipier == 3)
+                    {
+                        Debug.Log("Carte peut etre poser");
+                        // inofs cart send to player coequipier 1
+                        Debug.Log("Carte peut etre poser");
+                        CardDataCoequipier messageObject = new CardDataCoequipier("carteCoequipier", 1, this.id, this.GetType().Name, this.attackPoints, this.defensePoints, this.iconCard);
+                        string message = JsonUtility.ToJson(messageObject);
+                        Debug.Log("message : " + message);
+                        GetOwner().SendMessageToPlayer(message);
+                    }
+                    else if (idPlayerCoequipier == 4)
+                    {
+                        Debug.Log("Carte peut etre poser");
+                        // inofs cart send to player coequipier 2
+                        Debug.Log("Carte peut etre poser");
+                        CardDataCoequipier messageObject = new CardDataCoequipier("carteCoequipier", 2, this.id, this.GetType().Name, this.attackPoints, this.defensePoints, this.iconCard);
+                        string message = JsonUtility.ToJson(messageObject);
+                        Debug.Log("message : " + message);
+                        GetOwner().SendMessageToPlayer(message);
+                    }
+                }
+
+            }
+
         }
 
     }
+
+
+    public int GetIdplayerCoequipier()
+    {
+        Card[] allCards = UnityEngine.Object.FindObjectsOfType<Card>();
+        foreach (var card in allCards)
+        {
+            if (card.idPlayer != 0)
+            {
+                return card.idPlayer;
+            }
+        }
+        return 0;
+    }
+
+    public Player GetOwner()
+    {
+        Card[] allCards = UnityEngine.Object.FindObjectsOfType<Card>();
+        foreach (var card in allCards)
+        {
+            if (card.idPlayer != 0)
+            {
+                return card.owner;
+            }
+        }
+
+        return null;
+    }
+
 
     private IEnumerator DelayedDestroy(float time, int idCard)
     {
@@ -901,7 +981,7 @@ public abstract class Card : MonoBehaviour
     {
 
         Card[] allCards = FindObjectsOfType<Card>(); // Trouvez toutes les cartes dans la scène
-        //int pDeffence = 0;
+                                                     //int pDeffence = 0;
 
         foreach (Card card in allCards)
         {
@@ -951,7 +1031,7 @@ public abstract class Card : MonoBehaviour
                     if (attackPoints >= card.defensePoints)
                     {
 
-                        
+
 
                         // nouveau
                         int id = card.id;
@@ -964,7 +1044,7 @@ public abstract class Card : MonoBehaviour
                         attackPoints -= card.defensePoints;
                         UnityEngine.Object.Destroy(card.gameObject);
                         cartesEnModeDefenseParZone.Remove(zone);
-                       
+
 
                         //nouveau
                         CardMarket messageObject2 = new CardMarket(id, 2, this.attackPoints, defensePoints, iconCard, type, typeCard);
@@ -976,7 +1056,7 @@ public abstract class Card : MonoBehaviour
                         string message = JsonUtility.ToJson(messageObject);
                         tableManager.SendMessageToPlayer(message);
 
-                        
+
                     }
                     else
                     {
@@ -990,14 +1070,14 @@ public abstract class Card : MonoBehaviour
                     if (attackPoints >= card.defensePoints)
                     {
 
-                         // nouveau
+                        // nouveau
                         int id = card.id;
                         int defensePoints = card.defensePoints;
                         string iconCard = card.iconCard;
                         string type = "cartePourLeMarche";
                         string typeCard = card.GetType().Name;
 
-                        
+
                         attackPoints -= card.defensePoints;
                         UnityEngine.Object.Destroy(card.gameObject);
                         cartesEnModeDefenseParZone.Remove(zone);
@@ -1007,7 +1087,7 @@ public abstract class Card : MonoBehaviour
                         CardMarket messageObject2 = new CardMarket(id, 3, this.attackPoints, defensePoints, iconCard, type, typeCard);
                         string message2 = JsonUtility.ToJson(messageObject2);
                         tableManager.SendMessageToPlayer(message2);
-                        
+
 
 
 
@@ -1034,15 +1114,15 @@ public abstract class Card : MonoBehaviour
                         string iconCard = card.iconCard;
                         string type = "cartePourLeMarche";
                         string typeCard = card.GetType().Name;
-                        
-                        
+
+
                         attackPoints -= card.defensePoints;
                         UnityEngine.Object.Destroy(card.gameObject);
                         cartesEnModeDefenseParZone.Remove(zone);
 
 
 
- //nouveau
+                        //nouveau
                         CardMarket messageObject2 = new CardMarket(id, 4, this.attackPoints, defensePoints, iconCard, type, typeCard);
                         string message2 = JsonUtility.ToJson(messageObject2);
                         tableManager.SendMessageToPlayer(message2);

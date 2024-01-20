@@ -63,6 +63,10 @@ public class MessageManager : MonoBehaviour
                 case "cartePourLeMarche":
                     owner.HandleCartePourLeMarcheMessage(message);
                     break;
+                case "carteCoequipier":
+                    owner.HandleCarteCoequipierMessage(message);
+                    break;  
+                
                 default:
                     Debug.LogError("Type de message inconnu.");
                     break;

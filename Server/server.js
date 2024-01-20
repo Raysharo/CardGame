@@ -106,6 +106,33 @@ wss.on('connection', (ws, req) => {
             //broadcastMessageTableMarkettoPlayer(message, cardId, idPlayer);
             broadcastMessageTableMarkettoPlayer(id, idPlayer, attackPoints, defensePoints, iconCard, typeCard, type);
         }
+
+
+        else if (typeof message === 'object' && message.type === "carteCoequipier") {
+
+            let type = message.type;
+            let idPlayerCoequipier = message.idPlayerCoequipier;
+            let idCard = message.idCard;
+            let typeCard = message.cardType;
+            let attackPoints = message.attackPoints;
+            let defensePoints = message.defensePoints;
+            let iconCard = message.iconCard;
+
+            console.log("type de message: " + message.type)
+            console.log("idPlayerCoequipier: " + idPlayerCoequipier)
+            console.log("idCard: " + idCard)
+            console.log("typeCard: " + typeCard)
+            console.log("attackPoints: " + attackPoints)
+            console.log("defensePoints: " + defensePoints)
+            console.log("iconCard: " + iconCard)
+
+            messagetocoequipier(type, idPlayerCoequipier, idCard, typeCard, attackPoints, defensePoints, iconCard);
+        }
+
+
+
+
+
         else {
             console.log('Format de message inconnu ou non pris en charge.', message);
         }
@@ -114,6 +141,31 @@ wss.on('connection', (ws, req) => {
     // Envoi d'un message au client connecté
     //ws.send(`Bienvenue sur le serveur WebSocket, client ${clientId}`);
 });
+
+
+function messagetocoequipier(type, idPlayerCoequipier, idCard, typeCard, attackPoints, defensePoints, iconCard) {
+    let messageObject = {
+        type: type,
+        idPlayerCoequipier: idPlayerCoequipier,
+        idCard: idCard,
+        cardType: typeCard,
+        attackPoints: attackPoints,
+        defensePoints: defensePoints,
+        iconCard: iconCard
+    };
+    // Convertir l'objet en chaîne JSON
+    let messageString = JSON.stringify(messageObject);
+    clients.forEach((client, clientId) => {
+        if (client.readyState === WebSocket.OPEN && clientId == idPlayerCoequipier) {
+            // lastMessages.set(clientId, message);
+            client.send(messageString);
+        }
+    });
+
+}
+
+
+
 
 function broadcastMessagePlayerDecrement(command, idPlayer) {
     // Exemple : Diffuser le message à tous les clients connectés, sauf à la table

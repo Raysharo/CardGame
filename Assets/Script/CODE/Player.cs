@@ -375,6 +375,20 @@ public class Player
         }
     }
 
+    public void HandleCarteCoequipierMessage(string message)
+    {
+        // Convertir la chaîne JSON en objet
+        Debug.Log("Message reçu du serveur : " + message);
+        CardDataCoequipier cardDataCoequipier = JsonUtility.FromJson<CardDataCoequipier>(message);
+        Debug.Log("Carte trouvée : " + cardDataCoequipier.attackPoints + "  " + cardDataCoequipier.defensePoints + "  " + cardDataCoequipier.idPlayerCoequipier + "  " + cardDataCoequipier.cardType + "  " + cardDataCoequipier.iconCard);
+
+        
+
+
+        //CreateCardforDeck(cardDataCoequipier.idCard, cardDataCoequipier.idPlayerCoequipier, cardDataCoequipier.attackPoints, cardDataCoequipier.defensePoints, cardDataCoequipier.iconCard, cardDataCoequipier.type, cardDataCoequipier.cardType);
+
+    } 
+
 
 
     public void AddTextToCardUI(GameObject cardObject, string text, Vector3 localPosition)
