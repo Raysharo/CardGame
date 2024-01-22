@@ -91,7 +91,7 @@ public abstract class Card : MonoBehaviour
     void Start()
     {
         Program = GameObject.Find("Program").GetComponent<Program>();
-        
+
         // load the shield sprite Assets\Resources\Card_Shirts_Lite\shield.png
         shieldSprite = Resources.Load<Sprite>("Card_Shirts_Lite/shield");
     }
@@ -252,25 +252,22 @@ public abstract class Card : MonoBehaviour
         }
     }
 
-    void AddShieldIconToCard(Card card){
+    void AddShieldIconToCard(Card card)
+    {
         // add a shield icon on the top left of the card
         GameObject shield = new GameObject("shield");
         shield.transform.parent = card.transform;
         shield.transform.position = card.transform.position;
         shield.transform.localScale = new Vector3(0.007f, 0.01f, 0.01f);
-        shield.transform.localPosition = new Vector3(-0.5f, 0.5f, 0.0f);
+        shield.transform.localPosition = new Vector3(-0.5f, 0.5f, -9.0f);
         SpriteRenderer shieldSpriteRenderer = shield.AddComponent<SpriteRenderer>();
-        
-        if(shieldSprite == null){
-            Debug.LogError("shieldSprite is null");
-            shieldSprite = Resources.Load<Sprite>("Card_Shirts_Lite/shield");
-        }
-            
 
+        shieldSprite = Resources.Load<Sprite>("Card_Shirts_Lite/shield");
         shieldSpriteRenderer.sprite = shieldSprite;
     }
 
-    void RemoveShieldIconFromCard(Card card){
+    void RemoveShieldIconFromCard(Card card)
+    {
         // remove the shield icon from the card
         GameObject shield = card.transform.Find("shield").gameObject;
         Destroy(shield);
@@ -297,7 +294,7 @@ public abstract class Card : MonoBehaviour
                         this.transform.rotation = Quaternion.Euler(0, 0, -90);
                         cartesEnModeDefenseParZone[zone] = this;
                         AddShieldIconToCard(this);
-                        
+
 
                     }
                     else
@@ -381,7 +378,7 @@ public abstract class Card : MonoBehaviour
                     PlaySound(sound1_correct);
                     StartCoroutine(DelayedDestroy(0.3f, this.id));
 
-                    if (owner.CompteCarte() == 0)
+                    if (owner.CompteCarte() <= 0)
                     {
                         //owner.CreateCardPlayer(this.idPlayer);
                         owner.CreateCardFromDeck();
@@ -408,7 +405,7 @@ public abstract class Card : MonoBehaviour
                     StartCoroutine(DelayedDestroy(0.3f, this.id));
 
                     // nombreDeCartesParZone[Zone1Id]++;
-                    if (owner.CompteCarte() == 0)
+                    if (owner.CompteCarte() <= 0)
                     {
                         owner.CreateCardPlayer(this.idPlayer);
                     }
@@ -434,7 +431,7 @@ public abstract class Card : MonoBehaviour
                     StartCoroutine(DelayedDestroy(0.3f, this.id));
 
                     // nombreDeCartesParZone[Zone3Id]++;
-                    if (owner.CompteCarte() == 0)
+                    if (owner.CompteCarte() <= 0)
                     {
                         owner.CreateCardPlayer(this.idPlayer);
                     }
@@ -462,7 +459,7 @@ public abstract class Card : MonoBehaviour
 
 
                     // nombreDeCartesParZone[Zone4Id]++;
-                    if (owner.CompteCarte() == 0)
+                    if (owner.CompteCarte() <= 0)
                     {
                         owner.CreateCardPlayer(this.idPlayer);
                     }
@@ -880,10 +877,8 @@ public abstract class Card : MonoBehaviour
             }
         }
 
-        if (clickDuration < this.clickDuration)
-        {
-            TaskOnClik();
-        }
+        TaskOnClik();
+
     }
 
     public void SetCurrentZone(int playerId)

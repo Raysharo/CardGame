@@ -417,7 +417,7 @@ public class Player
                 square.transform.SetParent(card.gameObject.transform, false);
                 square.transform.localPosition = new Vector3(0, 0, 0); // Centrez sur la carte
                 
-                square.transform.localScale = new Vector3(1.05f, 1.05f, 0.1f); //  // Adjust width (x) and height (y) as needed
+                square.transform.localScale = new Vector3(1.3f, 1.3f, 0.1f); //  // Adjust width (x) and height (y) as needed
                 
                 // Make it red
                 square.GetComponent<Renderer>().material.color = Color.red;
