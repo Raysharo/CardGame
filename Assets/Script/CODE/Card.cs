@@ -84,11 +84,16 @@ public abstract class Card : MonoBehaviour
     private Coroutine sizeCardCoroutine;
     float originalScale;
 
+    // Sprite shield
+    public Sprite shieldSprite;
+
 
     void Start()
     {
         Program = GameObject.Find("Program").GetComponent<Program>();
-
+        
+        // load the shield sprite Assets\Resources\Card_Shirts_Lite\shield.png
+        shieldSprite = Resources.Load<Sprite>("Card_Shirts_Lite/shield");
     }
 
 
@@ -247,6 +252,31 @@ public abstract class Card : MonoBehaviour
         }
     }
 
+    void AddShieldIconToCard(Card card){
+        // add a shield icon on the top left of the card
+        GameObject shield = new GameObject("shield");
+        shield.transform.parent = card.transform;
+        shield.transform.position = card.transform.position;
+        shield.transform.localScale = new Vector3(0.007f, 0.01f, 0.01f);
+        shield.transform.localPosition = new Vector3(-0.5f, 0.5f, 0.0f);
+        SpriteRenderer shieldSpriteRenderer = shield.AddComponent<SpriteRenderer>();
+        
+        if(shieldSprite == null){
+            Debug.LogError("shieldSprite is null");
+            shieldSprite = Resources.Load<Sprite>("Card_Shirts_Lite/shield");
+        }
+            
+
+        shieldSpriteRenderer.sprite = shieldSprite;
+    }
+
+    void RemoveShieldIconFromCard(Card card){
+        // remove the shield icon from the card
+        GameObject shield = card.transform.Find("shield").gameObject;
+        Destroy(shield);
+    }
+
+
 
     void TaskOnClik()
     {
@@ -266,11 +296,15 @@ public abstract class Card : MonoBehaviour
                     {
                         this.transform.rotation = Quaternion.Euler(0, 0, -90);
                         cartesEnModeDefenseParZone[zone] = this;
+                        AddShieldIconToCard(this);
+                        
+
                     }
                     else
                     {
                         this.transform.rotation = Quaternion.Euler(0, 0, 0);
                         cartesEnModeDefenseParZone.Remove(zone);
+                        RemoveShieldIconFromCard(this);
                     }
                 }
                 else if (this.idPlayer == 2)
@@ -280,11 +314,13 @@ public abstract class Card : MonoBehaviour
                     {
                         this.transform.rotation = Quaternion.Euler(0, 0, -90);
                         cartesEnModeDefenseParZone.Remove(zone);
+                        RemoveShieldIconFromCard(this);
                     }
                     else
                     {
                         this.transform.rotation = Quaternion.Euler(0, 0, 0);
                         cartesEnModeDefenseParZone[zone] = this;
+                        AddShieldIconToCard(this);
 
                     }
                 }
@@ -297,11 +333,13 @@ public abstract class Card : MonoBehaviour
                     {
                         this.transform.rotation = Quaternion.Euler(0, 0, 90);
                         cartesEnModeDefenseParZone[zone] = this;
+                        AddShieldIconToCard(this);
                     }
                     else
                     {
                         this.transform.rotation = Quaternion.Euler(0, 0, -180);
                         cartesEnModeDefenseParZone.Remove(zone);
+                        RemoveShieldIconFromCard(this);
                     }
                 }
                 else if (this.idPlayer == 4)
@@ -311,12 +349,14 @@ public abstract class Card : MonoBehaviour
                     {
                         this.transform.rotation = Quaternion.Euler(0, 0, 90);
                         cartesEnModeDefenseParZone.Remove(zone);
+                        RemoveShieldIconFromCard(this);
 
                     }
                     else
                     {
                         this.transform.rotation = Quaternion.Euler(0, 0, 0);
                         cartesEnModeDefenseParZone[zone] = this;
+                        AddShieldIconToCard(this);
                     }
                 }
             }

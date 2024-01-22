@@ -414,8 +414,6 @@ public class Player
                 GameObject square = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 // Remove collider 
                 UnityEngine.Object.Destroy(square.GetComponent<BoxCollider>());
-
-
                 square.transform.SetParent(card.gameObject.transform, false);
                 square.transform.localPosition = new Vector3(0, 0, 0); // Centrez sur la carte
                 
@@ -423,11 +421,6 @@ public class Player
                 
                 // Make it red
                 square.GetComponent<Renderer>().material.color = Color.red;
-
-
-                
-                // SpriteRenderer spriteRenderer = square.AddComponent<SpriteRenderer>();
-                // spriteRenderer.sortingOrder = 1;
 
                 // Delay the destruction of the square
                 UnityEngine.Object.Destroy(square, Constant.DURATION_CARD_TARGETED);
